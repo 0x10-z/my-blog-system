@@ -35,7 +35,7 @@ export default function Home({ posts }: { posts: CoreContent<Blog>[] }) {
                         <time dateTime={date}>{formatDate(date, siteMetadata.locale)}</time>
                       </dd>
                       <dd className="font-sm text-base leading-6 text-gray-500 dark:text-gray-400">
-                        <span>⏰{post.readingTime.text.replaceAll('read', 'de lectura')}</span>
+                        <span>⏰{post.readingTime.text}</span>
                       </dd>
                     </dl>
                     <div className="space-y-5 xl:col-span-3">

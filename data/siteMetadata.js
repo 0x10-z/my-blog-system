@@ -2,7 +2,7 @@
 const siteMetadata = {
   title: 'Blog de Iker',
   author: 'Iker Ocio Zuazo',
-  headerTitle: 'Blog de Iker',
+  headerTitle: '',
   description: 'A veces escribo sobre Hacking, tecnología y curiosidades.',
   language: 'es-ES',
   theme: 'system', // system, dark or light

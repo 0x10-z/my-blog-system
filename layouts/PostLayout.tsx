@@ -29,7 +29,7 @@ interface LayoutProps {
 }
 
 export default function PostLayout({ content, authorDetails, next, prev, children }: LayoutProps) {
-  const { filePath, path, slug, date, title, tags } = content
+  const { filePath, path, slug, date, title, tags, readingTime } = content
   const basePath = path.split('/')[0]
 
   return (
@@ -51,6 +51,9 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
               </dl>
               <div>
                 <PageTitle>{title}</PageTitle>
+                <dd className="font-sm text-base leading-6 text-gray-500 dark:text-gray-400">
+                  <span>⏰{readingTime.text}</span>
+                </dd>
               </div>
             </div>
           </header>
