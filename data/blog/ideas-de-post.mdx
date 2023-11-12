@@ -1,0 +1,55 @@
+---
+title: 'Ideas de post'
+date: '2022-01-30'
+tags: ["#Import 2022-12-20 21:06"]
+draft: true
+authors: ['default']
+summary:   Hablar sobre trivy y escaneadores de vulnerabilidades Por ejemplo el contenedor de python311 t
+---
+
+* Hablar sobre trivy y escaneadores de vulnerabilidades. Por ejemplo el contenedor de python:3.11 tiene vulnerabilidades un monton pero el de alpine no.
+* trivy image --ignore-unfixed --severity HIGH python:3.11
+* trivy image --ignore-unfixed --severity HIGH python:3.11-alpine
+* Post sobre Osint, google dorks
+* https://cheatsheet.haax.fr/open-source-intelligence-osint/dorks/google_dorks/
+* https://twitter.com/TakSec/status/1609650609640312832
+* 
+* Post sobre OSINT
+* https://geoxc-apps.bd.esri.com/space/satellite-explorer/ Aqui puedo hablar del proposito de los satelites, tipos de orbitas, dueños y basura espacial
+* https://satellitemap.space/?constellation=starlink&norad=50188 lo puedo incluir en el de arriba para hablar de starlinkt
+* ----
+* Webcams sin contraseña http://www.insecam.org/en/bycountry/ES/?page=8
+* https://world-webcams.nsspot.net/
+* buscar en shodan a ver si hay algun google dork para sacar passwords default
+* Emails: https://nixintel.info/osint/12-osint-resources-for-e-mail-addresses/
+* Business and personal fingerprinting: https://www.futurespace.es/fs-osint/, esta web te muestra el leak de informacion que da tu navegador cuando visitas cualquier web https://browserleaks.com/. este te hace un test de cuanto seguro es tu browser https://coveryourtracks.eff.org/
+* https://clearbit.com/customers esta antes dabas un mail y te sacaba informacion de la persona, gustos, donde esta registrado... se ve que han cambiado un poco para que de "menos" miedo. Este post de 2015 lo confirma https://www.softzone.es/2015/04/08/clearbit-software-detras-direccion-email/. Estas webs infieren la identidad de un mail mirando en internet, cookies,...
+
+* Post sobre fuzzing de uris
+
+
+```
+wfuzz -c --hc=404,301 -t 200 -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt http://soccer.htb/tiny/uploads/FUZZ/
+```
+* fuzzing dns fuzz.web.com
+* fuzzing  web.com/fuzz/
+* fuzzing web.com/directory/fuzz.php
+
+* Post sobre fuerza bruta con hydra
+
+
+```
+hydra -L /usr/share/SecLists/Usernames/top-usernames-shortlist.txt -P /usr/share/SecLists/Passwords/2020-200_most_used_passwords.txt soccer.htb http-post-form "/tiny/:fm_usr=^USER^&fm_pwd=^PASS^:Invalid username or password"
+```
+* 
+* Pivoting con ssh, chisel
+* como funcitona tcp y https
+* Reconocimiento con nmap, script custom de python
+* Monitorizacion de procesos con ps-aux, pspy,
+* Escalado de privilegios suid
+* Reconocimiento de directorios con dirbuster, wfuzz
+* Trabajar con burpsuite para capturar peticiones y reenviarlas añadiendo una cookie de sesion
+* Pensar en cosas de docker que pueda enseñar
+* Almacenar contraseñas de forma segura en una db
+* ejecucion remota de codigo a traves de la plantilla de jinja cros side remote templtate https://book.hacktricks.xyz/pentesting-web/ssti-server-side-template-injection
+* Explicar arp poisoning MITM

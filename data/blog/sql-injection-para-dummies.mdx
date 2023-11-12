@@ -1,0 +1,57 @@
+---
+title: 'SQL Injection para Dummies'
+date: '2022-01-30'
+tags: ["Hacking", "SQLInjection", "RepoExample", "Dummies", "#Import 2022-12-20 21:06"]
+draft: false
+authors: ['default']
+summary: En este post vamos a hablar de SQL Injection o inyección SQL para los más hispanohablantes 
+---
+
+En este post vamos a hablar de SQL Injection o inyección SQL, para los más hispanohablantes.
+
+Antes de nada, si estás muy perdido, vamos a explicar qué es SQL o Structured Query Language. SQL se utiliza para que, los desarrolladores de software en su mayoría, nos comuniquemos con las diferentes bases de datos dentro de nuestro código. Es un lenguaje estándar para sistemas de bases de datos relaciones. Te dejo un [link](https://es.wikipedia.org/wiki/SQL) a Wikipedia y otro a la web de [INCIBE](https://www.incibe.es/protege-tu-empresa/blog/ataques-inyeccion-sql-amenaza-tu-web) (Instituto Nacional de CIBErseguridad) por si tienes más curiosidad.
+
+Después de esta breve introducción, al lío.
+
+Cuando hablamos concretamente de las inyecciones SQL, estamos hablando de un tipo de ciberataque que se puede dar en cualquier plataforma digital que maneje por detrás una base de datos. Poneos a pensar y os daréis cuenta de que es más rápido si tratáis de enumerar qué sistema digital no se sustenta por detrás por una o más bases de datos y así podéis imaginar cuan sensible es este tema.
+
+Aquellas potenciales plataformas que son sensibles a este tipo de ciberataque son aquellas (entre otras muchas) que manejan formularios y permiten introducir al usuario algún tipo de información. Si llegados a este punto te estás perdiendo, un formulario es lo que usas para meter tu usuario y contraseña de Netflix.
+
+Y es que con esto, un hacker podría insertar código propio en una plataforma vulnerable y acceder a todo tipo de información protegida. Desde información relativa de los usuarios, hasta enumerar las distintas bases de datos que hay dentro de una organización.
+
+En un mundo ideal, un usuario inserta una contraseña (1234) en un formulario de entrada. Pero, ¿que pasaría si un usuario introdujera lo siguiente en un servidor vulnerable?
+
+
+```
+ |          | Login form         |
+ |----------|--------------------|
+ | Username | John               |
+ | Password | 1234" or 1=1;--    |
+```
+A continuación vemos un esquema del funcionamiento de un ataque de este estilo.
+
+![](https://blog.ikerocio.com/content/images/2022/01/sqli.svg)SQL Injection schema
+ Probar cualquier acción de este tipo en un entorno que no nos pertenece, está duramente penado por la ley. En ningún caso deberíamos probar esto en las plataformas. Incluso el [Hacking Ético](https://www.pandasecurity.com/es/mediacenter/seguridad/asi-se-estan-endureciendo-en-espana-las-penas-contra-los-ciberdelincuentes/), sin permiso de la empresa responsable de la plataforma, es ilegal.
+
+1. Un atacante inserta una contraseña. (1234" or 1=1;--)
+2. Esa cadena de caracteres viaja al servidor y se sustituye dentro de la cláusula WHERE de la sentencia SQL.
+3. La sentencia WHERE hace de filtro. La idea es que devuelva aquellos usuarios que cumplen con la condición. En este caso, la condición booleana es verdadera en el operando derecho de la cláusula OR.
+4. Como siempre se cumple la condición, existe una fuga de información.
+
+He preparado una prueba de concepto en mi [repositorio](https://github.com/iocio005/flask-sqlinjection-vulnerable) que puedes ejecutar con los siguientes comandos en un entorno con Docker instalado.
+
+
+```
+git clone https://github.com/iocio005/flask-sqlinjection-vulnerable
+docker-compose -f flask-sqlinjection-vulnerable/docker-compose.yml up
+```
+Abre un navegador, entra a http://127.0.0.1 y extrae toda la información que puedas, como se ve a continuación.
+
+![](https://blog.ikerocio.com/content/images/2022/01/ezgif.com-gif-maker.gif)La mayoría de las plataformas están exentas de este tipo de vulnerabilidades, aunque siempre aparecen casos nuevos que necesitan ser parcheados.
+
+Si eres desarrollador y quieres asegurarte de que en tu código no introduces este tipo de vulnerabilidades, probablemente estés exento de ellas si utilizas algún ORM o Framework. En cualquier caso, investiga los siguientes enlaces con el fin de prevenir estas vulnerabilidades en diferentes lenguajes:
+
+* [C#](https://letmegooglethat.com/?q=How+to+prevent+sqli+csharp)
+* [Python](https://letmegooglethat.com/?q=How+to+prevent+sqli+python)
+* [Java](https://letmegooglethat.com/?q=How+to+prevent+sqli+java)
+* [Php](https://letmegooglethat.com/?q=How+to+prevent+sqli+php)

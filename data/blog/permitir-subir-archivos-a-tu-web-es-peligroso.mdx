@@ -1,0 +1,79 @@
+---
+title: 'Por qué permitir subir archivos a tu web es peligroso'
+date: '2022-02-06'
+tags: ["UnrestrictedFileUpload", "Hacking", "Vulnerabilities", "Pentesting", "#Import 2022-12-20 21:06"]
+draft: false
+authors: ['default']
+summary: El post de hoy va a tratar sobre el riesgo potencial que se crea en aquellas plataformas que permite
+---
+
+El post de hoy va a tratar sobre el riesgo potencial que se crea en aquellas plataformas que permiten a los usuarios subir archivos a través de algún formulario.
+
+Este tipo de plataformas van más allá que Facebook o Instagram, donde todos tenemos claro que se pueden subir fotos. También estamos hablando de cualquier web que te permite subir una imagen de perfil, por ejemplo. Y esto último abarca un gran número de webs.
+
+El impacto de una vulnerabilidad de este tipo está catalogado como riesgo alto por la [OWASP](https://owasp.org/www-community/vulnerabilities/Unrestricted_File_Upload) (Open Web Application Security Project) foundation, el organismo encargado de apoyar, gestionar y determinar las causas que hacen que el software sea inseguro.
+
+Pero analicemos más en profundidad qué riesgos puede ocasionarnos una vulnerabilidad de este tipo. A continuación, enumeraré los 2 más los más interesantes a mi parecer:
+
+1. Ejecución de código remoto en el contexto del cliente, pudiendo robar la cookie de sesión del usuario que accede a ese contenido.
+2. Ejecución de código remoto en el contexto del servidor (subiendo un archivo en el lenguaje que interprete el servidor).
+
+De este último, he preparado una prueba de concepto que servirá para entender mejor el problema al que nos enfrentamos.
+
+Unrestricted File Upload Vulnerability
+--------------------------------------
+
+El código de la prueba se puede descargar del siguiente [link](https://github.com/iocio005/Unrestricted-File-Upload-Vulnerability). Como siempre, se puede poner en marcha del siguiente modo.
+
+
+```
+git clone https://github.com/iocio005/Unrestricted-File-Upload-Vulnerability
+cd Unrestricted-File-Upload-Vulnerability
+docker-compose up
+```
+**Analicemos lo que ocurre a continuación**. 
+
+Estamos ante una aplicación que permite subir imágenes para visualizarlas online, como si se tratase de un álbum de fotos. Esta aplicación se ejecuta en un servidor que interpreta código PHP. Un atacante no tiene por qué conocer esta información, pero es relativamente fácil llegar a esta conclusión analizando el host remoto con una serie de herramientas o incluso, conociendo el CMS que está corriendo.
+
+![](https://blog.ikerocio.com/content/images/2022/02/ezgif-5-1b4b7d19e3-4.gif)El ataque consta de 3 pasos:
+
+1. Preparamos un archivo PHP que contiene el siguiente código.
+
+
+```
+php
+	echo system($_REQUEST['cmd']);
+?
+```
+*Es gracioso porque Windows me borraba automáticamente el archivo cuando lo estaba creando para hacer la prueba.*
+
+Este código recibe un parámetro *cmd* que ejecutará en una consola del sistema y después imprimirá por pantalla el resultado.
+
+2. Utilizamos el formulario para subir el archivo, ya que el servidor no tiene en cuenta la extensión del mismo. En la web, se generan unos links para acceder a la visualización del contenido.
+
+3. Como el servidor interpreta el código PHP que hemos introducido, le añadimos un parámetro a la URL que ejecutará el comando que queramos del siguiente modo.
+
+
+```
+http://127.0.0.1/php_rce.php?cmd=
+```
+Llegados a este punto, ya hemos obtenido la ejecución remota de código. A partir de este momento podemos enumerar archivos del sistema o simplemente ejecutarnos una shell reversa para navegar por el sistema de archivos.
+
+**Cosas a tener en consideración:**
+
+* Si el servidor se estuviese ejecutando como *root*, tanto los comandos como la shell que obtendríamos estaría en una sesión con todos los privilegios. Game Over. De ahí la importancia de tener un control de privilegios de las tareas que estamos ejecutando.
+* Si el servidor estuviese filtrando este tipo de archivos y solo permitiese subir imágenes, pero el backend estuviese empleando alguna librería típica de procesamiento de imágenes como [ImageTragick](https://imagetragick.com/), el servidor sería igualmente vulnerable.
+* Esta explotación de la vulnerabilidad es un caso extremo. No limitar el tamaño del archivo que se sube al servidor podría terminar en un ataque [DOS](https://www.cloudflare.com/es-es/learning/ddos/what-is-a-ddos-attack/) al llenar el almacenamiento total del sistema en caso de no estar alojando los archivos en un almacenamiento de datos Cloud como [S3](https://aws.amazon.com/es/s3/). En este último caso, tu economía podría irse al garete.
+* Cualquier lenguaje backend es susceptible de sufrir esta vulnerabilidad. La prueba de concepto con PHP se podría haber hecho con .NET, Java, Javascript, Python y un largo etc.
+
+Y, ¿qué puedo hacer para prevenir esto?
+---------------------------------------
+
+Son varias las cosas que deberías tener en cuenta como ves en este [link](https://cheatsheetseries.owasp.org/cheatsheets/File_Upload_Cheat_Sheet.html), pero los siguientes puntos deberían ser básicos para tu servidor:
+
+* El atributo Accept en el html del lado de [cliente](https://developer.mozilla.org/es/docs/Web/HTML/Attributes/accept). Ojo, esto por si solamente no sirve de nada, debe ir acompañado obligatoriamente del siguiente punto.
+* Valida el tipo de archivo en el servidor. No te fíes únicamente de la cabecera Content-Type, un usuario podría modificar esto. En el siguiente [enlace](https://dev.to/einlinuus/how-to-upload-files-with-php-correctly-and-securely-1kng) tienes un ejemplo de como se haría en PHP, pero básicamente consiste en leer el [MimeType](https://developer.mozilla.org/es/docs/Web/HTTP/Basics_of_HTTP/MIME_types) del archivo y mediante una [Whitelist](https://www.hypr.com/whitelist/), permitir unas extensiones concretas excluyendo automáticamente todas las demás.
+* Fija un tamaño límite del archivo. Si es posible, aplica algún tipo de umbral máximo de subida de archivo por cada usuario. No permitas subir archivos sin estar autenticado.
+* Almacena los archivos en un lugar externo al servidor que corre la aplicación. En caso de no ser posible, ubica la carpeta de subidas fuera del directorio webroot.
+* Utiliza identificadores que se mapeen con cada archivo. Es decir, en el caso de la aplicación de prueba, la forma de acceder al archivo subido no debería ser http://127.0.0.1/php\_rce.php, debería ser mediante una URI aleatoria tipo http://127.0.0.1/123456789.
+* Protege todos tus formularios de posibles ataques [CSRF](https://owasp.org/www-community/attacks/csrf).
