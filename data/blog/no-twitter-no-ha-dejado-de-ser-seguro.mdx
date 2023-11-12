@@ -1,0 +1,85 @@
+---
+title: 'No, Twitter no es inseguro'
+date: '2023-02-20'
+tags: []
+draft: false
+authors: ['default']
+summary: '![](/static/images/uploads/no-twitter-no-ha-dejado-de-ser-seguro/twitter_2fa.webp)'
+---
+
+![](/static/images/uploads/no-twitter-no-ha-dejado-de-ser-seguro/twitter_2fa.webp)
+
+De hecho, n(os) ha hecho un favor.
+
+Contexto
+========
+
+El pasado [15 de febrero de 2023](https://blog.twitter.com/en_us/topics/product/2023/an-update-on-two-factor-authentication-using-sms-on-twitter) Twitter anunció que hacía un cambio en su política de seguridad. El cambio consistía en que el método de autenticación de doble factor vía SMS solo iba a mantenerse para aquellos usuarios que estuviesen suscritos a Twitter Blue. O dicho de otra manera, si no pagas 8€/mes, pierdes esta funcionalidad.
+
+No son pocos los medios como [antena3](https://www.antena3.com/noticias/tecnologia/twitter-cobrara-usuarios-proteger-sus-cuentas-autenticacion-dos-pasos-mediante-sms_2023021863f108f52b5c780001355f72.html), [CNN](https://cnnespanol.cnn.com/2023/02/19/twitter-cobrara-autenticacion-de-dos-factores-sms-trax/) u otros tecnológicos como [Xataka](https://www.xataka.com/empresas-y-economia/pagas-u-olvidate-identificacion-dos-pasos-sms-ultimo-elon-para-empujar-twitter-blue) que se han hecho eco de esta noticia diciendo que Twitter despliega esta medida para favorecer a los usuarios de pago dejando en la estacada a aquellos que no pagasen por su marca de verificado o su [Twitter Blue](https://help.twitter.com/es/using-twitter/twitter-blue). Que la seguridad de una plataforma ahora es algo de unos pocos privilegiados. Y es que esta afirmación, es cuanto menos engañosa. Una media verdad que no busca informar realmente a las personas. Vamos a examinar por qué.
+
+**Twitter ofrece (ofrecía) [3 métodos](https://help.twitter.com/es/managing-your-account/two-factor-authentication) diferentes de autenticación de doble factor (o 2FA).**
+
+* 2FA vía SMS
+* 2FA vía TOTP app (time based one time password)
+* 2FA vía USB key
+
+En resumidas cuentas, lo que los 3 métodos consiguen, es que para acceder a tu cuenta, sea necesario una segunda forma de identificación. Y de las 3, **la que funciona mediante SMS es la más débil de todas**.
+
+En este post de Norton podemos encontrarnos el siguiente titular: [SIM swap scams on the rise](https://us.norton.com/blog/mobile/sim-swap-fraud#).
+
+💡Según el FBI, los estafadores recurren cada vez con más frecuencia a las estafas de SIM swap. La oficina informó de que en 2021, el FBI recibió 1.611 informes de este tipo de delito. Las pérdidas superaron los 68 millones de dólares.   
+  
+Desde enero de 2018 hasta diciembre de 2020, el FBI recibió solo 320 denuncias de SIM swap, y las víctimas de estos delitos perdieron alrededor de 12 millones de dólares.Aun en 2023, es relativamente fácil la forma en la que alguien puede suplantar nuestra tarjeta SIM, ya sea mediante ingeniería social contra uno de los operadores de nuestra compañía telefónica (la forma más común de llevarlo a cabo) o clonando físicamente la tarjeta. Y con ello, el 2FA sostenido mediante SMS pasa a ser absurdamente inútil. De hecho, si tu banco te envía por SMS una clave para acceder a tu cuenta corriente, CAMBIA de banco.
+
+**Twitter, a día de hoy y no parece que vaya a cambiar, sigue permitiendo utilizar los otros 2 métodos de autenticación de doble factor para TODOS los usuarios, independientemente de su tipo de cuenta.**
+
+Solo aquellos que pagan, pueden seguir utilizando el método (más) inseguro de los 3.
+
+Que es 2FA
+==========
+
+La autenticación en dos fases (**2FA**) es un **método de seguridad de administración de identidad y acceso que requiere dos formas de identificación para obtener acceso a los recursos y los datos.**
+
+La forma de funcionamiento es la siguiente:
+
+![](/static/images/uploads/no-twitter-no-ha-dejado-de-ser-seguro/2fa\_Excalidraw-1.webp)
+
+1. Inicias sesión en una plataforma mediante un usuario y una contraseña.
+2. Si la contraseña es correcta, se genera un desafio. Este desafio consiste en introducir una clave válida.
+3. Dependiendo el método de **2FA** que tengas configurado, tienes hasta 3 formas de generar esa clave válida.  
+
+3.1. Te llega un SMS con una clave.  
+
+3.2. Mediante un USB especial, lo introduces en el ordenador y la aplicación lo reconoce, dando paso en caso de ser un USB correcto.  
+
+3.3. Mediante una aplicación tipo [Latch](https://latch.elevenpaths.com/) o Google Authenticator, se genera una clave que dura unos segundos y que tienes que introducir como desafio.
+
+
+Cómo podemos mejorar la seguridad
+=================================
+
+¿De qué forma podemos incrementar la seguridad de acceso a una plataforma? Hay un mecanismo que, si bien no es infalible, dificulta mucho que alguien pueda suplantar nuestra identidad. La mejor forma de autenticación es cuando el método de autenticación tiene en cuenta las siguientes 3 cosas:
+
+* **Algo que sabes**, como por ejemplo un pin o una contraseña.
+* **Algo que tienes**, como por ejemplo un dispositivo, token o aplicación.
+* **Algo que eres,** (autenticación biométrica), como una huella dactilar o reconocimiento facial.
+
+[Algo que sabes, algo que tienes y algo que eres. ¿Sabes de qué estamos hablando?En la actualidad la utilización de contraseñas es un elemento básico y casi podríamos decir que cotidiano. Sin embargo, sigue presentando debilidades, relacionadas con la limitada capacidad humana![](https://www.incibe.es/sites/default/files/iconos_ios/apple-touch-icon-180x180.png)INCIBE![](/static/images/uploads/no-twitter-no-ha-dejado-de-ser-seguro/post\_d5\_txt3.webp)](https://www.incibe.es/protege-tu-empresa/blog/algo-sabes-tienes-eres-contrasenas-identidad-online)Existen muchas aplicaciones en el mercado que permiten implementar **2FA** (o incluso **MFA**) como [Latch](https://latch.elevenpaths.com/), [Google Authenticator](https://support.google.com/accounts/answer/1066447?hl=en&co=GENIE.Platform%3DAndroid) o [Microsoft Authenticator](https://www.microsoft.com/en-us/security/mobile-authenticator-app).
+
+Pero tienen también su parte mala.
+
+* Para acceder a ellas, necesitarás una contraseña. Intenta que ésta sea lo suficientemente segura como para que no te la puedan robar.
+* En algunos casos como **Google Auth**, si pierdes el dispositivo, tienes que contactar hasta con el mismísimo Joe Biden para recuperar el acceso al dispositivo.
+
+En definitiva, dependes al 100% de este mecanismo para acceder a todas tus cuentas.
+
+Personalmente, me quedo con **Latch**, puesto que puedes configurar un método de autenticación biométrico para abrirla y si pierdes el dispositivo, puedes iniciar sesión desde cualquier sitio conectado a internet.
+
+Conclusión
+==========
+
+Twitter sigue siendo tan seguro (o inseguro) como lo era antes. De hecho, se puede afirmar que trata mejor a sus usuarios gratuitos en este sentido que a aquellos que pasan por caja.
+
+Cualquier plataforma hoy en día permite utilizar 2FA como método de autenticación alternativa y entre ellas, la que funciona vía SMS es la más insegura. Esto no quiere decir que dejemos de utilizarla si es nuestro caso. Siempre será mejor esto que entrar en tu cuenta solo con la contraseña. Pero como siempre, cuanto más mecanismos de seguridad utilices en tus cuentas, estarás un poco más protegido que los que no utilizan ninguna.
+

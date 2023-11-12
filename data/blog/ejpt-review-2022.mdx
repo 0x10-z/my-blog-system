@@ -1,0 +1,83 @@
+---
+title: 'Review del eJPT en 2022'
+date: '2022-02-27'
+tags: ["Hacking", "Pentesting", "Blog", "#Import 2022-12-20 21:06"]
+draft: false
+authors: ['default']
+summary: '![](/static/images/uploads/ejpt-review-2022/carbon.webp)'
+---
+
+![](/static/images/uploads/ejpt-review-2022/carbon.webp)
+
+Hace unos días me presenté al examen para obtener la certificación del [**eJPT**](https://elearnsecurity.com/product/ejpt-certification/) (eLearnSecurity Junior Penetration Tester). Para los que no lo sepáis, es una de las varias certificaciones con cierta reputación que existen dentro del ámbito del pentesting.
+
+Dejo un [link](https://pauljerimy.com/security-certification-roadmap/) con el roadmap de todas las certificaciones que existen sobre redes y ciberseguridad, donde puedes ver los **CCNA** de Cisco, las relativas a Cloud Architect (AWS, Google Cloud y Azure) y otras más del contexto de la ciberseguridad como el **OSCP**.
+
+![](/static/images/uploads/ejpt-review-2022/image-27.webp)
+
+https://pauljerimy.com/security-certification-roadmap/Llegados hasta aquí, analizaré en detalle los siguientes puntos.
+
+💻 Cómo fue la experiencia del examen
+------------------------------------
+
+El proceso para obtener el certificado es el siguiente.
+
+* **Paso 1:** Compra la opción de presentarte al examen [aquí](https://elearnsecurity.com/?post_type=product&p=10890). (son 200$ que al cambio se quedan en unos 177€)
+* **Paso 2:** Desde el momento de la compra, tienes 180 días para prepararte el examen en [INE](https://my.ine.com/path/a223968e-3a74-45ed-884d-2d16760b8bbd) siguiendo el plan de estudio que tienen para el **eJPT**. La preparación para este examen es totalmente gratuita y tienes laboratorios prácticos al estilo CTF. Si cuentas con conocimientos previos en ámbito de redes, ciberseguridad y has hecho algún CTF, no necesitas mucho más que repasar su plan de estudios para presentarte al examen.
+* **Paso 3:** Inicia el proceso del examen. Desde ese momento tienes 3 días para terminarlo. Si suspendes, tienes una opción de recuperación antes de 14 días.
+
+Los resultados del examen los recibes directamente. El formato del examen son 20 preguntas tipo test, algunas de ellas con opción múltiple, y tienes que aprobar un 75% del examen. Es decir, solo puedes fallar 5 de las 20 preguntas.
+
+ Los 3 días son más que suficientes para aprobarlo. En mi caso, leí de mucha gente que lo suele terminar en unos 2 días y medio, siempre dependiendo de la preparación con la que te enfrentas a la prueba.
+
+Yo lo terminé en menos de 24 horas, unas 13-14 horas efectivas (sin contar los descansos).
+
+Era mi primer examen de este tipo y la experiencia fue muy positiva. Tuve 2 momentos en los que me atasqué, al inicio del examen (si lees otras [reviews](https://www.reddit.com/r/eLearnSecurity/comments/jhbx2d/ejpt_routing_advice/) del eJPT debe ser bastante común el bloqueo de esta parte) y otra al final, a falta de contestar 2 preguntas del test. El resto de preguntas se contestan de forma bastante fácil.
+
+❓ ¿Necesito el eJPT?
+--------------------
+
+Como muchas de las preguntas que te puedes hacer en la vida, la respuesta es "depende". Si te quieres iniciar en el mundo del Pentesting o Hacking Ético, es desde luego recomendable obtener el **eJPT**.
+
+En mi caso, me sirvió como termómetro del nivel de conocimiento necesario para sacar este tipo de certificaciones, ya que en el futuro me gustaría aspirar a otras como el [**eWPT**](https://elearnsecurity.com/product/ewpt-certification/)**, [eCPPTv2](https://elearnsecurity.com/product/ecpptv2-certification/)** o incluso el [**OSCP**](https://www.offensive-security.com/pwk-oscp/).
+
+🏋️‍♂️ ¿Cuál es la dificultad?
+-----------------------------
+
+El **eJPT** es una de las certificaciones más básicas que existen en el mundo del Pentesting. Pero que esto no te lleve a un engaño. El hecho de catalogarla como básica no significa que sea para todo el mundo. Requiere de muchas horas de estudio y dedicación, sobre todo si no has invertido antes tiempo en plataformas CTF o el conocimiento que tienes sobre software, redes y vulnerabilidades es pequeño. En cualquier caso, el plan de estudio que tiene eLearningSecurity de forma gratuita es recomendable.
+
+🔑 Consejos para el examen
+-------------------------
+
+Cuando inicias el proceso, te descargas un archivo ZIP con una carta de compromiso como la que recibirías en la realidad en una empresa donde vas a realizar un pentesting. Lee cuidadosamente esta carta al inicio y repite la lectura eventualmente durante el examen. Encontrarás pistas que en un inicio pueden pasar desapercibidas.
+
+![](/static/images/uploads/ejpt-review-2022/image-28.webp)
+
+El formato del pentesting que harás es de tipo BlackBox, por lo que no tendrás mucha información del entorno en el que te encuentras. En el ZIP inicial te entregarán un archivo PCAP que tendrás que abrir de manera local con Wireshark para tratar de extraer toda la información posible. Si no haces esto bien, no puedes continuar con el examen y es la parte donde la mayor parte de la gente se encuentra bloqueada.
+
+
+ Enumera, enumera y enumera. Anota todo. No es un CTF.
+
+En mi caso me preparé un esquema de como estaba constituida la red según iba recopilando información. Mantén este esquema actualizado. Es un buen modo de poder volver atrás y tener una visión global en todo momento. Además, siendo el examen de varios días, necesitas una manera de ponerte en situación rápidamente.
+
+El curso gratuito hace mucho hincapié en herramientas como **Metasploit**. En mi caso, no me gusta mucho utilizarla porque en el 99% de los casos puedes ejecutar los exploits de forma más "manual" y es una buena forma de aprendizaje. En cualquier caso, durante el examen tuve que emplearla una vez. Con saber como buscar, configurar y ejecutar exploits en ella es suficiente. No necesitas ser un experto. Dedica más esfuerzos en aprender las siguientes herramientas que te serán de más utilidad durante el examen.
+
+* Nmap (Con especial hincapié en esta)
+* BurpSuite
+* Hydra
+* Smbclient
+* Sqlmap
+
+🎓 Conclusión
+------------
+
+Estoy muy contento con haber tomado la decisión de obtener esta certificación. La experiencia del examen ha sido muy buena y divertida. Finalmente, aunque pensaba que todas las preguntas del tipo test las tenía bien, fallé 1 de ellas obteniendo un 95% del resultado final.
+
+Intuyo cuál pudo ser la que estaba mal, pero en cualquier caso no te fíes. Lee bien todas y cada una de ellas. Repasa lo que puedas y anota todo lo que haces. En esta certificación no debes entregar un reporte de las vulnerabilidades, pero tener todo anotado te puede servir a ti a la hora de repasar el examen al final.
+
+La recompensa, si todo ha ido bien, es la certificación que ves a continuación.
+
+![](/static/images/uploads/ejpt-review-2022/image-30.webp)
+
+https://verified.elearnsecurity.com/certificates/cdbd4f81-182a-42f7-a48c-8c5199fe4b1d### 👨‍💻 Happy Hacking!
+

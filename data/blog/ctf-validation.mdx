@@ -4,8 +4,10 @@ date: '2022-02-08'
 tags: ["CTF", "Hacking", "SQLInjection", "XSS", "#Import 2022-12-20 21:06"]
 draft: false
 authors: ['default']
-summary: Esta máquina es del creador de contenido de Ciberseguridad IppSec Podemos encontrar varias máquinas
+summary: '![](/static/images/uploads/ctf-validation/validation.webp)'
 ---
+
+![](/static/images/uploads/ctf-validation/validation.webp)
 
 Esta máquina es del creador de contenido de Ciberseguridad [IppSec](https://www.youtube.com/c/ippsec/videos). Podemos encontrar varias máquinas suyas en HTB y suelen ser todas bastante entretenidas.
 
@@ -41,7 +43,9 @@ El puerto 8080 devuelve un http status code 502 y el 4566 un 403 forbidden, por 
 
 En la página principal aparece un formulario donde podemos introducir un nombre y elegir un país.
 
-![](https://blog.ikerocio.com/content/images/2022/02/form.png)Parece que al rellenarlo, nos lleva a otra página con la información registrada. Probamos una inyección XSS en el campo *Username* y avanzamos.
+![](/static/images/uploads/ctf-validation/form.webp)
+
+Parece que al rellenarlo, nos lleva a otra página con la información registrada. Probamos una inyección XSS en el campo *Username* y avanzamos.
 
 
 ```
@@ -49,7 +53,9 @@ alert("XSS attack");
 ```
 Pulsamos al botón de Join Now y encontramos lo siguiente.
 
-![](https://blog.ikerocio.com/content/images/2022/02/xss.png)Una vez que validamos que es vulnerable a ataques XSS, busco el siguiente código en el cheatsheet de [R0B1NL1N](https://github.com/R0B1NL1N/WebHacking101/blob/master/xss-reflected-steal-cookie.md).
+![](/static/images/uploads/ctf-validation/xss.webp)
+
+Una vez que validamos que es vulnerable a ataques XSS, busco el siguiente código en el cheatsheet de [R0B1NL1N](https://github.com/R0B1NL1N/WebHacking101/blob/master/xss-reflected-steal-cookie.md).
 
 
 ```

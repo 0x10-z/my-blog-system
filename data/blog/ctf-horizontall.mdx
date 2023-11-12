@@ -4,8 +4,10 @@ date: '2022-02-09'
 tags: ["CTF", "Hacking", "VueJS", "Fuzzing", "Rce", "#Import 2022-12-20 21:06"]
 draft: false
 authors: ['default']
-summary: Hago un escaneo de puertos todos los puertos disponibles con NMAP
+summary: '![](/static/images/uploads/ctf-horizontall/Screenshot_1-1.webp)'
 ---
+
+![](/static/images/uploads/ctf-horizontall/Screenshot_1-1.webp)
 
 Hago un escaneo de puertos todos los puertos disponibles con NMAP.
 
@@ -15,9 +17,13 @@ nmap -p- -sS -T5 --open -vvv 10.10.11.105 -oG allPorts
 ```
 Me devuelve los puertos 80 y 22 como abiertos y abro en un navegador la siguiente url http://10.10.11.105.
 
-![](https://blog.ikerocio.com/content/images/2022/02/image.png)Percibo que me encuentro ante una SPA hecha en VueJS. En un inicio, el código fuente de la web está oculto puesto que se carga posteriormente cuando el navegador interpreta Javascript. Utilizando el devtools de Firefox, encuentro los archivos Vue que llaman a la API para recuperar la información.
+![](/static/images/uploads/ctf-horizontall/image.webp)
 
-![](https://blog.ikerocio.com/content/images/2022/02/Screenshot\_2-1.png)El subdominio que aparece reflejado lo introduzco en mi /etc/hosts con el fin de poder resolver dicha dirección en caso de encontrarme con un virtual hosting.
+Percibo que me encuentro ante una SPA hecha en VueJS. En un inicio, el código fuente de la web está oculto puesto que se carga posteriormente cuando el navegador interpreta Javascript. Utilizando el devtools de Firefox, encuentro los archivos Vue que llaman a la API para recuperar la información.
+
+![](/static/images/uploads/ctf-horizontall/Screenshot\_2-1.webp)
+
+El subdominio que aparece reflejado lo introduzco en mi /etc/hosts con el fin de poder resolver dicha dirección en caso de encontrarme con un virtual hosting.
 
 
 ```
@@ -53,11 +59,15 @@ ID           Response   Lines    Word       Chars       Payload
 ```
 Encuentro una ruta interesante en /admin. En ella, aparece un formulario de login de una plataforma denominada Strapi.
 
-![](https://blog.ikerocio.com/content/images/2022/02/image-3.png)Buscando un poco encuentro la siguiente [vulnerabilidad](https://www.exploit-db.com/exploits/50237) que nos permite resetear la contraseña del usuario. Analizando el script, veo que accediendo a la ruta http://api-prod.horizontall.htb/admin/strapiVersion puedo ver la versión del CMS que está detrás. Eso me sirve para confirmar que la versión *3.0.0-beta.17.4* es vulnerable. Aun así, necesito un usuario válido para poder emplear el script.
+![](/static/images/uploads/ctf-horizontall/image-3.webp)
+
+Buscando un poco encuentro la siguiente [vulnerabilidad](https://www.exploit-db.com/exploits/50237) que nos permite resetear la contraseña del usuario. Analizando el script, veo que accediendo a la ruta http://api-prod.horizontall.htb/admin/strapiVersion puedo ver la versión del CMS que está detrás. Eso me sirve para confirmar que la versión *3.0.0-beta.17.4* es vulnerable. Aun así, necesito un usuario válido para poder emplear el script.
 
 Si rellenamos el formulario de "olvidó su contraseña", observamos que hay una fuga de información que no debería existir. **Este tipo de formularios no deberían dar pistas sobre que usuarios existen o cuáles no.**
 
-![](https://blog.ikerocio.com/content/images/2022/02/image-5.png)Probamos con admin@horizontall.htb y vemos que no pone nada, por lo que asumimos que ese usuario **SI** existe.
+![](/static/images/uploads/ctf-horizontall/image-5.webp)
+
+Probamos con admin@horizontall.htb y vemos que no pone nada, por lo que asumimos que ese usuario **SI** existe.
 
 Añadimos en el script los campos acordes a nuestro entorno y ejecutamos.
 
@@ -110,7 +120,9 @@ Con un curl, vemos que es una CMS de Laravel. Creamos una clave ssh para poder c
 ```
 ssh -L 80:127.0.0.1:8000 -i strapi_id_rsa strapi@10.10.11.105
 ```
-![](https://blog.ikerocio.com/content/images/2022/02/image-6.png)Navegando un poco, encontramos un [exploit](https://www.exploit-db.com/exploits/49424) de la versión de Laravel que está siendo ejecutada en la máquina. Comprobamos que funciona con un 'whoami'.
+![](/static/images/uploads/ctf-horizontall/image-6.webp)
+
+Navegando un poco, encontramos un [exploit](https://www.exploit-db.com/exploits/49424) de la versión de Laravel que está siendo ejecutada en la máquina. Comprobamos que funciona con un 'whoami'.
 
 
 ```

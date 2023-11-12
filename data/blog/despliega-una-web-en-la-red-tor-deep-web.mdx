@@ -1,0 +1,119 @@
+---
+title: 'Despliega un hidden service en la red TOR (Deep Web)'
+date: '2023-04-24'
+tags: []
+draft: false
+authors: ['default']
+summary: '![](/static/images/uploads/despliega-una-web-en-la-red-tor-deep-web/tor-hidden-background-1.webp)'
+---
+
+![](/static/images/uploads/despliega-una-web-en-la-red-tor-deep-web/tor-hidden-background-1.webp)
+
+Vamos a ver lo fácil que es publicar una web (*hidden service*) que solo es visible dentro de la red Toro lo que más llanamente se conoce como **Deep Web.**
+
+Introducción
+------------
+
+Un *hidden service* en la red Tor se refiere a un servicio o sitio web que se aloja en una red anónima dentro de la Deep Web. Estos sitios web no son accesibles a través de Internet público, sino que solo se pueden acceder a través de un navegador especializado denominado *[Tor Browser](https://www.torproject.org/es/download/)*. Puedes descargarlo de forma gratuita desde [https://torproject.org/es/download/](https://www.torproject.org/es/download/).
+
+Los sitios web de *hidden service* se ejecutan en servidores dentro de la red Tor y se identifican por una dirección *.onion* en lugar de una dirección IP convencional. Estas direcciones *.onion* se generan automáticamente y son únicas para cada sitio web, lo que los hace difíciles de rastrear y localizar. La pinta que tienen son las de un *hash* aleatorio generado por una clave pública. Por ejemplo: *ca4p2udpkmrambici5vs3e3bqsqelorqr6lzr5cdk2ab7acsyp2njiid.onion*
+
+Debido a que estos sitios web están alojados en una red anónima, los usuarios que acceden a ellos también permanecen en el anonimato. Esto los convierte en sitios populares para actividades ilegales, como la venta de drogas, armas y servicios de *hacking*, pero también se utilizan para actividades legítimas, como la comunicación anónima o el periodismo.
+
+Archivos necesarios
+-------------------
+
+Utilizaremos **Docker** para lanzar los servicios necesarios, así como la web que queremos publicar.
+
+* Nos basaremos en una imagen de Nginx para el servidor web.
+* Instalaremos los paquetes necesarios para conectarnos con Tor y sincronizar la hora del servidor para que el puente que se establece en la red sea capaz de cifrar/descifrar los paquetes correctamente.
+* Reemplazaremos los archivos de configuración *torrc* y *nginx.conf* necesarios en nuestra imagen Docker para que cumpla con nuestros requisitos.
+
+Este es el **Dockerfile**.
+
+
+```
+FROM nginx:1.24.0
+
+# Base packages
+RUN apt-get update && \
+    apt-get -y install \
+    tor torsocks ntpdate \
+    qrencode
+
+# Tor Config
+COPY ./torrc /etc/tor/torrc
+
+# Nginx configuration 
+COPY ./web/ /usr/share/nginx/html/
+COPY ./nginx.conf /etc/nginx/conf.d/nginx.conf
+EXPOSE 80
+
+# Entrypoint copy
+COPY files/entrypoint.sh /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]
+```
+DockerfileNo hay mucho que señalar. Basándonos en la imagen base de Nginx, instalamos los paquetes y copiamos algunos archivos a la imagen de Docker.
+
+Vamos a echarle un vistazo a **torrc**, un archivo de configuración para personalizar la forma en que el cliente Tor funciona. Este archivo se encuentra dentro de */etc/tor/torrc* pero el manifiesto de Docker ya se encargará de dejarlo donde debe.
+
+
+```
+DataDirectory /tmp/tor
+HiddenServiceDir /var/lib/tor/hidden_service/
+HiddenServicePort 80 127.0.0.1:80
+Log notice stdout
+```
+torrc*HiddenServiceDir* y *HiddenServicePort* son las claves más importantes de este archivo.
+
+El primero, específica donde deseas que Tor genere la clave publica/privada, así como el hostname de la web donde se encontrará la web. Esta carpeta es muy importante y conviene tener los permisos del directorio correctos porque alguien podría atacar nuestra máquina a través del directorio, perdiendo todo el anonimato para los clientes que se conectan a nosotros.
+
+El segundo, le dice a Tor donde está el servicio web al que tiene que redirigir todo el trafico. En este caso, especificamos que todas las peticiones que entren por el puerto *80* sean redirigidas al *127.0.0.1:80* donde estará la web sirviendo el contenido.
+
+A continuación, vamos a echarle un vistazo al archivo de **Nginx.conf**.
+
+
+```
+server {
+  listen 127.0.0.1:80 default_server;
+  server_name localhost;
+
+  root /usr/share/nginx/html;
+  index index.html;
+
+  location / {
+    allow 127.0.0.1;
+    deny all;
+  }
+}
+```
+Es un archivo muy básico que puede ser extendido sin ningún problema, pero debemos fijarnos en la definición de *'location /'.*
+
+![](/static/images/uploads/despliega-una-web-en-la-red-tor-deep-web/tor-network-schema.webp)
+
+Tor network schema**Solo se permitirán las peticiones provenientes de 127.0.0.1**, localhost, y **se denegará el resto de peticiones** que pudiesen llegar a la máquina. Es decir, estas dos líneas son las que diferencian a un servidor web normal de uno en la Deep Web, y el servicio Tor que hemos instalado es el que se encarga de redirigir peticiones que vengan de su red como hemos visto en Torrc.
+
+Demo
+----
+
+1. Descargamos Tor Browser para instalarlo en el equipo: https://www.torproject.org/es/download/
+2. Descargamos el repositorio listo para ser ejecutado.
+
+
+```
+git clone https://github.com/0x10-z/docker-tor-nginx
+cd docker-tor-nginx
+docker-compose up
+```
+3. Cuando tengamos el servicio corriendo en la terminal, buscamos una entrada como la siguiente:
+
+![](/static/images/uploads/despliega-una-web-en-la-red-tor-deep-web/tor-nginx-bash.webp)
+
+Copiamos en el portapapeles la URL generada *nq35a2auw5abqiz5sgtfj4yzggdak3n3roci4cmppo64nujh33plz4ad.onion*
+
+4. Pegamos la URL en el navegador Tor y a disfrutar.
+
+![](/static/images/uploads/despliega-una-web-en-la-red-tor-deep-web/matrix-tor.webp)
+
+Matrix Tor

@@ -4,8 +4,10 @@ date: '2022-02-12'
 tags: ["CTF", "Windows", "PassTheHash", "#Import 2022-12-20 21:06"]
 draft: false
 authors: ['default']
-summary: Escaneamos puertos con NMAP y ejecutamos un análisis más exhaustivo sobre los puertos abiertos Omit
+summary: '![](/static/images/uploads/ctf-jeeves/Jeeves.webp)'
 ---
+
+![](/static/images/uploads/ctf-jeeves/Jeeves.webp)
 
 Escaneamos puertos con NMAP y ejecutamos un análisis más exhaustivo sobre los puertos abiertos. Omitiré la información no relevante.
 
@@ -41,7 +43,9 @@ SMB         10.10.10.63     445    JEEVES           [*] Windows 10 Pro 10586 x64
 ```
 Estamos ante una máquina Win10 x64 y SMB no está firmado. Esto lo hace potencialmente vulnerable a un ataque de tipo PassTheHash. Continuamos investigando. Entrando en la web y aparece la siguiente imagen.
 
-![](https://blog.ikerocio.com/content/images/2022/02/image-17.png)Cuando buscas algo, siempre sale la misma ventana de error que no es un error como tal, es un archivo png. No parece que se esté ejecutando nada.
+![](/static/images/uploads/ctf-jeeves/image-17.webp)
+
+Cuando buscas algo, siempre sale la misma ventana de error que no es un error como tal, es un archivo png. No parece que se esté ejecutando nada.
 
 Aplico Fuzzing contra el puerto 80 y el puerto 50000. En este segundo puerto, parece que encuentro una ruta disponible en */askjeeves*.
 
@@ -61,13 +65,19 @@ ID           Response   Lines    Word       Chars       Payload
 ```
 Accedo a la URL y encuentro un Jenkins de v2.87.
 
-![](https://blog.ikerocio.com/content/images/2022/02/image-18.png)Encontramos una [vulnerabilidad](https://cxsecurity.com/issue/WLB-2019020120) con el pipeline de Jenkins para esa versión. Hacemos una prueba rápida colocando un comando en la ventana de configuración del pipeline.
+![](/static/images/uploads/ctf-jeeves/image-18.webp)
 
-![](https://blog.ikerocio.com/content/images/2022/02/image-19.png)*Es importante seleccionar el Sandbox de Groovy que es quien tiene la vulnerabilidad*.
+Encontramos una [vulnerabilidad](https://cxsecurity.com/issue/WLB-2019020120) con el pipeline de Jenkins para esa versión. Hacemos una prueba rápida colocando un comando en la ventana de configuración del pipeline.
+
+![](/static/images/uploads/ctf-jeeves/image-19.webp)
+
+*Es importante seleccionar el Sandbox de Groovy que es quien tiene la vulnerabilidad*.
 
 Ponemos en escucha *tcpdump* y vemos si hay respuesta cuando ejecutamos el pipeline.
 
-![](https://blog.ikerocio.com/content/images/2022/02/image-20.png)Se acontece la vulnerabilidad. Modificamos el script de arriba para que nos entable una reverse shell.
+![](/static/images/uploads/ctf-jeeves/image-20.webp)
+
+Se acontece la vulnerabilidad. Modificamos el script de arriba para que nos entable una reverse shell.
 
 Para ello, vamos a enviar a la consola de Powershell un código codificado en base64. El código en cuestión es el siguiente.
 
@@ -113,7 +123,9 @@ Ponemos un servidor en nuestro equipo que acepte la descarga del script y en otr
 
 Ejecutamos el pipeline en Jenkins.
 
-![](https://blog.ikerocio.com/content/images/2022/02/image-21.png)Recibimos la consola de nuestro lado.
+![](/static/images/uploads/ctf-jeeves/image-21.webp)
+
+Recibimos la consola de nuestro lado.
 
 
 ```
@@ -160,7 +172,9 @@ CEH:mooxxxxx
 ```
 Parece que los resultados han sido positivos. Usamos la contraseña para abrir el archivo *kdbx* en un cliente de KeePass como [KeePassXC](https://keepassxc.org/).
 
-![](https://blog.ikerocio.com/content/images/2022/02/image-22.png)La entrada seleccionada en la imagen contiene una contraseña que parece ser un hash [NTLM](https://security.stackexchange.com/questions/161889/understanding-windows-local-password-hashes-ntlm) del usuario administrador. Validamos el hash con *crackmapexec*.
+![](/static/images/uploads/ctf-jeeves/image-22.webp)
+
+La entrada seleccionada en la imagen contiene una contraseña que parece ser un hash [NTLM](https://security.stackexchange.com/questions/161889/understanding-windows-local-password-hashes-ntlm) del usuario administrador. Validamos el hash con *crackmapexec*.
 
 
 ```

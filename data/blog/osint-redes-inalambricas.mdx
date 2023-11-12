@@ -1,0 +1,64 @@
+---
+title: 'OSINT - Redes inalámbricas'
+date: '2022-12-29'
+tags: ["Blog", "Osint", "WiFi"]
+draft: false
+authors: ['default']
+summary: '![](/static/images/uploads/osint-redes-inalambricas/osint.webp)'
+---
+
+![](/static/images/uploads/osint-redes-inalambricas/osint.webp)
+
+¿Que es OSINT?
+--------------
+
+OSINT (**O**pen **S**ource **INT**elligence), o inteligencia de fuentes libres, hace referencia al conjunto de técnicas y herramientas para la obtención de información que muchas veces, sin saberlo, está de forma pública. Si queréis explicaciones más extensas y mejores, podéis ir directamente [aquí](https://letmegooglethat.com/?q=que+es+osint). En este post, voy a ir al grano y es suficiente con saber que todas las empresas (y personas) somos susceptibles de tener información pública en internet. Sí, tú también.
+
+¿Quién utiliza OSINT?
+---------------------
+
+Gobiernos, ejércitos, ciberdelincuentes, hackers, RRHH de esa empresa que te acaba de entrevistar para contratarte y tu amigo cuando quiere saber el Facebook o TikTok de esa chica que le gusta (guiño, guiño). Porque sí, mirar los amigos de los amigos de los amigos de una persona, también es OSINT. Pero en este post vamos a tratar de herramientas desconocidas para el común de los mortales y tratar de concienciarnos un poco de la importancia de la información.
+
+La herramienta de hoy... https://wigle.net
+------------------------------------------
+
+[Wigle](https://wigle.net) (**Wi**reless **G**eographic **L**ogging **E**ngine), es un portal donde hay registrada la ubicación, además de otra información, de puntos de acceso inalámbricos a lo largo de todo el mundo. Esta información ha sido y es recopilada por voluntarios y posteriormente representada de una forma amigable a los usuarios como se puede ver en la imagen inferior.
+
+![](/static/images/uploads/osint-redes-inalambricas/image-5.webp)
+
+Imagen obtenida de https://wigle.netEl método de uso de esta aplicación es la siguiente:
+
+* A partir de una ubicación dada, encontrar redes WiFi disponibles, así como su información (SSID, si está cifrada y su tipo de cifrado, lat. y lon., dirección MAC).
+* Realizarlo de forma inversa, a partir de uno de estos datos, como el nombre de la red inalámbrica (SSID), ver si existe información disponible. Yo he hecho una prueba, pero esto te lo cuento al final.
+
+**Eso sí, necesitamos registrarnos gratuitamente para sacarle partido a la aplicación.**
+
+A continuación, te dejo unas estadísticas sobre esta herramienta a 29 de diciembre de 2022:
+
+* Hay 986.153.836 redes wifi.
+* Hoy se han añadido 450.550.
+* 1,275,820,545 dispositivos bluetooth.
+* 18,463,291 torres de telefonía móvil.
+
+![](/static/images/uploads/osint-redes-inalambricas/image-4.webp)
+
+Estadísticas de redes y su cifrado a lo largo del tiempo en [Wigle](https://wigle.net)Como se puede ver en la imagen superior, en 20 años, el número de redes inalámbricas sin cifrar, ha pasado de ser más del 60% a convertirse en algo residual a partir del año 2018. **Buenas noticias**.
+
+Por otro lado, a día de hoy, el número de redes que utilizan un cifrado WPA2 esta cerca del 72%. El cifrado WPA3 apenas llega al 1% de adopción. Esto no es raro teniendo en cuenta que este último cifrado nació prácticamente enfermo, como podemos leer en este [enlace](https://www.xataka.com/seguridad/protocolo-seguridad-wpa3-para-redes-wifi-se-tambalea-tiene-grave-error-diseno).
+
+Si queremos conocer un poco más la herramienta, en su apartado de [preguntas frecuentes](https://wigle.net/faq) podemos ver para que a que está destinado este proyecto.
+
+Prueba personal
+---------------
+
+Me he animado a tratar de localizar mi antigua vivienda a partir del nombre de la red y efectivamente, alguien pasó por mi casa con una de estas aplicaciones encargadas de recopilar información relativa a mi WiFi.
+
+![](/static/images/uploads/osint-redes-inalambricas/wi-fi-1.webp)
+
+Snapshot de mi red Wifi en Vitoria-GasteizSeguro que algunos conocíais esta herramienta, pero apuesto a que la mayoría, no. Hace varios años escuché una charla de Chema Alonso (dejo un [link](https://www.elladodelmal.com/2020/05/como-evitar-que-google-utilice-tu-red.html) más reciente a su blog) hablando de cómo Google, basándose en la intensidad de la señal de las redes inalámbricas que detectaba en los móviles Android, era capaz de triangular la posición de una persona en el globo terráqueo. Es decir, no importa que desactivemos el GPS del móvil o que no le demos permisos a una aplicación de nuestra ubicación. Simplemente, si quieren saber donde estás, lo sabrán igual.
+
+Espero escribir pronto sobre nuevas herramientas de OSINT. Creo que puede ser una tirada de posts chula e interesante para aquellos que me leáis.
+
+
+ “Conoce a tu enemigo y a ti mismo y en cien batallas nunca serás derrotado; Si eres ignorante de tu enemigo pero te conoces a ti mismo, las probabilidades de ganar o perder serán las mismas; si eres ignorante de tu enemigo y de ti mismo, saldrás derrotado siempre”. Sun Tzu, El arte de la Guerra.
+

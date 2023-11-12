@@ -1,0 +1,44 @@
+---
+title: 'CTF - Previse WriteUp'
+date: '2022-02-22'
+tags: ["CTF", "#Import 2022-12-20 21:06"]
+draft: true
+authors: ['default']
+summary: '![](/static/images/uploads/ctf-previse/Previse.webp)'
+---
+
+![](/static/images/uploads/ctf-previse/Previse.webp)
+
+Una máquina de dificultad fácil. Una de las últimas días antes de presentarme al eJPT.
+
+Iniciamos el escaneo de puertos con nmap donde visualizo los siguientes puertos interesantes.
+
+
+```
+nmap -p- --open -sS -T5 -n -Pn 10.10.11.104 -oG allPorts
+Discovered open port 22/tcp on 10.10.11.104
+Discovered open port 80/tcp on 10.10.11.104
+```
+Pruebo a fuzzear la web
+
+
+```
+wfuzz -c --hc=404 -t 200 -w /usr/share/dirbuster/wordlists/directory-list-2.3-medium.txt "http://previse.htb/FUZZ.php"
+=====================================================================
+ID           Response   Lines    Word       Chars       Payload     
+=====================================================================         
+000000015:   302        71 L     164 W      2801 Ch     "index"               
+000000053:   200        53 L     138 W      2224 Ch     "login"               
+000000094:   302        112 L    263 W      4914 Ch     "files"               
+000000191:   200        20 L     64 W       980 Ch      "header"             
+000000333:   200        5 L      14 W       217 Ch      "footer"             
+000000017:   302        0 L      0 W        0 Ch        "download"           
+000000764:   302        74 L     176 W      2966 Ch     "status" 
+000001225:   302        0 L      0 W        0 Ch        "logout"  
+000001389:   302        93 L     238 W      3994 Ch     "accounts" 
+000001490:   200        0 L      0 W        0 Ch        "config"   
+000000200:   200        31 L     60 W       1248 Ch     "nav"    
+000002271:   302        0 L      0 W        0 Ch        "logs" 
+```
+![](/static/images/uploads/ctf-previse/image-25.webp)
+

