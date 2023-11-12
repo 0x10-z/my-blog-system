@@ -4,10 +4,12 @@ import siteMetadata from '@/data/siteMetadata'
 import { formatDate } from 'pliny/utils/formatDate'
 import NewsletterForm from 'pliny/ui/NewsletterForm'
 import { Texts } from '@/components/texts'
+import { CoreContent } from 'pliny/utils/contentlayer'
+import { Blog } from 'contentlayer/generated'
 
 const MAX_DISPLAY = 5
 
-export default function Home({ posts }) {
+export default function Home({ posts }: { posts: CoreContent<Blog>[] }) {
   return (
     <>
       <div className="divide-y divide-gray-200 dark:divide-gray-700">
@@ -22,7 +24,7 @@ export default function Home({ posts }) {
         <ul className="divide-y divide-gray-200 dark:divide-gray-700">
           {!posts.length && 'No posts found.'}
           {posts.slice(0, MAX_DISPLAY).map((post) => {
-            const { slug, date, title, summary, tags, draft } = post
+            const { slug, date, title, summary, tags } = post
             return (
               <li key={slug} className="py-12">
                 <article>
@@ -31,7 +33,9 @@ export default function Home({ posts }) {
                       <dt className="sr-only">{Texts.publishedOn}</dt>
                       <dd className="text-base font-medium leading-6 text-gray-500 dark:text-gray-400">
                         <time dateTime={date}>{formatDate(date, siteMetadata.locale)}</time>
-                        <p>asdsa {draft}</p>
+                      </dd>
+                      <dd className="font-sm text-base leading-6 text-gray-500 dark:text-gray-400">
+                        <span>⏰{post.readingTime.text.replaceAll('read', 'de lectura')}</span>
                       </dd>
                     </dl>
                     <div className="space-y-5 xl:col-span-3">
@@ -55,6 +59,7 @@ export default function Home({ posts }) {
                           {summary}
                         </div>
                       </div>
+
                       <div className="text-base font-medium leading-6">
                         <Link
                           href={`/blog/${slug}`}

@@ -1,4 +1,5 @@
 export class Texts {
+  static home = '🏠Inicio'
   static blog = '📝Blog'
   static tags = '🏷️Tags'
   static projects = '🛠️Proyectos'
@@ -15,4 +16,5 @@ export class Texts {
   static outOf = 'de'
   static loadComments = '🔄 Cargar comentarios...'
   static lastPosts = '📰 Últimos posts'
+  static authors = 'Autor'
 }

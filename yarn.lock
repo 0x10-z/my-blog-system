@@ -9597,7 +9597,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"reading-time@npm:1.5.0":
+"reading-time@npm:^1.5.0":
   version: 1.5.0
   resolution: "reading-time@npm:1.5.0"
   checksum: e27bc5a70ba0f4ac337896b18531b914d38f4bee67cbad48029d0c11dd0a7a847b2a6bba895ab7ce2ad3e7ecb86912bdc477d8fa2d48405a3deda964be54d09b
@@ -11089,7 +11089,7 @@ __metadata:
     prettier-plugin-tailwindcss: ^0.4.1
     react: 18.2.0
     react-dom: 18.2.0
-    reading-time: 1.5.0
+    reading-time: ^1.5.0
     rehype-autolink-headings: ^6.1.0
     rehype-citation: ^1.0.2
     rehype-katex: ^6.0.3

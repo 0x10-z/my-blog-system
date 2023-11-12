@@ -40,7 +40,7 @@ export default function AuthorLayout({ children, content }: Props) {
                 <SocialIcon kind="mail" href={`mailto:${email}`} />
                 <SocialIcon kind="github" href={github} />
                 <SocialIcon kind="linkedin" href={linkedin} />
-                <SocialIcon kind="twitter" href={twitter} />
+                <SocialIcon kind="x" href={twitter} />
               </div>
             </div>
           </InteractiveCard>
