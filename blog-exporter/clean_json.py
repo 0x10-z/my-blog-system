@@ -6,6 +6,9 @@ from datetime import datetime
 import re
 import requests
 from pathlib import Path
+from PIL import Image
+import os
+import tempfile
 
 words_to_clean = [
   { "&lt;": "<"},
@@ -16,7 +19,7 @@ words_to_clean = [
 file_path = "./ghost-backup-2023-11-10.json"
 output_path = Path("./posts/")
 output_json_path = Path("./posts_and_tags.json")  # Ruta para el nuevo archivo JSON
-images_path = Path("./images/")
+images_path = Path("../public/static/images/uploads/")
 
 output_path.mkdir(parents=True, exist_ok=True)
 
@@ -36,35 +39,74 @@ def mdx_header(title, date, tags, draft, summary):
     tags_str = ", ".join([f'"{tag}"' for tag in tags])
     return f"---\ntitle: '{title}'\ndate: '{date}'\ntags: [{tags_str}]\ndraft: {str(draft).lower()}\nauthors: ['default']\nsummary: {sanitize(summary)}\n---\n\n"
 
+def convert_to_webp(image_path, final_path):
+    original_filename = os.path.basename(image_path)
+    webp_filename = os.path.splitext(original_filename)[0] + '.webp'
+    final_image_path = final_path / webp_filename
+
+    with Image.open(image_path) as img:
+        img.save(final_image_path, format='webp')
+    
+    return str(final_image_path)
+
 def download_image(image_url, post_slug, images_path):
     try:
         response = requests.get(image_url)
         response.raise_for_status()
         image_name = image_url.split("/")[-1]
-        post_images_path = images_path / post_slug
-        post_images_path.mkdir(parents=True, exist_ok=True)
-        image_path = post_images_path / image_name
-        with open(image_path, 'wb') as file:
-            file.write(response.content)
-        return str(image_path)
+
+        # Crear un directorio temporal para la descarga
+        with tempfile.TemporaryDirectory() as tmp_dir_name:
+            temp_image_path = Path(tmp_dir_name) / image_name
+            with open(temp_image_path, 'wb') as tmp_file:
+                tmp_file.write(response.content)
+
+            # Verificar la extensión de la imagen
+            extension = Path(image_name).suffix.lower()
+            if extension in ['.png', '.jpg', '.gif']:
+                post_images_path = images_path / post_slug
+                post_images_path.mkdir(parents=True, exist_ok=True)
+                # Convertir a webp y mover al directorio final
+                final_image_path = convert_to_webp(temp_image_path, post_images_path)
+            else:
+                # Mover la imagen original al directorio final si no necesita conversión
+                post_images_path = images_path / post_slug
+                post_images_path.mkdir(parents=True, exist_ok=True)
+                final_image_path = post_images_path / image_name
+                temp_image_path.replace(final_image_path)
+
+        return str(final_image_path)
     except requests.RequestException as e:
         print(f"Error al descargar {image_url}: {e}")
         return None
 
 
-def process_html_to_markdown(html, post_slug, images_path):
+
+def process_html_to_markdown(html, post_slug, images_path, feature_image=None):
     html_escaped = clean_words(html)
     soup = BeautifulSoup(html_escaped, 'html.parser')
     images = []
+    markdown_content = ""
+
+    if feature_image:
+        feature_image = feature_image.replace('__GHOST_URL__', 'https://blog.ikerocio.com')
+        feature_image_path = download_image(feature_image, post_slug, images_path)
+        if feature_image_path:
+            feature_image_path = feature_image_path.replace('../public', '')
+            images.append(feature_image_path)
+            markdown_content += f"![]({feature_image_path})\n\n"
+
     for img in soup.find_all('img'):
         img_url = img['src'].replace('__GHOST_URL__', 'https://blog.ikerocio.com')
         local_image_path = download_image(img_url, post_slug, images_path)
         if local_image_path:
+            local_image_path = local_image_path.replace('../public', '')
             img_alt = img.get('alt', '')
-            img.replace_with(f"![{img_alt}]({local_image_path})")
+            img.replace_with(f"![{img_alt}]({local_image_path})\n\n")
             images.append(local_image_path)
 
-    return clean_mdx(md(str(soup))), images
+    markdown_content += clean_mdx(md(str(soup)))
+    return markdown_content, images
  
 with open(file_path, 'r', encoding='utf-8') as file:
     db = json.load(file)
@@ -81,7 +123,7 @@ for post_tag in posts_tags:
 posts_with_tags = []  # Lista para almacenar la información de los posts y sus tags
 
 for post in posts:
-    markdown_content, images = process_html_to_markdown(post['html'], post["slug"], images_path)
+    markdown_content, images = process_html_to_markdown(post['html'], post["slug"], images_path, post['feature_image'])
     post_tags = post_to_tags[post["id"]]
 
     draft = post['status'] == 'draft'

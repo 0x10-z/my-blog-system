@@ -2,7 +2,7 @@ import json
 from pathlib import Path
 
 input_json_path = "./posts_and_tags.json"  # Archivo JSON de entrada
-output_path = Path("./posts/")
+output_path = Path("../data/blog/")
 
 # Crear el directorio de salida si no existe
 output_path.mkdir(parents=True, exist_ok=True)
