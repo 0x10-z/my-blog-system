@@ -6,7 +6,7 @@ const siteMetadata = {
   description: 'A veces escribo sobre Hacking, tecnología y curiosidades.',
   language: 'es-ES',
   theme: 'system', // system, dark or light
-  siteUrl: 'https://blog.ikerocio.com/',
+  siteUrl: 'https://iker-ocio-blog.vercel.app/',
   siteRepo: 'https://github.com/0x10-z/my-blog-system',
   siteLogo: '/static/images/banner.png',
   socialBanner: '/static/images/banner.png',
