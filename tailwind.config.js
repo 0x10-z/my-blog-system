@@ -15,6 +15,10 @@ module.exports = {
   darkMode: 'class',
   theme: {
     extend: {
+      backdropFilter: {
+        none: 'none',
+        blur: 'blur(20px)',
+      },
       lineHeight: {
         11: '2.75rem',
         12: '3rem',
@@ -71,5 +75,9 @@ module.exports = {
       }),
     },
   },
-  plugins: [require('@tailwindcss/forms'), require('@tailwindcss/typography')],
+  plugins: [
+    require('@tailwindcss/forms'),
+    require('@tailwindcss/typography'),
+    require('tailwindcss-filters'),
+  ],
 }
