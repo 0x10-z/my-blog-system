@@ -8,6 +8,7 @@ import type { Blog } from 'contentlayer/generated'
 import Link from '@/components/Link'
 import Tag from '@/components/Tag'
 import siteMetadata from '@/data/siteMetadata'
+import { Texts } from '@/components/texts'
 
 interface PaginationProps {
   totalPages: number
@@ -31,7 +32,7 @@ function Pagination({ totalPages, currentPage }: PaginationProps) {
       <nav className="flex justify-between">
         {!prevPage && (
           <button className="cursor-auto disabled:opacity-50" disabled={!prevPage}>
-            Previous
+            {Texts.previous}
           </button>
         )}
         {prevPage && (
@@ -39,20 +40,20 @@ function Pagination({ totalPages, currentPage }: PaginationProps) {
             href={currentPage - 1 === 1 ? `/${basePath}/` : `/${basePath}/page/${currentPage - 1}`}
             rel="prev"
           >
-            Previous
+            {Texts.previous}
           </Link>
         )}
         <span>
-          {currentPage} of {totalPages}
+          {currentPage} {Texts.outOf} {totalPages}
         </span>
         {!nextPage && (
           <button className="cursor-auto disabled:opacity-50" disabled={!nextPage}>
-            Next
+            {Texts.next}
           </button>
         )}
         {nextPage && (
           <Link href={`/${basePath}/page/${currentPage + 1}`} rel="next">
-            Next
+            {Texts.next}
           </Link>
         )}
       </nav>

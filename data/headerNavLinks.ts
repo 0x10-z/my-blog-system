@@ -1,9 +1,11 @@
+import { Texts } from '@/components/texts'
+
 const headerNavLinks = [
   { href: '/', title: 'Inicio' },
-  { href: '/blog', title: 'Blog' },
-  { href: '/tags', title: 'Etiquetas' },
-  { href: '/projects', title: 'Proyectos' },
-  { href: '/about', title: 'Sobre mí' },
+  { href: '/blog', title: Texts.blog },
+  { href: '/tags', title: Texts.tags },
+  { href: '/projects', title: Texts.projects },
+  { href: '/about', title: Texts.aboutme },
 ]
 
 export default headerNavLinks

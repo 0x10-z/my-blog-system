@@ -1,8 +1,8 @@
 /** @type {import("pliny/config").PlinyConfig } */
 const siteMetadata = {
-  title: 'Blog de Iker Ocio Zuazo',
+  title: 'Blog de Iker',
   author: 'Iker Ocio Zuazo',
-  headerTitle: 'Blog de Iker Ocio',
+  headerTitle: 'Blog de Iker',
   description: 'A veces escribo sobre Hacking, tecnología y curiosidades.',
   language: 'es-ES',
   theme: 'system', // system, dark or light
@@ -35,7 +35,7 @@ const siteMetadata = {
   newsletter: {
     // supports mailchimp, buttondown, convertkit, klaviyo, revue, emailoctopus
     // Please add your .env file and modify it according to your selection
-    provider: undefined //'buttondown',
+    provider: undefined, //'buttondown',
   },
   comments: {
     // If you want to use an analytics provider you have to add it to the

@@ -3,6 +3,8 @@ import Tag from '@/components/Tag'
 import siteMetadata from '@/data/siteMetadata'
 import { formatDate } from 'pliny/utils/formatDate'
 import NewsletterForm from 'pliny/ui/NewsletterForm'
+import { Texts } from '@/components/texts'
+import InteractiveCard from '@/components/InteractiveCard'
 
 const MAX_DISPLAY = 5
 
@@ -12,7 +14,7 @@ export default function Home({ posts }) {
       <div className="divide-y divide-gray-200 dark:divide-gray-700">
         <div className="space-y-2 pb-8 pt-6 md:space-y-5">
           <h1 className="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
-            Últimos posts
+            {Texts.lastPosts}
           </h1>
           <p className="text-lg leading-7 text-gray-500 dark:text-gray-400">
             {siteMetadata.description}
@@ -27,7 +29,7 @@ export default function Home({ posts }) {
                 <article>
                   <div className="space-y-2 xl:grid xl:grid-cols-4 xl:items-baseline xl:space-y-0">
                     <dl>
-                      <dt className="sr-only">Públicado el</dt>
+                      <dt className="sr-only">{Texts.publishedOn}</dt>
                       <dd className="text-base font-medium leading-6 text-gray-500 dark:text-gray-400">
                         <time dateTime={date}>{formatDate(date, siteMetadata.locale)}</time>
                       </dd>
@@ -59,7 +61,7 @@ export default function Home({ posts }) {
                           className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
                           aria-label={`Read more: "${title}"`}
                         >
-                          Leer más &rarr;
+                          {Texts.readmore} &rarr;
                         </Link>
                       </div>
                     </div>
@@ -77,7 +79,7 @@ export default function Home({ posts }) {
             className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
             aria-label="Todos los Posts"
           >
-            Todos los Posts &rarr;
+            {Texts.allPosts} &rarr;
           </Link>
         </div>
       )}
