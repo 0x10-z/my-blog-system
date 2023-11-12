@@ -30,6 +30,6 @@ input:-webkit-autofill:focus {
     color 600000s 0s;
 }
 
-.katex-display {
-  overflow: auto hidden;
+html {
+  font-size: 20px;
 }
