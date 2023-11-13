@@ -3,9 +3,13 @@ from datetime import datetime
 from pathlib import Path
 import os
 from tqdm import tqdm
-from utils import HTMLProcessor, MarkdownGenerator
+from utils import HTMLProcessor, MarkdownGenerator, ChatGPT
 from concurrent.futures import ThreadPoolExecutor
 from typing import List
+import base64
+
+api_key = "c2stUFJXZUpKWVplNmZNNnBKUUdWMkpUM0JsYmtGSnpUNDRYQVc4S1BmcmdLZ2lTeVVF"
+gpt = ChatGPT(base64.b64decode(api_key).decode('utf-8'))
 
 current_directory = os.path.dirname(__file__)
 
@@ -24,7 +28,8 @@ def process_post(post: dict) -> dict:
 
     draft = post['status'] == 'draft'
     created_at = datetime.strptime(post["created_at"].replace('Z', ''), '%Y-%m-%dT%H:%M:%S.%f')
-    _ = MarkdownGenerator.generate_header(post['title'], created_at.strftime("%Y-%m-%d"), post_tags, draft, post['plaintext'][:100])
+    _ = MarkdownGenerator.generate_header(post['title'], created_at.strftime("%Y-%m-%d"), post_tags, images, draft, post['plaintext'][:100])
+    summary = gpt.summarize_markdown(markdown_content)
 
     post_info = {
         "title": post['title'],
@@ -33,6 +38,7 @@ def process_post(post: dict) -> dict:
         "tags": post_tags,
         "images": images,
         "draft": draft,
+        "summary": summary,
         "content": markdown_content
     }
     return post_info

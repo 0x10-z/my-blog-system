@@ -18,11 +18,12 @@ for post_info in posts_with_tags:
     slug: str = post_info["slug"]
     date: str = post_info["date"]
     tags: list = post_info["tags"]
+    images: list = post_info['images']
     draft: bool = post_info["draft"]
-    summary: str = post_info["content"].split('\n', 1)[0][:100]
+    summary: str = post_info["summary"]
     markdown_content: str = post_info["content"]
 
-    header: str = MarkdownGenerator.generate_header(title, date, tags, draft, summary)
+    header: str = MarkdownGenerator.generate_header(title, date, tags, images, draft, summary)
     content: str = header + markdown_content
 
     file_name: Path = output_path / f"{slug}.mdx"
