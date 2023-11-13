@@ -1,17 +1,15 @@
 import json
 from pathlib import Path
+from utils import MarkdownGenerator
+import os
 
-input_json_path = "./posts_and_tags.json"  # Archivo JSON de entrada
+current_directory = os.path.dirname(__file__)
+
+input_json_path = os.path.join(current_directory,"posts_and_tags.json")
 output_path = Path("../data/blog/")
 
-# Crear el directorio de salida si no existe
 output_path.mkdir(parents=True, exist_ok=True)
 
-def mdx_header(title, date, tags, draft, summary):
-    tags_str = ", ".join([f'"{tag}"' for tag in tags])
-    return f"---\ntitle: '{title}'\ndate: '{date}'\ntags: [{tags_str}]\ndraft: {str(draft).lower()}\nauthors: ['default']\nsummary: '{summary}'\n---\n\n"
-
-# Carga los datos del JSON
 with open(input_json_path, 'r', encoding='utf-8') as file:
     posts_with_tags = json.load(file)
 
@@ -21,10 +19,10 @@ for post_info in posts_with_tags:
     date = post_info["date"]
     tags = post_info["tags"]
     draft = post_info["draft"]
-    summary = post_info["content"].split('\n', 1)[0][:100]  # Extraer resumen del contenido
+    summary = post_info["content"].split('\n', 1)[0][:100]
     markdown_content = post_info["content"]
 
-    header = mdx_header(title, date, tags, draft, summary)
+    header = MarkdownGenerator.generate_header(title, date, tags, draft, summary)
     content = header + markdown_content
 
     file_name = output_path / f"{slug}.mdx"
