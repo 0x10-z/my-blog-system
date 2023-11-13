@@ -9,11 +9,11 @@ import os
 
 class TextCleaner:
     @staticmethod
-    def sanitize(string):
+    def sanitize(string: str) -> str:
         return re.sub(r'[^\w\s]', '', string, flags=re.UNICODE)
 
     @staticmethod
-    def clean_words(string):
+    def clean_words(string: str) -> str:
         words_to_clean = [
             { "&lt;": "<"},
             { "&gt;": ">"},
@@ -26,18 +26,18 @@ class TextCleaner:
         return string
 
     @staticmethod
-    def clean_mdx(mdx_str):
+    def clean_mdx(mdx_str: str) -> str:
         return mdx_str.replace('<', '').replace('>','')
 
 class MarkdownGenerator:
     @staticmethod
-    def generate_header(title, date, tags, draft, summary):
+    def generate_header(title: str, date: str, tags: list, draft: bool, summary: str) -> str:
         tags_str = ", ".join([f'"{tag}"' for tag in tags])
         return f"---\ntitle: '{title}'\ndate: '{date}'\ntags: [{tags_str}]\ndraft: {str(draft).lower()}\nauthors: ['default']\nsummary: '{(summary)}'\n---\n\n"
 
 class ImageProcessor:
     @staticmethod
-    def convert_and_download_image(image_url, post_slug, images_path):
+    def convert_and_download_image(image_url: str, post_slug: str, images_path: Path) -> str:
         try:
             response = requests.get(image_url)
             response.raise_for_status()
@@ -65,7 +65,7 @@ class ImageProcessor:
             return None
 
     @staticmethod
-    def convert_to_webp(image_path, final_path):
+    def convert_to_webp(image_path: Path, final_path: Path) -> str:
         original_filename = os.path.basename(image_path)
         webp_filename = os.path.splitext(original_filename)[0] + '.webp'
         final_image_path = final_path / webp_filename
@@ -77,7 +77,7 @@ class ImageProcessor:
 
 class HTMLProcessor:
     @staticmethod
-    def process_html_to_markdown(html, post_slug, images_path, feature_image=None):
+    def process_html_to_markdown(html: str, post_slug: str, images_path: Path, feature_image: str = None) -> tuple[str, list]:
         html_escaped = TextCleaner.clean_words(html)
         soup = BeautifulSoup(html_escaped, 'html.parser')
         images = []
@@ -102,3 +102,17 @@ class HTMLProcessor:
 
         markdown_content += TextCleaner.clean_mdx(md(str(soup)))
         return markdown_content, images
+
+    @staticmethod
+    def generate_redirects(output_file: str, posts: list) -> None:
+        with open(output_file, "w") as file:
+            file.write("const Redirects = [\n")
+            for post in posts:
+                file.write("  {\n")
+                file.write(f"    source: '/{post['slug']}',\n")
+                file.write(f"    destination: '/blog/{post['slug']}',\n")
+                file.write(f"    permanent: false,\n")
+                file.write("  },\n")
+            file.write("]\n")
+
+        print(f"Se ha generado el archivo {output_file}")

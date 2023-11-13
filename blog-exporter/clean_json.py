@@ -5,18 +5,20 @@ import os
 from tqdm import tqdm
 from utils import HTMLProcessor, MarkdownGenerator
 from concurrent.futures import ThreadPoolExecutor
+from typing import List
 
 current_directory = os.path.dirname(__file__)
 
 file_path = os.path.join(current_directory, "ghost-backup-2023-11-10.json")
 output_path = Path(os.path.join(current_directory, "posts"))
 output_json_path = Path(os.path.join(current_directory, "posts_and_tags.json"))
+output_redirects_filename = os.path.join(current_directory, "redirects.js")
 
 images_path = Path("../public/static/images/uploads/")
 
 output_path.mkdir(parents=True, exist_ok=True)
 
-def process_post(post):
+def process_post(post: dict) -> dict:
     markdown_content, images = HTMLProcessor.process_html_to_markdown(post['html'], post["slug"], images_path, post['feature_image'])
     post_tags = post_to_tags[post["id"]]
 
@@ -57,6 +59,8 @@ if __name__ == "__main__":
         for post in posts:
             future = executor.submit(process_post, post)
             futures.append(future)
+        
+        HTMLProcessor.generate_redirects(output_redirects_filename, posts)
 
         for future in tqdm(futures, total=len(futures), desc="Processing Posts"):
             post_info = future.result()
