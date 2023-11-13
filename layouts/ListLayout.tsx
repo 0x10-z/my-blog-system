@@ -81,7 +81,7 @@ export default function ListLayout({
             {siteMetadata.description}
           </p>
         </div>
-        <ul>
+        <ul className="divide-y divide-gray-200 dark:divide-gray-700">
           {!posts.length && Texts.postsNotFound}
           {displayPosts.map((post) => {
             const { slug, path, date, title, summary, tags, images } = post
