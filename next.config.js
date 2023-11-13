@@ -54,6 +54,14 @@ const securityHeaders = [
   },
 ]
 
+const Redirects = [
+  {
+    source: '/:slug',
+    destination: '/blog/:slug',
+    permanent: false,
+  },
+]
+
 /**
  * @type {import('next/dist/next-server/server/config').NextConfig}
  **/
@@ -83,6 +91,9 @@ module.exports = () => {
       })
 
       return config
+    },
+    async redirects() {
+      return Redirects
     },
   })
 }
