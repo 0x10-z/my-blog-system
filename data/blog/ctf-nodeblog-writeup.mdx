@@ -4,7 +4,8 @@ date: '2022-02-01'
 tags: ["#Import 2022-12-20 21:06"]
 draft: true
 authors: ['default']
-summary: '![](/static/images/uploads/ctf-nodeblog-writeup/Screenshot_1.webp)'
+summary: 'Reto CTF que consiste en explorar una máquina con el objetivo de obtener acceso de root. El escaneo de puertos revela un servicio SSH en el puerto 22 y un servidor web Node.js en el puerto 5000. Se intenta realizar inyección SQL sin éxito, pero se descubre una vulnerabilidad de XML External entity en el servidor web. Al aprovechar esta vulnerabilidad, se logra ejecutar código y obtener acceso de usuario. Posteriormente, se obtienen las contraseñas de los usuarios y se accede como root, obteniendo las banderas del usuario y del sistema.'
+images: ["/static/images/uploads/ctf-nodeblog-writeup/Screenshot_1.webp", "/static/images/uploads/ctf-nodeblog-writeup/Screenshot_2.webp", "/static/images/uploads/ctf-nodeblog-writeup/Screenshot_4.webp", "/static/images/uploads/ctf-nodeblog-writeup/Screenshot_5.webp"]
 ---
 
 ![](/static/images/uploads/ctf-nodeblog-writeup/Screenshot_1.webp)

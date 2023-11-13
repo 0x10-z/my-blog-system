@@ -4,7 +4,8 @@ date: '2022-12-30'
 tags: ["Snmp", "Pivoting", "Docker", "Enumeration"]
 draft: true
 authors: ['default']
-summary: '![](/static/images/uploads/mentor-ctf/Mentor.webp)'
+summary: 'Reto CTF que consiste en realizar una fase de enumeración utilizando NMAP para escanear puertos abiertos en un servidor. Se analizan los puertos 22 y 80, encontrando información relevante como el servidor Apache y la existencia de un subdominio. Luego se realiza una enumeración web utilizando wfuzz para encontrar posibles subdominios y endpoints ocultos. También se descubre que el servidor tiene SNMP funcionando en el puerto 161 y se utiliza una herramienta de fuerza bruta para enumerar versiones y cadenas de comunidad disponibles. Se encuentra un subdominio vulnerable mediante SNMP y se obtiene una contraseña que se utiliza para realizar una solicitud a la API, obteniendo un token de acceso. A través de un endpoint vulnerable a RCE, se logra obtener una reverse shell y escalada de privilegios, accediendo así a la cuenta de root. Se completa el reto obteniendo las flags correspondientes. Vulnerabilidades: puertos abiertos, servidores vulnerables a RCE, SNMP sin seguridad.'
+images: ["/static/images/uploads/mentor-ctf/Mentor.webp", "/static/images/uploads/mentor-ctf/image-6.webp", "/static/images/uploads/mentor-ctf/Untitled-2022-12-30-2011.svg", "/static/images/uploads/mentor-ctf/image-7.webp", "/static/images/uploads/mentor-ctf/image-8.webp", "/static/images/uploads/mentor-ctf/image-9.webp", "/static/images/uploads/mentor-ctf/image-10.webp", "/static/images/uploads/mentor-ctf/Untitled-2022-12-30-2011-1.svg"]
 ---
 
 ![](/static/images/uploads/mentor-ctf/Mentor.webp)
@@ -206,7 +207,6 @@ Arrancamos *Burpsuite* e interceptamos una petición hacia *http://api.mentorquo
 ![](/static/images/uploads/mentor-ctf/image-8.webp)
 
 Captura de Burpsuite/RepeaterVemos que existen dos nuevos *endpoints*. */check* y */backup*. Parece que el primero no funciona, y el segundo, solo funciona si la petición es de tipo POST. Además, el parámetro *Content-Type* debe ser *application/json* y espera recibir un diccionario del siguiente tipo:
-
 ```
 {"body": "xxx", "path": "xxx"}
 ```

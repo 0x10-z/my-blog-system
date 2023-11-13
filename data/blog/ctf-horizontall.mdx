@@ -4,7 +4,8 @@ date: '2022-02-09'
 tags: ["CTF", "Hacking", "VueJS", "Fuzzing", "Rce", "#Import 2022-12-20 21:06"]
 draft: false
 authors: ['default']
-summary: '![](/static/images/uploads/ctf-horizontall/Screenshot_1-1.webp)'
+summary: 'En este CTF nos enfrentamos a una máquina horizontall.htb. Comienzo realizando un escaneo de puertos con NMAP y descubro que los puertos 80 y 22 están abiertos. Al abrir el sitio web en el puerto 80, noto que se trata de una SPA en VueJS. Utilizando el devtools de Firefox, encuentro los archivos Vue que llaman a la API para obtener información. Descubro un subdominio interesante y lo añado a mi /etc/hosts para resolver la dirección. Realizo fuzzing contra este subdominio y encuentro una ruta /admin que contiene un formulario de login de la plataforma Strapi. Mediante una vulnerabilidad de reseteo de contraseña, logro obtener acceso al usuario admin. Aprovechando una vulnerabilidad de ejecución remota de código en Strapi CMS, consigo una reverse shell y escalo privilegios. Exploro el localhost y descubro que hay un servicio oculto en el puerto 8000. Utilizando un exploit de Laravel, me conecto a este servicio y obtengo una shell como usuario root. Encuentro el archivo root.txt y finalizo el reto.'
+images: ["/static/images/uploads/ctf-horizontall/Screenshot_1-1.webp", "/static/images/uploads/ctf-horizontall/image.webp", "/static/images/uploads/ctf-horizontall/Screenshot_2-1.webp", "/static/images/uploads/ctf-horizontall/image-3.webp", "/static/images/uploads/ctf-horizontall/image-5.webp", "/static/images/uploads/ctf-horizontall/image-6.webp"]
 ---
 
 ![](/static/images/uploads/ctf-horizontall/Screenshot_1-1.webp)

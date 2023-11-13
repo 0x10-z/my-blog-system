@@ -4,7 +4,8 @@ date: '2022-02-08'
 tags: ["CTF", "Hacking", "SQLInjection", "XSS", "#Import 2022-12-20 21:06"]
 draft: false
 authors: ['default']
-summary: '![](/static/images/uploads/ctf-validation/validation.webp)'
+summary: 'Reto CTF que consiste en escanear los puertos de una máquina y descubrir varios puertos abiertos. En el puerto 80 encontramos un formulario vulnerable a XSS, donde insertamos un script para robar cookies. Al recibir la petición, verificamos que el ataque funciona correctamente. Descubrimos que el campo de país del formulario es vulnerable a inyecciones SQL. Aprovechamos esta vulnerabilidad para obtener una shell y acceder a la configuración del sistema. Finalmente, encontramos las flags de usuario y root.'
+images: ["/static/images/uploads/ctf-validation/validation.webp", "/static/images/uploads/ctf-validation/form.webp", "/static/images/uploads/ctf-validation/xss.webp"]
 ---
 
 ![](/static/images/uploads/ctf-validation/validation.webp)
