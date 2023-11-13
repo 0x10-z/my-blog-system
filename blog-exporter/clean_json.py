@@ -16,10 +16,13 @@ words_to_clean = [
   { "<gathered_session_id>": "gathered_session_id"},
 ]
 
-file_path = "./ghost-backup-2023-11-10.json"
-output_path = Path("./posts/")
-output_json_path = Path("./posts_and_tags.json")  # Ruta para el nuevo archivo JSON
-images_path = Path("../public/static/images/uploads/")
+current_directory = os.path.dirname(__file__)
+
+file_path = os.path.join(current_directory, "ghost-backup-2023-11-10.json")
+output_path = Path(os.path.join(current_directory, "posts"))
+output_json_path = Path(os.path.join(current_directory, "posts_and_tags.json"))
+
+images_path = Path(os.path.join(current_directory, "../public/static/images/uploads/"))
 
 output_path.mkdir(parents=True, exist_ok=True)
 
@@ -55,21 +58,17 @@ def download_image(image_url, post_slug, images_path):
         response.raise_for_status()
         image_name = image_url.split("/")[-1]
 
-        # Crear un directorio temporal para la descarga
         with tempfile.TemporaryDirectory() as tmp_dir_name:
             temp_image_path = Path(tmp_dir_name) / image_name
             with open(temp_image_path, 'wb') as tmp_file:
                 tmp_file.write(response.content)
 
-            # Verificar la extensión de la imagen
             extension = Path(image_name).suffix.lower()
             if extension in ['.png', '.jpg', '.gif']:
                 post_images_path = images_path / post_slug
                 post_images_path.mkdir(parents=True, exist_ok=True)
-                # Convertir a webp y mover al directorio final
                 final_image_path = convert_to_webp(temp_image_path, post_images_path)
             else:
-                # Mover la imagen original al directorio final si no necesita conversión
                 post_images_path = images_path / post_slug
                 post_images_path.mkdir(parents=True, exist_ok=True)
                 final_image_path = post_images_path / image_name
@@ -114,13 +113,12 @@ with open(file_path, 'r', encoding='utf-8') as file:
 posts = db["db"][0]["data"]["posts"]
 tags = {tag["id"]: tag["name"] for tag in db["db"][0]["data"]["tags"]}
 posts_tags = db["db"][0]["data"]["posts_tags"]
-
 post_to_tags = {post["id"]: [] for post in posts}
 for post_tag in posts_tags:
     if post_tag["post_id"] in post_to_tags:
         post_to_tags[post_tag["post_id"]].append(tags[post_tag["tag_id"]])
 
-posts_with_tags = []  # Lista para almacenar la información de los posts y sus tags
+posts_with_tags = []
 
 for post in posts:
     markdown_content, images = process_html_to_markdown(post['html'], post["slug"], images_path, post['feature_image'])
@@ -131,7 +129,6 @@ for post in posts:
     content = mdx_header(post['title'], created_at.strftime("%Y-%m-%d"), post_tags, draft, post['plaintext'][:100])
     content = markdown_content
 
-    # Almacenar información en la estructura de datos
     post_info = {
         "title": post['title'],
         "slug": post['slug'],
@@ -143,7 +140,6 @@ for post in posts:
     }
     posts_with_tags.append(post_info)
 
-# Guardar la estructura de datos en un archivo JSON
 with open(output_json_path, 'w', encoding='utf-8') as json_file:
     json.dump(posts_with_tags, json_file, ensure_ascii=False, indent=4)
 
