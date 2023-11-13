@@ -16,7 +16,7 @@ export default function NotFound() {
           inicio. 🚀
         </p>
         <Link
-          href="/"
+          href="/blog"
           className="focus:shadow-outline-blue rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors duration-150 hover:bg-blue-700 focus:outline-none dark:hover:bg-blue-500"
         >
           Volver a la página de inicio 🏠

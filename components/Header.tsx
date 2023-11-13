@@ -14,7 +14,7 @@ const Header = () => {
   return (
     <header className="flex items-center justify-between py-10">
       <div>
-        <Link href="/" aria-label={Texts.home}>
+        <Link href="/blog" aria-label={Texts.home}>
           <div className="flex items-center justify-between">
             <div className="mr-3">
               <Logo />
@@ -37,7 +37,7 @@ const Header = () => {
               key={link.title}
               href={link.href}
               className={`hidden ${
-                currentPath === link.href ? 'rounded-sm bg-gray-200 p-2' : ''
+                currentPath.includes(link.href) ? 'rounded-sm bg-gray-200 p-2' : ''
               } text-sm font-medium text-gray-900 dark:text-gray-100 sm:block`}
             >
               {link.title}

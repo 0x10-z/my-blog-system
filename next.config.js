@@ -55,6 +55,11 @@ const securityHeaders = [
 
 const Redirects = [
   {
+    source: '/',
+    destination: '/blog',
+    permanent: true,
+  },
+  {
     source: '/pandora-ctf',
     destination: '/blog/pandora-ctf',
     permanent: false,
