@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Link from '@/components/Link'
 import Tag from '@/components/Tag'
 import siteMetadata from '@/data/siteMetadata'
@@ -24,7 +25,8 @@ export default function Home({ posts }: { posts: CoreContent<Blog>[] }) {
         <ul className="divide-y divide-gray-200 dark:divide-gray-700">
           {!posts.length && Texts.postsNotFound}
           {posts.slice(0, MAX_DISPLAY).map((post) => {
-            const { slug, date, title, summary, tags } = post
+            const { slug, date, title, summary, tags, images } = post
+            const selectedImage = images[0]
             return (
               <li key={slug} className="py-12">
                 <article>
@@ -37,6 +39,19 @@ export default function Home({ posts }: { posts: CoreContent<Blog>[] }) {
                       <dd className="font-sm text-base leading-6 text-gray-500 dark:text-gray-400">
                         <span>⏰{post.readingTime.text}</span>
                       </dd>
+                      {selectedImage && (
+                        <dd className="font-sm text-base leading-6 text-gray-500 dark:text-gray-400">
+                          <div className="relative">
+                            <Image
+                              src={selectedImage}
+                              alt={selectedImage}
+                              width={250}
+                              height={250}
+                              className="rounded-lg  shadow-md"
+                            />
+                          </div>
+                        </dd>
+                      )}
                     </dl>
                     <div className="space-y-5 xl:col-span-3">
                       <div className="space-y-6">
