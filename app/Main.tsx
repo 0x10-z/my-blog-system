@@ -22,7 +22,7 @@ export default function Home({ posts }: { posts: CoreContent<Blog>[] }) {
           </p>
         </div>
         <ul className="divide-y divide-gray-200 dark:divide-gray-700">
-          {!posts.length && 'No posts found.'}
+          {!posts.length && Texts.postsNotFound}
           {posts.slice(0, MAX_DISPLAY).map((post) => {
             const { slug, date, title, summary, tags } = post
             return (
@@ -64,7 +64,7 @@ export default function Home({ posts }: { posts: CoreContent<Blog>[] }) {
                         <Link
                           href={`/blog/${slug}`}
                           className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
-                          aria-label={`Read more: "${title}"`}
+                          aria-label={`${Texts.readmore}: "${title}"`}
                         >
                           {Texts.readmore} &rarr;
                         </Link>
@@ -82,7 +82,7 @@ export default function Home({ posts }: { posts: CoreContent<Blog>[] }) {
           <Link
             href="/blog"
             className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
-            aria-label="Todos los Posts"
+            aria-label={`${Texts.allPosts}`}
           >
             {Texts.allPosts} &rarr;
           </Link>

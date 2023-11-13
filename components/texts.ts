@@ -17,4 +17,5 @@ export class Texts {
   static loadComments = '🔄 Cargar comentarios...'
   static lastPosts = '📰 Últimos posts'
   static authors = 'Autor'
+  static postsNotFound = 'No hay Posts'
 }

@@ -5,12 +5,13 @@ import Link from './Link'
 import MobileNav from './MobileNav'
 import ThemeSwitch from './ThemeSwitch'
 import SearchButton from './SearchButton'
+import { Texts } from './texts'
 
 const Header = () => {
   return (
     <header className="flex items-center justify-between py-10">
       <div>
-        <Link href="/" aria-label={siteMetadata.headerTitle}>
+        <Link href="/" aria-label={Texts.home}>
           <div className="flex items-center justify-between">
             <div className="mr-3">
               <Logo />
