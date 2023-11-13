@@ -51,6 +51,7 @@ async function replaceImageReferences(convertedImages) {
 
       // Configuración para reemplazar referencias
       for (const image of convertedImages) {
+        console.log(image)
         const options = {
           files: filePath,
           from: new RegExp(image.original, 'g'),
