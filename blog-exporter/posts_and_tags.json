@@ -1,7 +1,7 @@
 [
   {
     "title": "CTF - Pandora WriteUp",
-    "slug": "pandora-ctf",
+    "slug": "ctf-pandora",
     "date": "2022-01-29",
     "tags": ["CTF", "Pentesting", "Hacking", "Pivoting", "Suid"],
     "images": [
