@@ -4,7 +4,7 @@ date: '2022-02-27'
 tags: ["Hacking", "Pentesting", "Blog", "#Import 2022-12-20 21:06"]
 draft: false
 authors: ['default']
-summary: 'Recientemente me presenté al examen del eJPT (eLearnSecurity Junior Penetration Tester), una certificación de prestigio en el ámbito del pentesting. El proceso consta de la compra de la opción de examen, seguido de un periodo de preparación en los laboratorios prácticos de INE y finalmente la realización del examen en un plazo de 3 días. El examen consiste en 20 preguntas tipo test y se necesita aprobar al menos el 75% para obtener la certificación. A pesar de ser una certificación básica, requiere de un estudio y dedicación previos. Durante el examen, es importante leer atentamente las instrucciones y realizar un esquema de la red para tener una visión global. Se recomienda familiarizarse con herramientas como Nmap, BurpSuite, Hydra, Smbclient y Sqlmap. Personalmente, la experiencia del examen fue positiva y estoy satisfecho con el resultado obtenido. ¡Feliz hacking!'
+summary: 'En mi blog encontrarás un resumen de mi experiencia al obtener la certificación eJPT. Es un reto de Capture The Flag que evalúa tus habilidades en pentesting y explora vulnerabilidades en redes y sistemas.'
 images: ["/static/images/uploads/ejpt-review-2022/carbon.webp", "/static/images/uploads/ejpt-review-2022/image-27.webp", "/static/images/uploads/ejpt-review-2022/image-28.webp", "/static/images/uploads/ejpt-review-2022/image-30.webp"]
 ---
 
@@ -14,12 +14,11 @@ Hace unos días me presenté al examen para obtener la certificación del [**eJP
 
 Dejo un [link](https://pauljerimy.com/security-certification-roadmap/) con el roadmap de todas las certificaciones que existen sobre redes y ciberseguridad, donde puedes ver los **CCNA** de Cisco, las relativas a Cloud Architect (AWS, Google Cloud y Azure) y otras más del contexto de la ciberseguridad como el **OSCP**.
 
-![](/static/images/uploads/ejpt-review-2022/image-27.webp)
+![https://pauljerimy.com/security-certification-roadmap/](/static/images/uploads/ejpt-review-2022/image-27.webp)
 
-https://pauljerimy.com/security-certification-roadmap/Llegados hasta aquí, analizaré en detalle los siguientes puntos.
+Llegados hasta aquí, analizaré en detalle los siguientes puntos.
 
-💻 Cómo fue la experiencia del examen
-------------------------------------
+## 💻 Cómo fue la experiencia del examen
 
 El proceso para obtener el certificado es el siguiente.
 
@@ -35,20 +34,17 @@ Yo lo terminé en menos de 24 horas, unas 13-14 horas efectivas (sin contar los 
 
 Era mi primer examen de este tipo y la experiencia fue muy positiva. Tuve 2 momentos en los que me atasqué, al inicio del examen (si lees otras [reviews](https://www.reddit.com/r/eLearnSecurity/comments/jhbx2d/ejpt_routing_advice/) del eJPT debe ser bastante común el bloqueo de esta parte) y otra al final, a falta de contestar 2 preguntas del test. El resto de preguntas se contestan de forma bastante fácil.
 
-❓ ¿Necesito el eJPT?
---------------------
+## ❓ ¿Necesito el eJPT?
 
 Como muchas de las preguntas que te puedes hacer en la vida, la respuesta es "depende". Si te quieres iniciar en el mundo del Pentesting o Hacking Ético, es desde luego recomendable obtener el **eJPT**.
 
 En mi caso, me sirvió como termómetro del nivel de conocimiento necesario para sacar este tipo de certificaciones, ya que en el futuro me gustaría aspirar a otras como el [**eWPT**](https://elearnsecurity.com/product/ewpt-certification/)**, [eCPPTv2](https://elearnsecurity.com/product/ecpptv2-certification/)** o incluso el [**OSCP**](https://www.offensive-security.com/pwk-oscp/).
 
-🏋️‍♂️ ¿Cuál es la dificultad?
------------------------------
+## 🏋️‍♂️ ¿Cuál es la dificultad?
 
 El **eJPT** es una de las certificaciones más básicas que existen en el mundo del Pentesting. Pero que esto no te lleve a un engaño. El hecho de catalogarla como básica no significa que sea para todo el mundo. Requiere de muchas horas de estudio y dedicación, sobre todo si no has invertido antes tiempo en plataformas CTF o el conocimiento que tienes sobre software, redes y vulnerabilidades es pequeño. En cualquier caso, el plan de estudio que tiene eLearningSecurity de forma gratuita es recomendable.
 
-🔑 Consejos para el examen
--------------------------
+## 🔑 Consejos para el examen
 
 Cuando inicias el proceso, te descargas un archivo ZIP con una carta de compromiso como la que recibirías en la realidad en una empresa donde vas a realizar un pentesting. Lee cuidadosamente esta carta al inicio y repite la lectura eventualmente durante el examen. Encontrarás pistas que en un inicio pueden pasar desapercibidas.
 
@@ -57,7 +53,7 @@ Cuando inicias el proceso, te descargas un archivo ZIP con una carta de compromi
 El formato del pentesting que harás es de tipo BlackBox, por lo que no tendrás mucha información del entorno en el que te encuentras. En el ZIP inicial te entregarán un archivo PCAP que tendrás que abrir de manera local con Wireshark para tratar de extraer toda la información posible. Si no haces esto bien, no puedes continuar con el examen y es la parte donde la mayor parte de la gente se encuentra bloqueada.
 
 
- Enumera, enumera y enumera. Anota todo. No es un CTF.
+> Enumera, enumera y enumera. Anota todo. No es un CTF.
 
 En mi caso me preparé un esquema de como estaba constituida la red según iba recopilando información. Mantén este esquema actualizado. Es un buen modo de poder volver atrás y tener una visión global en todo momento. Además, siendo el examen de varios días, necesitas una manera de ponerte en situación rápidamente.
 
@@ -69,8 +65,7 @@ El curso gratuito hace mucho hincapié en herramientas como **Metasploit**. En m
 * Smbclient
 * Sqlmap
 
-🎓 Conclusión
-------------
+## 🎓 Conclusión
 
 Estoy muy contento con haber tomado la decisión de obtener esta certificación. La experiencia del examen ha sido muy buena y divertida. Finalmente, aunque pensaba que todas las preguntas del tipo test las tenía bien, fallé 1 de ellas obteniendo un 95% del resultado final.
 
@@ -78,7 +73,7 @@ Intuyo cuál pudo ser la que estaba mal, pero en cualquier caso no te fíes. Lee
 
 La recompensa, si todo ha ido bien, es la certificación que ves a continuación.
 
-![](/static/images/uploads/ejpt-review-2022/image-30.webp)
+![https://verified.elearnsecurity.com/certificates/cdbd4f81-182a-42f7-a48c-8c5199fe4b1d](/static/images/uploads/ejpt-review-2022/image-30.webp)
 
-https://verified.elearnsecurity.com/certificates/cdbd4f81-182a-42f7-a48c-8c5199fe4b1d### 👨‍💻 Happy Hacking!
+### 👨‍💻 Happy Hacking! 
 
