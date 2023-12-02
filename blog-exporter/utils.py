@@ -17,7 +17,26 @@ class MyMarkdownConverter(MarkdownConverter):
     
     def convert_h3(self, el, text, convert_as_inline):
         return f'### {text}\n\n'
+    
+    def convert_figure(self, el, text, convert_as_inline):
+        figcaption = el.find('figcaption')
+        caption_text = figcaption.get_text(strip=True) if figcaption else ''
 
+        img_markdown_pattern = re.compile(r'!\[.*\]\((.*?)\)')
+        match = img_markdown_pattern.search(text)
+        
+        if match:
+            img_markdown = match.group(0)
+            img_url = match.group(1)
+            new_img_markdown = f'![{caption_text}]({img_url})'
+            text = text.replace(img_markdown, new_img_markdown)
+
+        return text
+
+    def convert_figcaption(self, el, text, convert_as_inline):
+        return ''
+
+    
 md = MyMarkdownConverter()
 
 class TextCleaner:
@@ -145,7 +164,7 @@ class ChatGPT:
             Hazme un resumen de este texto en markdown para mi blog. Lo voy a poner tal cual escribas,
             como si fuese una sinopsis. Escribelo en primera persona. Hay maquinas CTF de Capture The Flag.
             Para estos posts haz un resumen tipico en plan: Reto CTF que consiste en... y comenta las vulnerabilidades que se atacan.
-            Dame solo texto de 60 palabras:\n\n{markdown_text}\n\n"""
+            Dame solo texto de 30 palabras. Se muy conciso.:\n\n{markdown_text}\n\n"""
             response = self.client.chat.completions.create(
                 messages=[
                     {
