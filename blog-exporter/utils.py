@@ -2,11 +2,23 @@ import re
 import requests
 import tempfile
 from bs4 import BeautifulSoup
-from markdownify import markdownify as md
 from pathlib import Path
 from PIL import Image
 import os
 from openai import OpenAI
+from markdownify import MarkdownConverter
+
+class MyMarkdownConverter(MarkdownConverter):
+    def convert_h1(self, el, text, convert_as_inline):
+        return f'# {text}\n\n'
+    
+    def convert_h2(self, el, text, convert_as_inline):
+        return f'## {text}\n\n'
+    
+    def convert_h3(self, el, text, convert_as_inline):
+        return f'### {text}\n\n'
+
+md = MyMarkdownConverter()
 
 class TextCleaner:
     @staticmethod
@@ -102,7 +114,7 @@ class HTMLProcessor:
                 img.replace_with(f"![{img_alt}]({local_image_path})\n\n")
                 images.append(local_image_path)
 
-        markdown_content += TextCleaner.clean_mdx(md(str(soup)))
+        markdown_content += TextCleaner.clean_mdx(md.convert(str(soup)))
         return markdown_content, images
 
     @staticmethod
