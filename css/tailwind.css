@@ -33,3 +33,9 @@ input:-webkit-autofill:focus {
 html {
   font-size: 20px;
 }
+
+/* Custom */
+::selection {
+  background-color: #b92f2f;
+  color: #fff;
+}

@@ -104,7 +104,10 @@ class ImageProcessor:
         final_image_path = final_path / webp_filename
 
         with Image.open(image_path) as img:
-            img.save(final_image_path, format='webp')
+            if img.format == 'GIF' and 'duration' in img.info:
+                img.save(final_image_path, format='webp', save_all=True, duration=img.info['duration'], loop=0)
+            else:
+                img.save(final_image_path, format='webp')
 
         return str(final_image_path)
 

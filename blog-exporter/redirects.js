@@ -1,7 +1,7 @@
 const Redirects = [
   {
-    source: '/pandora-ctf',
-    destination: '/blog/pandora-ctf',
+    source: '/ctf-pandora',
+    destination: '/blog/ctf-pandora',
     permanent: false,
   },
   {
@@ -85,8 +85,8 @@ const Redirects = [
     permanent: false,
   },
   {
-    source: '/mentor-ctf',
-    destination: '/blog/mentor-ctf',
+    source: '/ctf-mentor',
+    destination: '/blog/ctf-mentor',
     permanent: false,
   },
   {
