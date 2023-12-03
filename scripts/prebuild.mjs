@@ -14,14 +14,14 @@ async function convertImagesToWebP() {
 
   try {
     // Buscar todas las imágenes en el directorio y subdirectorios
-    const imageFiles = await glob.sync('**/*.{png,jpg,gif}', { cwd: imagesDirectory })
+    const imageFiles = await glob.sync('**/*.{png,jpg,jpeg}', { cwd: imagesDirectory })
 
     for (const imageFile of imageFiles) {
       // Ruta completa de la imagen original
       const imagePath = `${imagesDirectory}/${imageFile}`
 
       // Ruta de salida para la imagen WebP
-      const webPPath = imagePath.replace(/\.(png|jpg|gif)$/i, '.webp')
+      const webPPath = imagePath.replace(/\.(png|jpg|jpeg)$/i, '.webp')
 
       // Convertir la imagen a WebP
       await sharp(imagePath).toFile(webPPath)
