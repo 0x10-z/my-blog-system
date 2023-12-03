@@ -4,7 +4,7 @@ date: '2022-02-13'
 tags: ["Hacking", "Docker", "Vulnerabilities", "#Import 2022-12-20 21:06"]
 draft: false
 authors: ['default']
-summary: 'En este artículo, exploramos el problema de seguridad que surge al utilizar Docker. Aunque Docker ha revolucionado la forma en que creamos y compartimos imágenes de contenedores, uno de los problemas que se le atribuye es que el proceso de Docker Daemon se ejecuta como Root. Esto puede tener implicaciones indirectas y comprometer la seguridad de nuestro sistema. A través de una prueba de concepto, demostramos cómo un usuario sin privilegios puede acceder a archivos protegidos por root dentro de un contenedor Docker. Es importante tener en cuenta estas consideraciones de seguridad al utilizar Docker y tomar medidas adecuadas para proteger nuestro sistema.'
+summary: 'Docker puede ser un problema de seguridad cuando se ejecuta como Root. Esto permite a usuarios sin privilegios acceder a archivos protegidos de root a través de contenedores. Es importante configurarlo correctamente y concienciar sobre los riesgos.'
 images: ["/static/images/uploads/docker-puede-ser-un-problema-de-seguridad/docker.webp", "/static/images/uploads/docker-puede-ser-un-problema-de-seguridad/image-23.webp", "/static/images/uploads/docker-puede-ser-un-problema-de-seguridad/image-24.webp"]
 ---
 
@@ -13,6 +13,8 @@ images: ["/static/images/uploads/docker-puede-ser-un-problema-de-seguridad/docke
 Docker nació (o mejor dicho, fue presentado al público) en la PyCon de 2013 en una charla titulada *"The future of Linux Containers"*. Recomiendo ver el video que aparece a continuación (son menos de 6 minutos) y disfrutar del hecho de que en la informática, estamos viviendo lo que en un futuro será la "historia del desarrollo de software".
 
 Y es que los *Albert Einstein* del software como *[Linus Torvalds](https://es.wikipedia.org/wiki/Linus_Torvalds), [Robert C. Martin](https://es.wikipedia.org/wiki/Robert_C._Martin), [Martin Fowler](https://martinfowler.com/), [Guido Van Rossum](https://es.wikipedia.org/wiki/Guido_van_Rossum)* o muchos de los inventores de lenguajes de programación que se encuentran en el 99% del software que utilizamos, están vivos a día de hoy.
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/wW9CAH9nSLs?si=4v4fJABw8RGeiaH4" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
 
 Pero volviendo al tema de Docker. Docker no trajo consigo la tecnología de contenedores que se usa en Linux. Esto es algo que lleva existiendo desde [hace más de 20 años](https://blog.aquasec.com/a-brief-history-of-containers-from-1970s-chroot-to-docker-2016) con diferentes nombres como Chroot en 1979, Jails en el 2000 y contenedores a partir de 2004. Pero no fue hasta el 2013 cuando esta tecnología se empezó a utilizar por la mayoría de la gente.
 
@@ -28,11 +30,9 @@ Por romper una lanza a favor de ellos, en esa misma página podemos encontrar el
 
 Y es que si, todos (o al menos yo alguna vez) solemos pasar por alto este tipo de mensajes si es que hemos llegado a verlos, porque en la mayoría de los blogs donde nos enseñan a instalar Docker en nuestro sistema directamente no nos previenen del riesgo de tener un usuario "sin privilegios" en el grupo de Docker. Además, "eso de Daemon Attack Surface a mi me suena a chino" 😎.
 
-Prueba de concepto
-==================
+# Prueba de concepto
 
-1. Contexto del problema
-------------------------
+## 1. Contexto del problema
 
 Tenemos 2 usuarios en nuestro sistema, **root** y **demo**.
 
@@ -48,8 +48,7 @@ uid=1001(demo) gid=1003(demo) grupos=1003(demo),1000(docker)
 ```
 Como vemos, demo está en el grupo Docker para poder lanzar contenedores y realizar su gestión. Como demo es un usuario con pocos privilegios, además, es un poco con el que solemos hacer todo pensando que así estamos más seguros.
 
-2. El archivo "protegido" de root
----------------------------------
+## 2. El archivo "protegido" de root
 
 Hay un archivo en /home que se llama password.txt. Este archivo, en principio, tiene permisos 400 para que solo el usuario root pueda leer su contenido.
 
@@ -76,8 +75,7 @@ cat: /home/password.txt: Permiso denegado
 ```
 Hasta aquí todo bien, ¿correcto?
 
-3. Docker Daemon Attack Surface
--------------------------------
+## 3. Docker Daemon Attack Surface
 
 A continuación, el usuario demo, el que no tenía privilegios, el que no podía leer el contenido de root, crea un contenedor del siguiente modo.
 
@@ -104,8 +102,7 @@ Es decir, un usuario sin privilegios, fuera del contexto de los contenedores no 
 
 Dentro del contexto de los contenedores, si mapeamos en un volumen la raíz de todo el disco a una ruta del contenedor, tendremos control total de los archivos del sistema.
 
-4. Conclusión
--------------
+## 4. Conclusión
 
 ¿Es el título del post clickbait? En parte sí. Más que una vulnerabilidad es un problema de no tener las cosas bien configuradas. 
 

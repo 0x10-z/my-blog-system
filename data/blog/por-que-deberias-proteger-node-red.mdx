@@ -4,24 +4,22 @@ date: '2023-01-15'
 tags: []
 draft: false
 authors: ['default']
-summary: 'Reto CTF que consiste en comprometer sistemas que utilizan Node-RED, una herramienta de programación visual. Se explotan vulnerabilidades en los nodos "exec", "tcp in" y "tcp out" para establecer una shell reversa en el sistema. Se demuestra la importancia de proteger Node-RED mediante la configuración de la ventana de login, separación de credenciales, uso de HTTPS y deshabilitación de nodos innecesarios.'
+summary: 'Reto CTF: Node-RED es una herramienta de programación visual con nodos que se comunican entre sí. Se pueden aprovechar vulnerabilidades como ejecución de comandos y acciones de entrada/salida por TCP para comprometer el sistema. Es importante proteger Node-RED mediante el uso de autenticación, HTTPS y la deshabilitación de nodos innecesarios. No debemos confiarnos solo por usar contenedores.'
 images: ["/static/images/uploads/por-que-deberias-proteger-node-red/nodered-pwned.webp", "/static/images/uploads/por-que-deberias-proteger-node-red/image-4.webp", "/static/images/uploads/por-que-deberias-proteger-node-red/nodered-esquema-2.svg", "/static/images/uploads/por-que-deberias-proteger-node-red/image-3.webp", "/static/images/uploads/por-que-deberias-proteger-node-red/image-5.webp"]
 ---
 
 ![](/static/images/uploads/por-que-deberias-proteger-node-red/nodered-pwned.webp)
 
-¿Qué es Node-RED?
------------------
+## ¿Qué es Node-RED?
 
 Esta es la parte más aburrida del post, por lo que me voy a permitir el lujo de copiarlo de otro sitio en Internet.
 
 
- Node-RED es una herramienta de **programación visual que se implementa en dispositivos controladores de *hardware*****.** Trabaja mostrando de manera visual las relaciones y funciones de manera que se pueda programar sin escribir. Es un **panel** de ***flow*** al que se pueden incorporar nodos que se comuniquen entre ellos y puede instalarse en equipos como ordenadores Windows, Linux, o en servidores en la nube. Este sistema de representaciónpuede ayudarte a visualizar gráficamente el flujo de la información y consiste en su representación gráfica.
+> Node-RED es una herramienta de programación visual que se implementa en dispositivos controladores de hardware. Trabaja mostrando de manera visual las relaciones y funciones de manera que se pueda programar sin escribir. Es un panel de flow al que se pueden incorporar nodos que se comuniquen entre ellos y puede instalarse en equipos como ordenadores Windows, Linux, o en servidores en la nube. Este sistema de representaciónpuede ayudarte a visualizar gráficamente el flujo de la información y consiste en su representación gráfica.
 
 En otras palabras, es una plataforma que mediante cajitas que hacen distintas cosas, eres capaz de crear un **workflow** de una forma visual y ver su representación de un solo vistazo.
 
-Preparación del escenario
--------------------------
+## Preparación del escenario
 
 1. Arranco **Docker** en mi ordenador de casa con **Windows 11**.
 
@@ -35,8 +33,9 @@ Preparación del escenario
 
 ![](/static/images/uploads/por-que-deberias-proteger-node-red/image-4.webp)
 
-⚠️Esta prueba se realiza utilizando contenedores Docker, pero es también posible hacerlo sin utilizar ninguna tecnología de contenedorización.De qué forma es vulnerable
---------------------------
+> ⚠️Esta prueba se realiza utilizando contenedores Docker, pero es también posible hacerlo sin utilizar ninguna tecnología de contenedorización.
+
+## De qué forma es vulnerable
 
 Arranco una máquina virtual de tal forma que simularemos ser el atacante de la prueba. El esquema es el siguiente.
 
@@ -93,14 +92,15 @@ Ya tenemos acceso a la Shell del contenedor Docker. No debemos pensar bajo ning�
 
 A partir de aquí, debes pensar que cualquier cosa que estuviese dentro de tu sistema (o en otros sistemas, porque también se puede acabar saltando hacia otros equipos vulnerables del entorno) ha podido ser robada. Ya sean **Api Keys** que utilizas para subir los datos a un proveedor **Cloud** o contraseñas para acceder a otros sistemas que hayas pensado que almacenarlos dentro de una carpeta del contenedor era una buena idea.
 
-Cómo puedo hacerlo (un poco) más seguro.
-----------------------------------------
+## Cómo puedo hacerlo (un poco) más seguro.
 
 Lo primero es seguir las recomendaciones que dice su propia página en https://nodered.org/docs/user-guide/runtime/securing-node-red.
 
 En la primera línea nos encontramos el siguiente mensaje.
 
-⚠️By default, the Node-RED editor is not secured - anyone who can access its IP address can access the editor and deploy changes.A partir de aquí, lo que debe ser un **MUST** en nuestra configuración debe ser:
+> ⚠️By default, the Node-RED editor is not secured - anyone who can access its IP address can access the editor and deploy changes.
+
+A partir de aquí, lo que debe ser un **MUST** en nuestra configuración debe ser:
 
 * Habilitar la ventana de Login en todos los casos.
 * Separar credenciales entre los editores de los flujos y los usuarios normales.

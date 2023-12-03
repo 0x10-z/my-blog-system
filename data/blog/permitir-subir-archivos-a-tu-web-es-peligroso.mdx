@@ -4,7 +4,7 @@ date: '2022-02-06'
 tags: ["UnrestrictedFileUpload", "Hacking", "Vulnerabilities", "Pentesting", "#Import 2022-12-20 21:06"]
 draft: false
 authors: ['default']
-summary: 'En este post, aprenderemos sobre el riesgo de permitir a los usuarios subir archivos a través de formularios en plataformas web. Analizaremos las vulnerabilidades que pueden ser objetivo de ataques, como la ejecución de código remoto en el contexto del cliente o del servidor. Además, presentaremos una prueba de concepto que demuestra cómo un archivo PHP puede ser utilizado para obtener acceso y controlar el sistema. También se discuten medidas preventivas, como validar el tipo de archivo, limitar el tamaño del archivo y almacenarlos en un lugar externo al servidor.'
+summary: 'En este post hablaré sobre los riesgos de permitir la subida de archivos en plataformas web. Enumeraré las vulnerabilidades que pueden aprovecharse, como la ejecución de código remoto en el cliente o en el servidor. Explicaré una prueba de concepto y daré consejos para prevenir estos ataques.'
 images: ["/static/images/uploads/permitir-subir-archivos-a-tu-web-es-peligroso/Screenshot_6.webp", "/static/images/uploads/permitir-subir-archivos-a-tu-web-es-peligroso/ezgif-5-1b4b7d19e3-4.webp"]
 ---
 
@@ -23,8 +23,7 @@ Pero analicemos más en profundidad qué riesgos puede ocasionarnos una vulnerab
 
 De este último, he preparado una prueba de concepto que servirá para entender mejor el problema al que nos enfrentamos.
 
-Unrestricted File Upload Vulnerability
---------------------------------------
+## Unrestricted File Upload Vulnerability
 
 El código de la prueba se puede descargar del siguiente [link](https://github.com/iocio005/Unrestricted-File-Upload-Vulnerability). Como siempre, se puede poner en marcha del siguiente modo.
 
@@ -60,7 +59,7 @@ Este código recibe un parámetro *cmd* que ejecutará en una consola del sistem
 
 
 ```
-http://127.0.0.1/php_rce.php?cmd=
+http://127.0.0.1/php_rce.php?cmd=<command to execute>
 ```
 Llegados a este punto, ya hemos obtenido la ejecución remota de código. A partir de este momento podemos enumerar archivos del sistema o simplemente ejecutarnos una shell reversa para navegar por el sistema de archivos.
 
@@ -71,8 +70,7 @@ Llegados a este punto, ya hemos obtenido la ejecución remota de código. A part
 * Esta explotación de la vulnerabilidad es un caso extremo. No limitar el tamaño del archivo que se sube al servidor podría terminar en un ataque [DOS](https://www.cloudflare.com/es-es/learning/ddos/what-is-a-ddos-attack/) al llenar el almacenamiento total del sistema en caso de no estar alojando los archivos en un almacenamiento de datos Cloud como [S3](https://aws.amazon.com/es/s3/). En este último caso, tu economía podría irse al garete.
 * Cualquier lenguaje backend es susceptible de sufrir esta vulnerabilidad. La prueba de concepto con PHP se podría haber hecho con .NET, Java, Javascript, Python y un largo etc.
 
-Y, ¿qué puedo hacer para prevenir esto?
----------------------------------------
+## Y, ¿qué puedo hacer para prevenir esto?
 
 Son varias las cosas que deberías tener en cuenta como ves en este [link](https://cheatsheetseries.owasp.org/cheatsheets/File_Upload_Cheat_Sheet.html), pero los siguientes puntos deberían ser básicos para tu servidor:
 
