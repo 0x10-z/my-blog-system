@@ -202,7 +202,11 @@ Arrancamos *Burpsuite* e interceptamos una petición hacia *http://api.mentorquo
 
 ![Captura de Burpsuite/Repeater](/static/images/uploads/ctf-mentor/image-8.webp)
 
-Vemos que existen dos nuevos *endpoints*. */check* y */backup*. Parece que el primero no funciona, y el segundo, solo funciona si la petición es de tipo POST. Además, el parámetro *Content-Type* debe ser *application/json* y espera recibir un diccionario del siguiente tipo: *{"body": "xxx", "path": "xxx"}.*
+Vemos que existen dos nuevos *endpoints*. */check* y */backup*. Parece que el primero no funciona, y el segundo, solo funciona si la petición es de tipo POST. Además, el parámetro *Content-Type* debe ser *application/json* y espera recibir un diccionario del siguiente tipo:
+
+```json
+ {"body": "xxx", "path": "xxx"}
+```
 
 ![Captura de Burpsuite/Repeater](/static/images/uploads/ctf-mentor/image-9.webp)
 
