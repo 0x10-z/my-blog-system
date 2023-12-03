@@ -4,7 +4,7 @@ date: '2022-01-30'
 tags: ["CTF", "Hacking", "Pentesting", "#Import 2022-12-20 21:06"]
 draft: false
 authors: ['default']
-summary: 'En este post, me sumerjo en el mundo de las pruebas de penetración y los retos CTF (Capture The Flag). En este caso, me enfrento a una máquina de HackTheBox con el objetivo de comprometerla y obtener acceso. Para ello, utilizo diferentes fases como el escaneo de puertos, el acceso al sistema y el escalado de privilegios. En el proceso, exploro vulnerabilidades en un servicio de gestión de impresoras HP y aprovecho una vulnerabilidad en el módulo de administración de CUPS para obtener acceso como root. Concluyo que aunque la máquina es de dificultad fácil, requiere investigación y conocimiento previo para llevar a cabo el escalado de privilegios.'
+summary: 'En mi último post, me enfrento al reto CTF de HackTheBox llamado "Antique". A través de un escaneo de puertos, descubro un servicio de gestión de impresoras HP vulnerable. Aprovechando esta vulnerabilidad, consigo acceso al sistema y escalo privilegios para obtener el flag final. Este reto destaca por su simplicidad y la necesidad de investigar el funcionamiento de scripts de Metasploit.'
 images: ["/static/images/uploads/ctf-antique/Screenshot_1-1.webp", "/static/images/uploads/ctf-antique/fases-proyecto-pentesting-768x478.webp", "/static/images/uploads/ctf-antique/Screenshot_2.webp", "/static/images/uploads/ctf-antique/Screenshot_3-1.webp"]
 ---
 
@@ -27,8 +27,7 @@ Si bien es cierto que no es un trabajo totalmente lineal y que en cada uno de lo
 2. Acceso al sistema
 3. Escalado de privilegios
 
-1. Escaneo
-----------
+## 1. Escaneo
 
 Este es el punto más automático de todos. En todas las máquinas tienes que seguir la misma metodología y tratar de enumerar el máximo número de puertos abiertos en la máquina que deseas atacar.
 
@@ -36,7 +35,7 @@ Este es el punto más automático de todos. En todas las máquinas tienes que se
 ```
 ❯ nmap -p- -sT --open --min-rate 5000 -vvv -n -Pn -oG allPorts antique.htb
 ```
-NMAP all ports discovery*donde:*
+*donde:*
 
 * *-p- lista los puertos de [0, 65535]*
 * *-sT se centra en los de protocolo TCP*
@@ -53,7 +52,7 @@ El comando nos arroja el puerto 23 abierto. Lanzamos otro comando más específi
 ```
 ❯ nmap -p23 -sCV -vvv -oN targeted antique.htb
 ```
-NMAP specific port service version discovery*donde*
+*donde*
 
 * *-p23 especifica el puerto que se desea atacar*
 * *-sCV utiliza los scripts básicos de reconocimiento para tratar de recuperar la versión del servicio en escucha además de otra información básica*
@@ -92,7 +91,6 @@ SF:\nHP\x20JetDirect\n\nPassword:\x20")%r(oracle-tns,19,"\nHP\x20JetDirect
 SF:\n\nPassword:\x20")%r(ms-sql-s,19,"\nHP\x20JetDirect\n\nPassword:\x20")
 SF:%r(afp,19,"\nHP\x20JetDirect\n\nPassword:\x20")%r(giop,19,"\nHP\x20JetD
 SF:irect\n\nPassword:\x20");
-
 ```
 Vamos a conectarnos directamente nosotros al puerto 23 mediante telnet a ver que nos encontramos.
 
@@ -137,12 +135,10 @@ HP JetDirect
 Password: P@ssw0rd@123!!123
 
 Please type "?" for HELP
- 
 ```
 Probando distintos datos de entrada, parece que podemos llegar a ejecutar código remotamente. Llegamos incluso a ver que el propio servicio de HP JetDirect es un script de Python por lo que podemos inferir que la máquina es capaz de ejecutar este tipo de archivos.
 
-2. Acceso al sistema
---------------------
+## 2. Acceso al sistema
 
 Ponemos en nuestra máquina un servicio escuchando en el puerto 443 y lanzamos desde la consola de Telnet el siguiente script
 
@@ -166,8 +162,7 @@ lp@antique:~$ cat user.txt
 ```
 Primera flag obtenida. Estamos dentro.
 
-3. Escalado de privilegios
---------------------------
+## 3. Escalado de privilegios
 
 Llegados a este punto, continuamos viendo que puertos hay abiertos en el sistema.
 
@@ -238,8 +233,7 @@ Nos aseguramos que seguimos manteniendo el túnel de Chisel activo y vamos al na
 
 Ahí está el flag de root. He tenido que recargar la página asegurándome de no cachear la respuesta, ya que al principio no era capaz de ver el resultado. Con esto finalizamos la máquina.
 
-Conclusión
-----------
+## Conclusión
 
 Esta máquina se nota que es de dificultad fácil aunque no es trivial el escalado de privilegios final si no has trabajado antes con impresoras en Linux. Ha sido necesario investigar el funcionamiento de los scripts de Metasploit para no alargar mucho la resolución de la misma y aunque finalmente solo tienes acceso a leer archivos de la máquina y no es un escalado de privilegios real, podemos darla por terminada.
 

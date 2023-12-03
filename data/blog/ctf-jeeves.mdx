@@ -4,7 +4,7 @@ date: '2022-02-12'
 tags: ["CTF", "Windows", "PassTheHash", "#Import 2022-12-20 21:06"]
 draft: false
 authors: ['default']
-summary: 'En este post vamos a resolver un reto CTF que consiste en hackear una máquina llamada Jeeves. La máquina tiene varios puertos abiertos, incluyendo el puerto 80, 135, 445 y 50000. Al escanear los puertos, descubrimos que la máquina es un servidor web con Microsoft IIS y un servidor Jetty. También encontramos una vulnerabilidad en el pipeline de Jenkins, que nos permite ejecutar comandos en el sistema remoto. Con esto, conseguimos obtener un acceso de usuario y escalamos privilegios hasta obtener la flag. ¡Sigue leyendo para descubrir cómo lo hice!'
+summary: 'Reto CTF que consiste en buscar vulnerabilidades en una máquina Windows. Se exploran puertos, se encuentra una vulnerabilidad en Jenkins y se logra obtener acceso de administrador. La flag se encuentra en un stream de datos oculto.'
 images: ["/static/images/uploads/ctf-jeeves/Jeeves.webp", "/static/images/uploads/ctf-jeeves/image-17.webp", "/static/images/uploads/ctf-jeeves/image-18.webp", "/static/images/uploads/ctf-jeeves/image-19.webp", "/static/images/uploads/ctf-jeeves/image-20.webp", "/static/images/uploads/ctf-jeeves/image-21.webp", "/static/images/uploads/ctf-jeeves/image-22.webp"]
 ---
 
@@ -91,7 +91,7 @@ Esto descargará un script desde nuestro equipo y lo ejecutará en el entorno re
 La forma de codificarlo a base64 pasa por cambiar el encoding a UTF-16LE si queremos tener en consideración a [Microsoft](https://docs.microsoft.com/es-es/powershell/module/microsoft.powershell.core/about/about_character_encoding?view=powershell-7.2). De lo contrario, probablemente no podrá ejecutar nuestro comando.
 
 
- En general, Windows PowerShell tiene configurada la codificación UNICODE [UTF-16LE](https://wikipedia.org/wiki/UTF-16) de forma predeterminada.
+> En general, Windows PowerShell tiene configurada la codificación UNICODE [UTF-16LE](https://wikipedia.org/wiki/UTF-16) de forma predeterminada.
 
 Para ello, ejecutamos el siguiente código.
 

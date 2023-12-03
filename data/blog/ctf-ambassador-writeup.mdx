@@ -4,7 +4,7 @@ date: '2023-01-01'
 tags: ["Grafana", "Git", "Rce", "Lfi", "CTF", "Directory Path Traversal"]
 draft: true
 authors: ['default']
-summary: 'La máquina CTF Ambassador es un desafío de Capture The Flag que consiste en enumerar los puertos expuestos en el servidor. Después, se investiga la vulnerabilidad de Grafana y se utiliza una LFI (Local File Inclusion) para obtener el archivo de configuración de Grafana y las credenciales de administrador. También se descarga la base de datos de Grafana para obtener más información.'
+summary: 'Reto CTF que consiste en enumerar y explotar una máquina. Se atacan vulnerabilidades como Local File Inclusion (LFI) en Grafana y obtención de credenciales en archivos de configuración y base de datos.'
 images: ["/static/images/uploads/ctf-ambassador-writeup/Ambassador.webp", "/static/images/uploads/ctf-ambassador-writeup/image.webp", "/static/images/uploads/ctf-ambassador-writeup/image-1.webp"]
 ---
 
@@ -12,8 +12,7 @@ images: ["/static/images/uploads/ctf-ambassador-writeup/Ambassador.webp", "/stat
 
 Esta máquina ha sido una que me ha gustado mucho. Sobre todo la primera parte hasta llegar a la escalada de privilegios.
 
-Enumeración
------------
+## Enumeración
 
 
 ```
@@ -67,8 +66,7 @@ Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
 ```
 Tenemos el puerto de *SSH*, lo que parece un s*ervidor web* típico en el puerto 80, algo desconocido en el puerto 3000 y una base de datos *MySQL* en el puerto 3306.
 
-Local File Inclusion
---------------------
+## Local File Inclusion
 
 Como me corroe la curiosidad, empiezo por el puerto 3000 y me encuentro Grafana instalado.
 
@@ -117,9 +115,9 @@ admin_password = messageInABottle685427
 ```
 Con esas credenciales, podemos entrar directamente al panel de Grafana. En él, vemos que hay una base de datos MySQL configurada, pero no podemos ver sus credenciales. Además de eso, no hay mucho más que podamos hacer por esa vía. Otra ruta de interés es */var/lib/grafana/grafana.db.*
 
-![](/static/images/uploads/ctf-ambassador-writeup/image-1.webp)
+![Mysql configurado en Grafana](/static/images/uploads/ctf-ambassador-writeup/image-1.webp)
 
-Mysql configurado en GrafanaEsta ruta contiene una base de datos *sqlite,* donde se almacenan los Dashboards configurados. Con el siguiente comando nos descargamos la base de datos.
+Esta ruta contiene una base de datos *sqlite,* donde se almacenan los Dashboards configurados. Con el siguiente comando nos descargamos la base de datos.
 
 
 ```

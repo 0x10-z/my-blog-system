@@ -4,7 +4,7 @@ date: '2023-01-03'
 tags: ["DNS Spoofing", "POC"]
 draft: true
 authors: ['default']
-summary: 'En mi último blog, expliqué el funcionamiento del WiFi Pineapple Mk7 de Hack5 utilizando ilustraciones de Julia Evans. En este post, me enfoco en cómo funciona el DNS y cómo se puede manipular para llevar a cabo ataques como el DNS Spoofing. Utilicé ejemplos y comandos para mostrar cómo se puede actualizar el archivo /etc/hosts, borrar la caché DNS y luego ejecutar un ataque de DNS Spoofing desde un dispositivo móvil.'
+summary: 'Reto CTF que consiste en explicar cómo funciona el WiFi Pineapple Mk7 y su capacidad para realizar ataques de DNS spoofing. Se explora la modificación del archivo /etc/hosts y el cache DNS en un teléfono móvil.'
 images: ["/static/images/uploads/wifi-pineapple-mkvii/life-of-a-dns-query.webp", "/static/images/uploads/wifi-pineapple-mkvii/iphone14_spoof.webp"]
 ---
 
@@ -29,9 +29,9 @@ Clear DNS cache
 ```
 Vamos al movil
 
-![](/static/images/uploads/wifi-pineapple-mkvii/iphone14\_spoof.webp)
+![DNS Spoofing gmail.google.es](/static/images/uploads/wifi-pineapple-mkvii/iphone14\_spoof.webp)
 
-DNS Spoofing gmail.google.esy ahora de nuevo
+y ahora de nuevo
 
 
 ```

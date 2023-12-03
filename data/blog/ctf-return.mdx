@@ -4,7 +4,7 @@ date: '2022-02-11'
 tags: ["CTF", "Windows", "ServerOperatorGroupAbusing", "ServiceConfigurationManipulation", "#Import 2022-12-20 21:06"]
 draft: false
 authors: ['default']
-summary: 'En este reto CTF nos encontramos con una máquina Windows. Al escanear los puertos abiertos con NMAP, descubrimos un portal web en el puerto 80 que parece ser un panel de administración de impresoras. Al investigar más, encontramos un formulario de registro en el que podemos introducir nuestra IP. Al interceptar la comunicación con netcat, obtenemos una contraseña y un usuario. Usando Evil-WinRM, obtenemos la primera flag y más tarde encontramos un método para escalar privilegios de Administrador al pertenecer al grupo "Server Operators". Intentamos crear un servicio con el binario nc.exe, pero no tenemos permisos para ello. Cambiamos uno de los servicios existentes y logramos obtener una reverse shell. Finalmente, al obtener la consola con privilegios de sistema, obtenemos la flag final.'
+summary: 'Se trata de una máquina CTF de Capture The Flag basada en Windows. La vulnerabilidad explotada es la falta de seguridad en un formulario de registro que permite obtener acceso al sistema y escalar privilegios para obtener la flag.'
 images: ["/static/images/uploads/ctf-return/return.webp", "/static/images/uploads/ctf-return/image-7.webp"]
 ---
 
