@@ -4,21 +4,21 @@ date: '2022-01-29'
 tags: ["CTF", "Pentesting", "Hacking", "Pivoting", "Suid"]
 draft: false
 authors: ['default']
-summary: 'En este reto CTF de Pandora HTB, exploro una máquina que involucra vulnerabilidades como SNMP, inyección SQL, exploit de PandoraFMS y Path Hijacking para escalar privilegios.'
-images: ["/static/images/uploads/pandora-ctf/pandora-750x410.webp", "/static/images/uploads/pandora-ctf/Screenshot_1.webp", "/static/images/uploads/pandora-ctf/Screenshot_3.webp", "/static/images/uploads/pandora-ctf/Screenshot_4.webp", "/static/images/uploads/pandora-ctf/pivoting-4.svg", "/static/images/uploads/pandora-ctf/Screenshot_5.webp", "/static/images/uploads/pandora-ctf/Screenshot_6.webp", "/static/images/uploads/pandora-ctf/burpsuite2.webp"]
+summary: 'Este texto es un resumen de un CTF en el que se explora la máquina Pandora, que presenta vulnerabilidades como SNMP y una inyección SQL en el software PandoraFMS. Se obtiene acceso a la máquina y se escala privilegios mediante una vulnerabilidad de Path Hijacking en el archivo pandora_backup. Se consigue acceso como usuario root y se recupera la flag.'
+images: ["/static/images/uploads/ctf-pandora/pandora-750x410.webp", "/static/images/uploads/ctf-pandora/Screenshot_1.webp", "/static/images/uploads/ctf-pandora/Screenshot_3.webp", "/static/images/uploads/ctf-pandora/Screenshot_4.webp", "/static/images/uploads/ctf-pandora/pivoting-4.svg", "/static/images/uploads/ctf-pandora/Screenshot_5.webp", "/static/images/uploads/ctf-pandora/Screenshot_6.webp", "/static/images/uploads/ctf-pandora/burpsuite2.webp"]
 ---
 
-![](/static/images/uploads/pandora-ctf/pandora-750x410.webp)
+![](/static/images/uploads/ctf-pandora/pandora-750x410.webp)
 
 He de decir que esta máquina aunque se encuentra entre las fáciles, me ha costado más de lo que me imaginaba y de hecho, los usuarios de la plataforma tienen otra opinión de la dificultad al respecto, como se puede ver en la imagen inferior:
 
-![](/static/images/uploads/pandora-ctf/Screenshot\_1.webp)
+![](/static/images/uploads/ctf-pandora/Screenshot\_1.webp)
 
 ## 1. Reconocimiento
 
 Antes de nada, añadimos a nuestro /etc/hosts el dominio de la máquina por si estuviese sirviendo un servicio a través de algún virtual hosting.
 
-![/etc/hosts file](/static/images/uploads/pandora-ctf/Screenshot\_3.webp)
+![/etc/hosts file](/static/images/uploads/ctf-pandora/Screenshot\_3.webp)
 
 Primero de todo, verificamos conexión con el objetivo.
 
@@ -48,7 +48,7 @@ Host: 10.10.11.136 ()	Ports: 22/open/tcp//ssh///, 80/open/tcp//http///
 ```
 Veo que el puerto 80 está abierto y trato de ver que me encuentro:
 
-![Static website](/static/images/uploads/pandora-ctf/Screenshot\_4.webp)
+![Static website](/static/images/uploads/ctf-pandora/Screenshot\_4.webp)
 
 Tras haber investigado la web y haber un poco de Fuzzing, doy con una vía muerta. Continúo examinando los puertos UDP a ver que me encuentro.
 
@@ -108,7 +108,7 @@ Imprimo las cadenas de caracteres que contiene el binario y me encuentro la sigu
 
 Si accedo desde mi máquina, no puedo ver nada. Solo tengo acceso desde el sistema de daniel. 
 
-![Pivoting schema](/static/images/uploads/pandora-ctf/pivoting-4.svg)
+![Pivoting schema](/static/images/uploads/ctf-pandora/pivoting-4.svg)
 
 
 ```
@@ -116,7 +116,7 @@ ssh -L 8080:pandora.htb:80 daniel@pandora.htb
 ```
 Dado que desde pandora.htb, lanzando una petición al puerto 80 soy capaz de ver la nueva máquina, con el comando de arriba realizo un túnel ssh que sincroniza mi puerto local 8080 con el puerto 80 de destino. De esta manera, soy capaz de acceder a la siguiente ventana:
 
-![Pandora FMS 742 login](/static/images/uploads/pandora-ctf/Screenshot\_5.webp)
+![Pandora FMS 742 login](/static/images/uploads/ctf-pandora/Screenshot\_5.webp)
 
 ## 3. Explotación
 
@@ -146,11 +146,11 @@ sqlmap -u http://localhost:8080/pandora_console/include/chart_generator.php?sess
 ```
 De esta forma, si accedo desde mi navegador a http://localhost:8080/pandora\_console/include/chart\_generator.php?session\_id=gathered\_session\_id y posteriormente a http://localhost:8080/pandora\_console/index.php, me encontraré dentro del sistema.
 
-![Pandora FMS 742 index](/static/images/uploads/pandora-ctf/Screenshot\_6.webp)
+![Pandora FMS 742 index](/static/images/uploads/ctf-pandora/Screenshot\_6.webp)
 
 Llegados a este punto, tras visitar cada uno de los menús en busca de alguna opción de continuar con el proceso, me he decantado por buscar en internet vulnerabilidades relativas a PandoraFMS de ejecución de código remoto o RCE. He encontrado un [enlace](https://www.rapid7.com/db/modules/exploit/linux/http/pandora_fms_events_exec/) donde se describe un script de Metasploit que permite hacer esto. He decidido lanzar Burpsuite para interceptar la petición que lanza el script y ver con mis propios ojos que hace el exploit. Tras incrustarle la cookie que me permite estar autenticado y ver la ubicación de donde poner el comando a ejecutar, he obtenido la primera flag básica del usuario Matt.
 
-![Burpsuite repeater](/static/images/uploads/pandora-ctf/burpsuite2.webp)
+![Burpsuite repeater](/static/images/uploads/ctf-pandora/burpsuite2.webp)
 
 Posteriormente, he utilizado de nuevo Burpsuite para recibir en mi máquina una reverse shell de Matt.
 
