@@ -1,0 +1,96 @@
+---
+title: 'Patrón de datos sospechoso en las recientes elecciones venezolanas'
+date: '2024-08-02'
+tags: ["Elecciones Venezolanas", "Estadistica", "Ciberseguridad"]
+draft: false
+authors: ['default']
+summary: 'En este post, se analizan las curiosidades estadísticas de las elecciones venezolanas de 2024, destacando posibles indicadores de fraude. A continuación, se presenta una traducción y análisis de los puntos más relevantes, comparándolos con las elecciones españolas de 2016, 2019 y 2023.'
+images: ["/static/images/uploads/elecciones-venezolanas/politics-maduro.webp"]
+---
+
+# Patrón de datos sospechoso en las recientes elecciones venezolanas
+
+> Post original: [https://statmodeling.stat.columbia.edu/2024/07/31/suspicious-data-pattern-in-recent-venezuelan-election/](https://statmodeling.stat.columbia.edu/2024/07/31/suspicious-data-pattern-in-recent-venezuelan-election/)
+
+He encontrado un post que explica curiosidades estadísticas de las elecciones ocurridas en Venezuela este año 2024.
+
+Voy a tratar de traducir aquellos puntos más destacables y, finalmente, usar un ejemplo de las anteriores elecciones españolas para comparar las diferencias estadísticas entre ambas.
+
+Para empezar, entre idas y venidas, unos gritando que las elecciones venezolanas fueron amañadas y otros tratando de convencer al mundo de que todo está bien y no pasa nada malo, **han ocurrido hechos estadísticos curiosos con las cifras oficiales otorgadas por el gobierno venezolano**.
+
+El domingo por la noche, más de 6 horas después de que se suponía que cerraran las urnas, el Presidente de la Comisión Nacional Electoral anunció al ganador de las elecciones: "Con el 80% de los votos contados, y una tendencia fuerte e irreversible, aquí están los resultados oficiales de la votación de hoy..."
+
+| Candidato        | Votos      | Porcentaje |
+| ---------------- | ---------- | ---------- |
+| Nicolas Maduro   | 5,150,092  | 51.2%      |
+| Edmundo Gonzalez | 4,445,978  | 44.2%      |
+| Otros            | 462,704    | 4.6%       |
+| **Totales**      | 10,058,774 | 100.0%     |
+
+Para ser más precisos, vamos a expandir los decimales porcentuales en los resultados dados hasta el séptimo decimal:
+
+| Candidato        | Votos      | Porcentaje   |
+| ---------------- | ---------- | ------------ |
+| Nicolas Maduro   | 5,150,092  | 51.1999997%  |
+| Edmundo Gonzalez | 4,445,978  | 44.1999989%  |
+| Otros            | 462,704    | 4.6000039%   |
+| **Totales**      | 10,058,774 | 100.0000000% |
+
+**Si os fijáis, los resultados porcentuales son casi exactos.** Para entender mejor, me he tomado la molestia de hacer el mismo trabajo con las elecciones españolas de [2016](https://www.abc.es/elecciones/elecciones-generales/resultados/2019-28a/), [2019](https://www.abc.es/elecciones/elecciones-generales/resultados/2019-28a/) y [2023](https://www.abc.es/elecciones/elecciones-generales/resultados/):
+
+| Partidos | Votos 2016 | Porcentaje 2016 | Votos 2019 | Porcentaje 2019 | Votos 2023 | Porcentaje 2023 |
+| -------- | ---------- | --------------- | ---------- | --------------- | ---------- | --------------- |
+| PP       | 7.941.236  | 35.6211373%     | 4.356.023  | 18.6164097%     | 8.091.840  | 34.6319857%     |
+| PSOE     | 5.443.846  | 24.4188670%     | 7.480.755  | 31.9706302%     | 7.760.970  | 33.2159067%     |
+| Vox      | 47.182     | 0.2116392%      | 2.677.173  | 11.4414799%     | 3.033.744  | 12.9840159%     |
+| SUMAR    | -          | -               | -          | -               | 3.014.006  | 12.8995399%     |
+| ERC      | 632.234    | 2.8359432%      | 1.015.355  | 4.3393400%      | 462.883    | 1.9810769%      |
+| JUNTS    | -          | -               | -          | -               | 392.634    | 1.6804207%      |
+| EH Bildu | -          | -               | -          | -               | 333.362    | 1.4267445%      |
+| PNV      | -          | -               | -          | -               | 275.782    | 1.1803098%      |
+| Cs       | 3.141.570  | 14.0917983%     | 4.136.600  | 17.6786579%     | -          | -               |
+| UP       | 5.087.538  | 22.8206150%     | 3.732.929  | 15.9534823%     | -          | -               |
+
+**¿Se ve la diferencia?**
+
+Esto parece muy sospechoso. **¿Puede ser que, en lugar de calcular los porcentajes a partir del número de votos, alguien decidió los porcentajes y luego calculó el número de votos?**
+
+Hagamos el ejercicio. Comencemos con el número total de votos y asignemos 51.2% de los votos a Maduro, 44.2% a su principal oponente y 4.6% al resto del campo, para ver a dónde nos lleva esto:
+
+| Candidato        | Votos         | Porcentaje   |
+| ---------------- | ------------- | ------------ |
+| Nicolas Maduro   | 5,150,092.288 | 51.2000000%  |
+| Edmundo Gonzalez | 4,445,978.108 | 44.2000000%  |
+| Otros            | 462,703.604   | 4.6000000%   |
+| **Totales**      | 10,058,774    | 100.0000000% |
+
+"Sería raro si publicamos decimales de votos. Es decir, no se puede otorgar un voto y medio. **Mejor redondeemos al entero más cercano**":
+
+| Candidato        | Votos      | Porcentaje |
+| ---------------- | ---------- | ---------- |
+| Nicolas Maduro   | 5,150,092  | 51.2%      |
+| Edmundo Gonzalez | 4,445,978  | 44.2%      |
+| Otros            | 462,704    | 4.6%       |
+| **Totales**      | 10,058,774 | 100.0%     |
+
+**Si esto no es evidencia de fraude por sí mismo, no sé qué lo es.** De todos modos, la imagen de los jefes chavistas fabricando los resultados con una servilleta y sus calculadoras de teléfonos parece tan plausible como divertida.
+
+Dicho esto, la situación a día 2 de agosto de 2024 es la siguiente:
+
+1. **La web oficial del CNE (Consejo Nacional Electoral) donde están las actas de las votaciones está caída**: [https://www.cne.gob.ve/](https://www.cne.gob.ve/)
+2. **Ha aparecido una web de la oposición, que se ha tomado la molestia de escanear actas físicas y colgarlas en un portal que se puede consultar si alguien tiene su identificación venezolana**: [https://resultadosconvzla.com/](https://resultadosconvzla.com/)
+
+Podemos pensar que la segunda web es fraudulenta, por supuesto, pero estas actas físicas **tienen un código QR generado por el propio CNE** (más se muestra uno de ejemplo). Es decir, el CNE podría simplemente mostrar que la papeleta auténtica (la física) no se corresponde con lo publicado. **Esto aún no ha pasado.**
+
+Por otro lado, este código QR se ha generado con dos propósitos:
+
+- Asegurar la integridad de la información, es decir, que no haya sido manipulada.
+- Asegurar la autenticidad y vinculación de la información con el objeto.
+
+Nada de esto sirve a día de hoy porque el CNE no ha publicado la clave pública con la que validar esta información. Algo que no tiene sentido desde el punto de vista técnico y criptográfico, puesto que es la única manera de poder asegurar estos dos puntos anteriores.
+
+Es decir, **en este punto la CNE es quien tiene la sartén por el mango y es quien tiene el poder de dar veracidad a las cifras oficiales o desmentir a la oposición. Mientras no se sepa nada más, todo lo que se publique será humo y no podrá tomarse por cierto.**
+
+A continuación se muestra una de las actas oficiales que se puede consultar en la web de la oposición así como el QR del que estamos hablando.
+
+![](/static/images/uploads/elecciones-venezolanas/cedula-ejemplo.webp)
