@@ -1,0 +1,97 @@
+---
+title: 'Intento de Phishing con la DGT'
+date: '2024-09-07'
+tags: []
+draft: false
+authors: ['default']
+summary: 'En este post, analizo en detalle un intento de phishing utilizando como señuelo la Dirección General de Tráfico (DGT) de España. Describo el proceso de investigación, cómo se logró evadir medidas de seguridad, y ofrezco consejos prácticos para evitar caer en este tipo de estafas.'
+images: ["/static/images/uploads/intento-phishing-dgt-1/phishing-2.webp"]
+---
+
+Este verano, hace unos días, recibí el siguiente SMS, que no me sorprendió del todo, ya que había utilizado el coche en varias ocasiones y podía haber recibido alguna multa.
+
+![](/static/images/uploads/intento-phishing-dgt-1/phishing-1.webp)
+
+A pesar de que parecía una multa legítima de la DGT, ciertos elementos despertaron mis sospechas. Aquí están las razones principales por las que decidí investigar más a fondo:
+
+* El número de teléfono que envió el mensaje era un móvil aleatorio, algo inusual en comunicaciones oficiales.
+  * Marcado como spam en [https://www.listaspam.com/busca.php?Telefono=663429311](https://www.listaspam.com/busca.php?Telefono=663429311)
+* La URL incluida no parecía legítima, no contenía ningún dominio oficial relacionado con la DGT.
+
+## Investigando la web
+
+Al acceder a la web desde el móvil, la página aparentaba ser de la DGT.
+
+![](/static/images/uploads/intento-phishing-dgt-1/phishing-2.webp)
+
+Sin embargo, al acceder desde un PC, la web nos redirigió a un periódico francés.
+
+![](/static/images/uploads/intento-phishing-dgt-1/phishing-3.webp)
+
+Es probable que el servidor esté verificando el user-agent del navegador, y al detectar un PC, redirija al usuario a otro sitio para evitar la detección del phishing.
+
+Con esta táctica, los atacantes dificultan que usuarios comunes y las fuerzas de seguridad descubran la web fraudulenta.
+
+De todos modos, utilizando **Burp Suite**, logramos evadir esta medida de seguridad, forzando que todas nuestras peticiones incluyan un user-agent de iOS.
+
+```plaintext
+Mozilla/5.0 (iPhone; CPU iPhone OS 15_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.5 Mobile/15E148 Safari/604.1
+```
+
+![](/static/images/uploads/intento-phishing-dgt-1/phishing-4.webp)
+
+De esta manera, durante la investigación, podemos acceder al contenido de la estafa.
+
+![](/static/images/uploads/intento-phishing-dgt-1/phishing-5.webp)
+
+## Iniciando el formulario
+
+Procedemos a iniciar el formulario.
+
+![](/static/images/uploads/intento-phishing-dgt-1/phishing-6.webp)
+
+Introducimos datos personales ficticios. **Es importante recalcar que nunca deben usarse datos reales** de nadie, ya que podrías meter en problemas a familiares o amigos.
+
+A continuación, ingresamos los datos de una tarjeta de crédito inventada.
+
+Este phishing está un poco más trabajado, ya que verifica que el número de tarjeta sea válido. Existen webs/APIs que permiten realizar estas verificaciones.
+
+![](/static/images/uploads/intento-phishing-dgt-1/phishing-7.webp)
+
+Para continuar, utilizamos páginas que generan números ficticios de tarjetas de crédito capaces de pasar estos checks.
+
+![](/static/images/uploads/intento-phishing-dgt-1/phishing-8.webp)
+
+![](/static/images/uploads/intento-phishing-dgt-1/phishing-9.webp)
+
+Utilizamos un número de teléfono temporal por si recibíamos algún SMS, pero no se recibió ninguno.
+
+![](/static/images/uploads/intento-phishing-dgt-1/phishing-10.webp)
+
+Utilizando cualquier codigo aleatorio tampoco se conseguia nada.
+
+## Conclusión
+
+La web no parece ser vulnerable a la enumeración de directorios, no utiliza ningún CMS conocido, y no tiene rutas ocultas que permitan seguir con la investigación.
+
+En cualquier caso, **debes extremar las precauciones**. Este phishing, aunque en algunos aspectos estaba bien elaborado, el dominio y el número de teléfono en el SMS nos dieron pistas suficientes para sospechar. Sin embargo, no siempre es así. A veces, estos elementos están mejor trabajados y es más difícil detectar la estafa.
+
+Aquí tienes algunos consejos para no ser víctima de phishing:
+
+### Consejos para evitar caer en intentos de phishing:
+
+1. **Verifica siempre la fuente del mensaje**: Si recibes un mensaje que parece legítimo, verifica el número de teléfono o el remitente antes de hacer clic en ningún enlace. Las entidades oficiales rara vez usan números móviles o servicios de mensajería aleatorios.
+   
+2. **No hagas clic en enlaces sospechosos**: Si tienes dudas sobre la legitimidad del enlace, no lo abras directamente desde el mensaje. En su lugar, visita el sitio web oficial manualmente escribiendo la URL en tu navegador.
+
+3. **Presta atención a los detalles en la URL**: Revisa siempre la URL en la barra de direcciones para asegurarte de que pertenece al dominio oficial de la entidad. Los estafadores a menudo utilizan dominios similares o confusos para engañar a los usuarios.
+
+4. **No compartas información personal o financiera sin estar completamente seguro**: Las entidades legítimas nunca pedirán que ingreses datos personales o financieros a través de un mensaje o correo electrónico.
+
+5. **Revisa las cabeceras del correo o SMS**: A veces, los intentos de phishing tienen cabeceras inusuales o direcciones de correo que no coinciden con la organización oficial.
+
+6. **Mantén actualizado tu software de seguridad**: Asegúrate de que tu dispositivo tenga actualizado el sistema operativo, navegador y antivirus para protegerte contra los ataques más recientes.
+
+Siguiendo estos consejos, estarás más protegido frente a intentos de phishing y otros tipos de estafas en línea.
+
+Espero ser "víctima" de más intentos de phishing en el futuro para poder analizarlos más a fondo, y quizás incluso obtener más información de los ciberdelincuentes involucrados.
