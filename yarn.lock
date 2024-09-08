@@ -9,53 +9,53 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "0x10-blog-system@workspace:."
   dependencies:
-    "@next/bundle-analyzer": 14.2.3
+    "@next/bundle-analyzer": 14.2.8
     "@svgr/webpack": ^8.1.0
-    "@tailwindcss/forms": ^0.5.7
-    "@tailwindcss/typography": ^0.5.12
-    "@types/mdx": ^2.0.12
+    "@tailwindcss/forms": ^0.5.9
+    "@tailwindcss/typography": ^0.5.15
+    "@types/mdx": ^2.0.13
     "@types/node": ^22.5.4
-    "@types/react": ^18.2.73
-    "@typescript-eslint/eslint-plugin": ^6.13.1
+    "@types/react": ^18.3.5
+    "@typescript-eslint/eslint-plugin": ^6.21.0
     "@typescript-eslint/parser": ^6.21.0
-    "@vercel/analytics": ^1.1.1
-    autoprefixer: ^10.4.16
+    "@vercel/analytics": ^1.3.1
+    autoprefixer: ^10.4.20
     contentlayer2: 0.4.6
     cross-env: ^7.0.3
     esbuild: 0.19.12
     eslint: ^8.57.0
     eslint-config-next: 14.2.3
     eslint-config-prettier: ^9.1.0
-    eslint-plugin-prettier: ^5.0.1
+    eslint-plugin-prettier: ^5.2.1
     github-slugger: ^2.0.0
     glob: ^10.4.5
     gray-matter: ^4.0.3
     husky: ^9.0.0
-    image-size: 1.0.2
+    image-size: 1.1.1
     lint-staged: ^15.1.0
-    next: 14.2.3
+    next: 14.2.8
     next-contentlayer2: 0.4.6
     next-themes: ^0.3.0
-    pliny: 0.2.1
-    postcss: ^8.4.32
+    pliny: 0.2.2
+    postcss: ^8.4.45
     prettier: ^3.1.0
     prettier-plugin-tailwindcss: ^0.5.14
     react: 18.3.1
     react-dom: 18.3.1
     reading-time: ^1.5.0
     rehype-autolink-headings: ^7.1.0
-    rehype-citation: ^2.0.0
-    rehype-katex: ^7.0.0
+    rehype-citation: ^2.1.1
+    rehype-katex: ^7.0.1
     rehype-preset-minify: 7.0.0
     rehype-prism-plus: ^2.0.0
     rehype-slug: ^6.0.0
-    remark: ^15.0.0
+    remark: ^15.0.1
     remark-gfm: ^4.0.0
     remark-github-blockquote-alert: ^1.2.1
     remark-math: ^6.0.0
     replace-in-file: ^7.2.0
-    sharp: ^0.33.0
-    tailwindcss: ^3.4.3
+    sharp: ^0.33.5
+    tailwindcss: ^3.4.10
     typescript: ^5.3.2
     unist-util-visit: ^5.0.0
   languageName: unknown
@@ -2770,19 +2770,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@next/bundle-analyzer@npm:14.2.3":
-  version: 14.2.3
-  resolution: "@next/bundle-analyzer@npm:14.2.3"
+"@next/bundle-analyzer@npm:14.2.8":
+  version: 14.2.8
+  resolution: "@next/bundle-analyzer@npm:14.2.8"
   dependencies:
     webpack-bundle-analyzer: 4.10.1
-  checksum: 34355cd5e28b02aba8179babd5ffd9c7f275c3fddeb16895c3f4fcbc3333c26fc6991dcb6488e26a7eb55516118ad9f53d25c916ea263d06beda417af7a06179
+  checksum: b7ee575f733b2a7632ac55f5e1e157a8c7c0d4dd11f2a88071b5c41fe9abdd9cdb7068e2a9ce537655f8e74342ce87080a2fdc46d785f37bfc077a87604e5a5d
   languageName: node
   linkType: hard
 
-"@next/env@npm:14.2.3":
-  version: 14.2.3
-  resolution: "@next/env@npm:14.2.3"
-  checksum: 47ddb64ec6cdc13dfcf560ba42cce71d7948174bf800162738e20ba0147cc46a5f6fdde1eb7957a3676a9eca6dccf6603836ed7c755eab238d9f5c73614d9880
+"@next/env@npm:14.2.8":
+  version: 14.2.8
+  resolution: "@next/env@npm:14.2.8"
+  checksum: 9165a2c3f96ce157f97ee3efe4a49d0abf5f05d56e3e771ce741a2169110db2df4deb335cb979277d88eafc803d4272e0ef16c8dc8bd5f94eb36e940e577fbde
   languageName: node
   linkType: hard
 
@@ -2795,65 +2795,65 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@next/swc-darwin-arm64@npm:14.2.3":
-  version: 14.2.3
-  resolution: "@next/swc-darwin-arm64@npm:14.2.3"
+"@next/swc-darwin-arm64@npm:14.2.8":
+  version: 14.2.8
+  resolution: "@next/swc-darwin-arm64@npm:14.2.8"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"@next/swc-darwin-x64@npm:14.2.3":
-  version: 14.2.3
-  resolution: "@next/swc-darwin-x64@npm:14.2.3"
+"@next/swc-darwin-x64@npm:14.2.8":
+  version: 14.2.8
+  resolution: "@next/swc-darwin-x64@npm:14.2.8"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
-"@next/swc-linux-arm64-gnu@npm:14.2.3":
-  version: 14.2.3
-  resolution: "@next/swc-linux-arm64-gnu@npm:14.2.3"
+"@next/swc-linux-arm64-gnu@npm:14.2.8":
+  version: 14.2.8
+  resolution: "@next/swc-linux-arm64-gnu@npm:14.2.8"
   conditions: os=linux & cpu=arm64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@next/swc-linux-arm64-musl@npm:14.2.3":
-  version: 14.2.3
-  resolution: "@next/swc-linux-arm64-musl@npm:14.2.3"
+"@next/swc-linux-arm64-musl@npm:14.2.8":
+  version: 14.2.8
+  resolution: "@next/swc-linux-arm64-musl@npm:14.2.8"
   conditions: os=linux & cpu=arm64 & libc=musl
   languageName: node
   linkType: hard
 
-"@next/swc-linux-x64-gnu@npm:14.2.3":
-  version: 14.2.3
-  resolution: "@next/swc-linux-x64-gnu@npm:14.2.3"
+"@next/swc-linux-x64-gnu@npm:14.2.8":
+  version: 14.2.8
+  resolution: "@next/swc-linux-x64-gnu@npm:14.2.8"
   conditions: os=linux & cpu=x64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@next/swc-linux-x64-musl@npm:14.2.3":
-  version: 14.2.3
-  resolution: "@next/swc-linux-x64-musl@npm:14.2.3"
+"@next/swc-linux-x64-musl@npm:14.2.8":
+  version: 14.2.8
+  resolution: "@next/swc-linux-x64-musl@npm:14.2.8"
   conditions: os=linux & cpu=x64 & libc=musl
   languageName: node
   linkType: hard
 
-"@next/swc-win32-arm64-msvc@npm:14.2.3":
-  version: 14.2.3
-  resolution: "@next/swc-win32-arm64-msvc@npm:14.2.3"
+"@next/swc-win32-arm64-msvc@npm:14.2.8":
+  version: 14.2.8
+  resolution: "@next/swc-win32-arm64-msvc@npm:14.2.8"
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
 
-"@next/swc-win32-ia32-msvc@npm:14.2.3":
-  version: 14.2.3
-  resolution: "@next/swc-win32-ia32-msvc@npm:14.2.3"
+"@next/swc-win32-ia32-msvc@npm:14.2.8":
+  version: 14.2.8
+  resolution: "@next/swc-win32-ia32-msvc@npm:14.2.8"
   conditions: os=win32 & cpu=ia32
   languageName: node
   linkType: hard
 
-"@next/swc-win32-x64-msvc@npm:14.2.3":
-  version: 14.2.3
-  resolution: "@next/swc-win32-x64-msvc@npm:14.2.3"
+"@next/swc-win32-x64-msvc@npm:14.2.8":
+  version: 14.2.8
+  resolution: "@next/swc-win32-x64-msvc@npm:14.2.8"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
@@ -3471,7 +3471,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tailwindcss/forms@npm:^0.5.7":
+"@tailwindcss/forms@npm:^0.5.9":
   version: 0.5.9
   resolution: "@tailwindcss/forms@npm:0.5.9"
   dependencies:
@@ -3482,7 +3482,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tailwindcss/typography@npm:^0.5.12":
+"@tailwindcss/typography@npm:^0.5.15":
   version: 0.5.15
   resolution: "@tailwindcss/typography@npm:0.5.15"
   dependencies:
@@ -3585,7 +3585,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/mdx@npm:^2.0.0, @types/mdx@npm:^2.0.12":
+"@types/mdx@npm:^2.0.0, @types/mdx@npm:^2.0.13":
   version: 2.0.13
   resolution: "@types/mdx@npm:2.0.13"
   checksum: 195137b548e75a85f0558bb1ca5088aff1c01ae0fc64454da06085b7513a043356d0bb51ed559d3cbc7ad724ccd8cef2a7d07d014b89a47a74dff8875ceb3b15
@@ -3622,7 +3622,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:^18.2.73":
+"@types/react@npm:^18.3.5":
   version: 18.3.5
   resolution: "@types/react@npm:18.3.5"
   dependencies:
@@ -3667,7 +3667,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/eslint-plugin@npm:^6.13.1":
+"@typescript-eslint/eslint-plugin@npm:^6.21.0":
   version: 6.21.0
   resolution: "@typescript-eslint/eslint-plugin@npm:6.21.0"
   dependencies:
@@ -3861,7 +3861,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vercel/analytics@npm:^1.1.1":
+"@vercel/analytics@npm:^1.3.1":
   version: 1.3.1
   resolution: "@vercel/analytics@npm:1.3.1"
   dependencies:
@@ -4205,7 +4205,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"autoprefixer@npm:^10.4.16":
+"autoprefixer@npm:^10.4.20":
   version: 10.4.20
   resolution: "autoprefixer@npm:10.4.20"
   dependencies:
@@ -5831,7 +5831,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-prettier@npm:^5.0.1":
+"eslint-plugin-prettier@npm:^5.2.1":
   version: 5.2.1
   resolution: "eslint-plugin-prettier@npm:5.2.1"
   dependencies:
@@ -7101,14 +7101,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"image-size@npm:1.0.2":
-  version: 1.0.2
-  resolution: "image-size@npm:1.0.2"
+"image-size@npm:1.1.1":
+  version: 1.1.1
+  resolution: "image-size@npm:1.1.1"
   dependencies:
     queue: 6.0.2
   bin:
     image-size: bin/image-size.js
-  checksum: 01745fdb47f87cecf538e69c63f9adc5bfab30a345345c2de91105f3afbd1bfcfba1256af02bf3323077b33b0004469a837e077bf0cbb9c907e9c1e9e7547585
+  checksum: 23b3a515dded89e7f967d52b885b430d6a5a903da954fce703130bfb6069d738d80e6588efd29acfaf5b6933424a56535aa7bf06867e4ebd0250c2ee51f19a4a
   languageName: node
   linkType: hard
 
@@ -9142,20 +9142,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"next@npm:14.2.3":
-  version: 14.2.3
-  resolution: "next@npm:14.2.3"
+"next@npm:14.2.8":
+  version: 14.2.8
+  resolution: "next@npm:14.2.8"
   dependencies:
-    "@next/env": 14.2.3
-    "@next/swc-darwin-arm64": 14.2.3
-    "@next/swc-darwin-x64": 14.2.3
-    "@next/swc-linux-arm64-gnu": 14.2.3
-    "@next/swc-linux-arm64-musl": 14.2.3
-    "@next/swc-linux-x64-gnu": 14.2.3
-    "@next/swc-linux-x64-musl": 14.2.3
-    "@next/swc-win32-arm64-msvc": 14.2.3
-    "@next/swc-win32-ia32-msvc": 14.2.3
-    "@next/swc-win32-x64-msvc": 14.2.3
+    "@next/env": 14.2.8
+    "@next/swc-darwin-arm64": 14.2.8
+    "@next/swc-darwin-x64": 14.2.8
+    "@next/swc-linux-arm64-gnu": 14.2.8
+    "@next/swc-linux-arm64-musl": 14.2.8
+    "@next/swc-linux-x64-gnu": 14.2.8
+    "@next/swc-linux-x64-musl": 14.2.8
+    "@next/swc-win32-arm64-msvc": 14.2.8
+    "@next/swc-win32-ia32-msvc": 14.2.8
+    "@next/swc-win32-x64-msvc": 14.2.8
     "@swc/helpers": 0.5.5
     busboy: 1.6.0
     caniuse-lite: ^1.0.30001579
@@ -9196,7 +9196,7 @@ __metadata:
       optional: true
   bin:
     next: dist/bin/next
-  checksum: d34ea63adf23fe46efebe2a9c536c9127c0ee006d74c60d6d23aecbef650798c976b27c17910ca585f3bb1223b10924cb429b9ce930f3074aee1170d1519dccc
+  checksum: a93c73952ff3fe358d7076a40ec64c35979e3a1608b2c0bb6c9ca32579c443120d163ce2eca6b0406c41d4b768bf811ae3478f0ef4dea8a6c3041f13cfe4d529
   languageName: node
   linkType: hard
 
@@ -9674,9 +9674,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pliny@npm:0.2.1":
-  version: 0.2.1
-  resolution: "pliny@npm:0.2.1"
+"pliny@npm:0.2.2":
+  version: 0.2.2
+  resolution: "pliny@npm:0.2.2"
   dependencies:
     "@docsearch/react": ^3.5.0
     "@giscus/react": ^3.0.0
@@ -9695,7 +9695,7 @@ __metadata:
     next: ">=13.0.0"
     react: ^17.0.2 || ^18.0.0
     react-dom: ^17.0.2 || ^18.0.0
-  checksum: a24182a068ec286be25eb6380ecc24e69834acbcf925d493c7a60293078792c5bba5e603a229b2e3388d9604910fe8139e8bead54208f5c7351b8e9b7ce87816
+  checksum: dfb39a3417ea402b8e10c113e173815a9dd37d3b0a01cb364dcdf81a8dfebe17c173d49032bb3426854b03e868eb51fadd48b8bd78b034b848ad6f191dce95ee
   languageName: node
   linkType: hard
 
@@ -9797,7 +9797,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:^8.4.23, postcss@npm:^8.4.32":
+"postcss@npm:^8.4.23, postcss@npm:^8.4.45":
   version: 8.4.45
   resolution: "postcss@npm:8.4.45"
   dependencies:
@@ -10194,7 +10194,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rehype-citation@npm:^2.0.0":
+"rehype-citation@npm:^2.1.1":
   version: 2.1.1
   resolution: "rehype-citation@npm:2.1.1"
   dependencies:
@@ -10216,7 +10216,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rehype-katex@npm:^7.0.0":
+"rehype-katex@npm:^7.0.1":
   version: 7.0.1
   resolution: "rehype-katex@npm:7.0.1"
   dependencies:
@@ -10690,7 +10690,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"remark@npm:^15.0.0":
+"remark@npm:^15.0.0, remark@npm:^15.0.1":
   version: 15.0.1
   resolution: "remark@npm:15.0.1"
   dependencies:
@@ -10960,7 +10960,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sharp@npm:^0.33.0":
+"sharp@npm:^0.33.5":
   version: 0.33.5
   resolution: "sharp@npm:0.33.5"
   dependencies:
@@ -11560,7 +11560,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tailwindcss@npm:^3.4.3":
+"tailwindcss@npm:^3.4.10":
   version: 3.4.10
   resolution: "tailwindcss@npm:3.4.10"
   dependencies:
