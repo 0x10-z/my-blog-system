@@ -15,10 +15,6 @@ module.exports = {
   darkMode: 'class',
   theme: {
     extend: {
-      backdropFilter: {
-        none: 'none',
-        blur: 'blur(20px)',
-      },
       lineHeight: {
         11: '2.75rem',
         12: '3rem',
@@ -29,12 +25,13 @@ module.exports = {
         sans: ['var(--font-space-grotesk)', ...fontFamily.sans],
       },
       colors: {
-        primary: {
-          400: '#b92f2f',
-          500: '#b92f2f',
-          600: '#b92f2f',
-        },
+        primary: colors.pink,
         gray: colors.gray,
+      },
+      zIndex: {
+        60: '60',
+        70: '70',
+        80: '80',
       },
       typography: ({ theme }) => ({
         DEFAULT: {
@@ -75,9 +72,5 @@ module.exports = {
       }),
     },
   },
-  plugins: [
-    require('@tailwindcss/forms'),
-    require('@tailwindcss/typography'),
-    require('tailwindcss-filters'),
-  ],
+  plugins: [require('@tailwindcss/forms'), require('@tailwindcss/typography')],
 }
