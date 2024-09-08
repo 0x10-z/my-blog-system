@@ -1,6 +1,6 @@
 {
   "name": "0x10-blog-system",
-  "version": "2.2.0",
+  "version": "2.1.9",
   "private": true,
   "scripts": {
     "start": "next dev",
