@@ -43,7 +43,7 @@ const dictionaries = [
 ]
 
 function calculateCombinations(password: string) {
-  const charsetSize = 94 // Assuming all printable ASCII characters
+  const charsetSize = 94 // Asumiendo todos los caracteres ASCII imprimibles
   return Math.pow(charsetSize, password.length)
 }
 
@@ -66,6 +66,7 @@ function formatTime(seconds: number) {
 
 export default function Home() {
   const [password, setPassword] = useState('')
+  const [isModalOpen, setIsModalOpen] = useState(false) // Estado para controlar el modal
 
   const calculateTime = () => {
     const combinations = calculateCombinations(password)
@@ -89,10 +90,73 @@ export default function Home() {
 
   return (
     <div className={`flex items-center justify-center text-black`}>
-      <div className="w-full max-w-lg rounded-lg  bg-gray-200 p-8 shadow-lg dark:bg-gray-800 dark:text-white">
-        <h1 className="mb-6 text-center text-2xl font-bold">
-          Diferencias de Crackeo por Algoritmo
-        </h1>
+      <div className="w-full max-w-lg rounded-lg bg-gray-200 p-8 shadow-lg dark:bg-gray-800 dark:text-white">
+        <div className="mb-6 flex justify-between">
+          <h1 className="text-2xl font-bold">Diferencias de Crackeo por Algoritmo</h1>
+          {/* Ícono de información */}
+          <button onClick={() => setIsModalOpen(true)}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6 text-gray-600 dark:text-gray-300"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M13 16h-1v-4h-1m1-4h.01M12 2a10 10 0 100 20 10 10 0 000-20z"
+              />
+            </svg>
+          </button>
+        </div>
+
+        {/* Modal de información */}
+        {isModalOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+            <div className="w-1/3 rounded-lg bg-white p-6 shadow-lg dark:bg-gray-800">
+              <h2 className="mb-4 text-xl font-semibold">Cálculo de Tiempos de Crackeo</h2>
+              <p>
+                Los tiempos de crackeo se calculan basándose en la tasa de hashes por segundo
+                (hashes/seg) que cada algoritmo puede realizar. Esto varía entre los algoritmos
+                dependiendo de su complejidad y del número de iteraciones que ejecuta.
+              </p>
+              <p className="mt-2">
+                Para los cálculos, se asume que la contraseña puede estar compuesta por los{' '}
+                <span className="rounded bg-red-700 p-0.5 text-white">
+                  94 caracteres ASCII imprimibles
+                </span>{' '}
+                (letras, números, símbolos) , lo que incrementa exponencialmente el número de
+                combinaciones posibles a medida que la longitud de la contraseña aumenta.
+              </p>
+              <ul className="ml-5 mt-4 list-disc">
+                <li>
+                  <span className="font-bold">MD5:</span> 10 mil millones de hashes por segundo
+                </li>
+                <li>
+                  <span className="font-bold">SHA-1:</span> 1 mil millones de hashes por segundo
+                </li>
+                <li>
+                  <span className="font-bold">SHA-256:</span> 100 millones de hashes por segundo
+                </li>
+                <li>
+                  <span className="font-bold">Bcrypt:</span> 1000 hashes por segundo
+                </li>
+                <li>
+                  <span className="font-bold">Argon2:</span> 500 hashes por segundo
+                </li>
+              </ul>
+              <button
+                onClick={() => setIsModalOpen(false)}
+                className="mt-6 rounded-lg bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+              >
+                Cerrar
+              </button>
+            </div>
+          </div>
+        )}
+
         <input
           type="text"
           value={password}

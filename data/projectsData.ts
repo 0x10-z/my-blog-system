@@ -6,6 +6,12 @@ const projectsData = [
     href: 'https://retrogasteiz.com',
   },
   {
+    title: 'Music Player',
+    description: `Este proyecto es un reproductor de música que reúne algunas de las canciones de rap que marcaron mi infancia. Es un homenaje personal a los raperos locales que influyeron en mi vida y en la cultura de mi zona, celebrando sus letras, ritmos y el legado que dejaron en la comunidad.`,
+    imgSrc: '/static/images/music-player.webp',
+    href: 'https://gasteizko-rap-player.vercel.app/',
+  },
+  {
     title: 'Fast GPT',
     description:
       'Este proyecto es una implementación de un clon de ChatGPT utilizando FastAPI en el backend y React para la interfaz de usuario. El objetivo es crear una aplicación web en la que los usuarios puedan interactuar con un modelo de lenguaje basado en IA, similar a ChatGPT, con una interfaz moderna y sencilla.',
@@ -29,6 +35,12 @@ const projectsData = [
     description: `Este proyecto es una aplicación web de álbum de fotos desarrollada con Django, que permite a los usuarios cargar, organizar y visualizar fotos en galerías personalizadas. Es ideal para aquellos que desean gestionar imágenes en línea de manera sencilla y eficiente.`,
     imgSrc: '/static/images/aitor_viewbook_landscape3.webp',
     href: 'https://aitorrayo.com/',
+  },
+  {
+    title: 'DB Multiverse Comic',
+    description: `Proyecto de Python que scrapea y que reune algunos de los comics de https://www.dragonball-multiverse.com/es/accueil.html y los transforma en PDF para su descarga.`,
+    imgSrc: '/static/images/dragonball-multiverse.webp',
+    href: 'https://github.com/0x10-z/python-dbuniverse-downloader/releases/tag/DragonBallMultiverse-PDF-latest',
   },
 ]
 
