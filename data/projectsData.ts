@@ -6,10 +6,29 @@ const projectsData = [
     href: 'https://retrogasteiz.com',
   },
   {
+    title: 'Fast GPT',
+    description:
+      'Este proyecto es una implementación de un clon de ChatGPT utilizando FastAPI en el backend y React para la interfaz de usuario. El objetivo es crear una aplicación web en la que los usuarios puedan interactuar con un modelo de lenguaje basado en IA, similar a ChatGPT, con una interfaz moderna y sencilla.',
+    imgSrc: '/static/images/fastapi_landscape2.webp',
+    href: 'https://github.com/0x10-z/fast-gpt',
+  },
+  {
     title: 'Ez dago Gasteiz B',
     description: `Ezdagogasteizb es una plataforma dedicada a la concienciación y educación ambiental en Vitoria-Gasteiz, que promueve prácticas sostenibles y ecológicas aplicables en la vida cotidiana. Este proyecto ofrece una serie de consejos prácticos y accesibles para adoptar hábitos más verdes, desde la gestión de residuos hasta la optimización del uso de recursos. Además, fomenta el apoyo al comercio local, destacando cómo las elecciones de consumo pueden influir positivamente en la economía local y el medio ambiente. Ezdagogasteizb busca empoderar a los ciudadanos para que tomen decisiones informadas y responsables que contribuyan a un futuro sostenible..`,
     imgSrc: '/static/images/ezdago_landscape.webp',
     href: 'https://ezdagogasteizb.ikerocio.com',
+  },
+  {
+    title: 'Calculadora de tiempo de crackeo de una contraseña',
+    description: `Esta herramienta interactiva te permite comparar la eficiencia de varios algoritmos de hash comunes, como MD5, SHA-1, SHA-256, bcrypt y Argon2, para determinar el tiempo aproximado que tomaría crackear una contraseña. Ingresando una contraseña, puedes ver cuántos caracteres contiene y calcular cuánto tiempo llevaría descifrarla con cada algoritmo. Además, incluye enlaces a diccionarios populares de cracking que son comúnmente usados en ataques de fuerza bruta. Es ideal para usuarios que quieran entender la relación entre la complejidad de una contraseña y la velocidad con la que diferentes algoritmos pueden romperla.`,
+    imgSrc: '/static/images/password-calculator.webp',
+    href: '/password-checker',
+  },
+  {
+    title: 'Album de fotos con Django',
+    description: `Este proyecto es una aplicación web de álbum de fotos desarrollada con Django, que permite a los usuarios cargar, organizar y visualizar fotos en galerías personalizadas. Es ideal para aquellos que desean gestionar imágenes en línea de manera sencilla y eficiente.`,
+    imgSrc: '/static/images/aitor_viewbook_landscape3.webp',
+    href: 'https://aitorrayo.com/',
   },
 ]
 
