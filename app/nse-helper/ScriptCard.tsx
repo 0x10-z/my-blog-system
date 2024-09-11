@@ -1,3 +1,4 @@
+import { Github, NMap } from '@/components/social-icons/icons'
 import React from 'react'
 
 interface ScriptCardProps {
@@ -38,11 +39,21 @@ const ScriptCard: React.FC<ScriptCardProps> = ({
       <div className="mb-2 flex items-center justify-between">
         <h3 className="text-xl font-semibold text-gray-900">{script.name}</h3>
         <span
-          className={`rounded-full px-2 py-1 text-xs font-semibold ${
-            isExternal ? 'bg-blue-500 text-white' : 'bg-green-500 text-white'
+          className={`rounded-full px-1.5 py-0.5 text-xs font-semibold ${
+            isExternal ? 'bg-gray-200 text-white' : 'bg-gray-500 text-white'
           }`}
         >
-          {isExternal ? 'External' : 'Nmap'}
+          {isExternal ? (
+            <div className="flex items-center gap-2 text-gray-800">
+              Git
+              <Github className="h-4 w-4" />
+            </div>
+          ) : (
+            <div className="flex items-center gap-2 text-gray-200">
+              Nmap
+              <NMap className="h-4 w-4" />
+            </div>
+          )}
         </span>
       </div>
       <p className="mb-4 text-sm text-gray-700">{script.description}</p>
@@ -54,7 +65,7 @@ const ScriptCard: React.FC<ScriptCardProps> = ({
             window.open(url, '_blank')
           }}
         >
-          Ver fuente
+          Source code
         </button>
         <button
           className="mx-1 text-sm text-gray-700 underline"

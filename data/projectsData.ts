@@ -8,6 +8,14 @@ const projectsData = [
     github: 'https://github.com/0x10-z/retrogasteiz',
   },
   {
+    title: 'NMap NSE Cheatsheet',
+    description: `Página estática diseñada para centralizar en un único repositorio los scripts NSE de Nmap, tanto oficiales como de terceros, permitiendo la búsqueda eficiente y detallada de su uso para facilitar su posterior implementación.`,
+    imgSrc: '/static/images/nse-helper.webp',
+    href: '/nse-helper',
+    tags: ['NextJS'],
+    github: 'https://github.com/0x10-z/my-blog-system/tree/master/app/nse-helper',
+  },
+  {
     title: 'Music Player',
     description: `Este proyecto es un reproductor de música que reúne algunas de las canciones de rap que marcaron mi infancia. Es un homenaje personal a los raperos locales que influyeron en mi vida y en la cultura de mi zona, celebrando sus letras, ritmos y el legado que dejaron en la comunidad.`,
     imgSrc: '/static/images/music-player.webp',

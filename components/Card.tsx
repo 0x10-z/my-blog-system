@@ -80,7 +80,7 @@ const Card = ({ title, description, imgSrc, href, tags, githubUrl }: CardProps) 
                 className="text-base font-medium leading-6 text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
                 aria-label={`Link to ${title}`}
               >
-                Ver más &rarr;
+                Ver &rarr;
               </Link>
             )}
           </div>
@@ -213,7 +213,7 @@ const ProjectModal = ({
               className="text-base font-medium leading-6 text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
               aria-label={`Link to ${title}`}
             >
-              Ver proyecto completo &rarr;
+              Ver proyecto &rarr;
             </Link>
           </div>
         )}
