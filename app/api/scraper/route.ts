@@ -18,9 +18,7 @@ const GIT_REPOS = [
 ]
 
 // Obtén el token de GitHub de las variables de entorno
-const GITHUB_TOKEN =
-  process.env.GITHUB_TOKEN ||
-  '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'
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN || '<put github token here>'
 
 // Función que construye la apiUrl
 function constructGitApiUrl(gitUrl: string, path = '') {
