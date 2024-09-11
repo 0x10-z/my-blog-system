@@ -169,6 +169,7 @@ export default function ScraperPage() {
         {filteredScripts.map((script, index) => (
           <li key={index}>
             <ScriptCard
+              tabIndex={index}
               script={script}
               handleScriptSelect={handleScriptSelect}
               handleCopyUrl={handleCopyUrl}
