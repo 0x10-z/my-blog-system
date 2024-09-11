@@ -1,0 +1,452 @@
+[
+  {
+    "name": "nse-script-template.nse",
+    "description": "No description available",
+    "source": "External",
+    "url": "https://github.com/cldrn/nmap-nse-scripts"
+  },
+  {
+    "name": "hostmap.nse",
+    "description": "Finds hostnames that resolve to the target's IP address by querying the online databases:\n* http://www.bfk.de/bfk_dnslogger.html \n* http://www.whataremyhosts.com ( Bing Search Results )\n\nOptionally users can return results from a specific provider by using the argument <code>hostmap.provider</code>. \nThe supported provider identifiers are:\n* BFK\n* BING\n\nThe script is in the \"external\" category because it sends target IPs to a third party in order to query their database.",
+    "source": "External",
+    "url": "https://github.com/cldrn/nmap-nse-scripts"
+  },
+  {
+    "name": "http-awstatstotals-exec.nse",
+    "description": "No description available",
+    "source": "External",
+    "url": "https://github.com/cldrn/nmap-nse-scripts"
+  },
+  {
+    "name": "http-axis2-dir-traversal.nse",
+    "description": "http-axis2-dir-traversal exploits a directory traversal vulnerability in Apache Axis2 version 1.4.1 by sending a specially crafted request to the parameter <code>xsd</code> (OSVDB-59001). By default it will try to retrieve the configuration file of the Axis2 service <code>'/conf/axis2.xml'</code> using the path <code>'/axis2/services/'</code> to return the username and password of the admin account.\n\nTo exploit this vulnerability we need to detect a valid service running on the installation so we extract it from <code>/listServices</code> before exploiting the directory traversal vulnerability.\nBy default it will retrieve the configuration file, if you wish to retrieve other files you need to set the argument <code>http-axis2-dir-traversal.file</code> correctly to traverse to the file's directory. Ex. <code>../../../../../../../../../etc/issue</code>\n\nTo check the version of an Apache Axis2 installation go to:\nhttp://domain/axis2/services/Version/getVersion\n\nReference:\n* http://osvdb.org/show/osvdb/59001\n* http://www.exploit-db.com/exploits/12721/",
+    "source": "External",
+    "url": "https://github.com/cldrn/nmap-nse-scripts"
+  },
+  {
+    "name": "http-brute.nse",
+    "description": "Performs brute force password auditing against http basic authentication.",
+    "source": "External",
+    "url": "https://github.com/cldrn/nmap-nse-scripts"
+  },
+  {
+    "name": "http-cakephp-version.nse",
+    "description": "Obtains the CakePHP version of a web application built with the CakePHP framework. This script depends on default files shipped with the CakePHP framework.\n\nThis script queries the files 'vendors.php', 'cake.generic.css', 'cake.icon.png' and 'cake.icon.gif' to try to obtain the version of the CakePHP installation.\nSince installations that had been upgraded are prone to false positives due to old files that aren't removed, the script displays 3 different versions:\n* Codebase: Taken from the existence of vendors.php (1.1.x or 1.2.x if it does and 1.3.x otherwise)\n* Stylesheet: Taken from cake.generic.css \n* Icon: Taken from cake.icon.gif or cake.icon.png \n\nFor more information about CakePHP visit: http://www.cakephp.org/.",
+    "source": "External",
+    "url": "https://github.com/cldrn/nmap-nse-scripts"
+  },
+  {
+    "name": "http-default-accounts.nse",
+    "description": "http-default-accounts tests for access with default credentials in a variety of web applications and devices.  \n\nIt works similar to http-enum, we detect applications by matching known paths and launching a login routine using default credentials when found.\nThis script depends on a fingerprint file containing the target's information: name, category, location paths, default credentials and login routine.\n\nYou may select a category if you wish to reduce the number of requests. We have categories like:\n* <code>web</code> - Web applications\n* <code>router</code> - Routers\n* <code>voip</code> - VOIP devices\n* <code>security</code> \n\nPlease help improve this script by adding new entries to nselib/data/http-default-accounts.lua\n\nRemember each fingerprint must have:\n* <code>name</code> - Descriptive name\n* <code>category</code> - Category\n* <code>login_combos</code> - Table of login combinations\n* <code>paths</code> - Paths table containing the possible location of the target\n* <code>login_check</code> - Login function of the target\n\nDefault fingerprint file: /nselib/data/http-default-accounts-fingerprints.lua \nThis script was based on http-enum.",
+    "source": "External",
+    "url": "https://github.com/cldrn/nmap-nse-scripts"
+  },
+  {
+    "name": "http-email-harvest.nse",
+    "description": "http-email-harvest returns a list of email accounts found in the body text of all URIs found in the web server.",
+    "source": "External",
+    "url": "https://github.com/cldrn/nmap-nse-scripts"
+  },
+  {
+    "name": "http-form-brute.nse",
+    "description": "Performs brute force password auditing against http form-based authentication.",
+    "source": "External",
+    "url": "https://github.com/cldrn/nmap-nse-scripts"
+  },
+  {
+    "name": "http-google-malware.nse",
+    "description": "http-google-malware checks if hosts are on Google's blacklist of suspected malware and phishing servers. These lists are constantly updated and are part of Google's Safe Browsing service.\n\nTo do this the script queries the Google's Safe Browsing service and you need to have your own API key to access Google's Safe Browsing Lookup services. Sign up for yours at http://code.google.com/apis/safebrowsing/key_signup.html\n\n* To learn more about Google's Safe Browsing:\nhttp://code.google.com/apis/safebrowsing/\n\n* To register and get your personal API key: \nhttp://code.google.com/apis/safebrowsing/key_signup.html",
+    "source": "External",
+    "url": "https://github.com/cldrn/nmap-nse-scripts"
+  },
+  {
+    "name": "http-huawei-hg5xx-vuln.nse",
+    "description": "Detects Huawei modems models HG530x, HG520x, HG510x (and possibly others...) vulnerable to a remote credential and information disclosure vulnerability. It also extracts the PPPoE credentials \nand other interesting configuration values. \n\nAttackers can query the URIs \"/Listadeparametros.html\" and \"/wanfun.js\" to extract sensitive information \nincluding PPPoE credentials, firmware version, model, gateway, dns servers and active connections among other values.\n\nThis script exploits two vulnerabilities. One was discovered and reported by Adiaz from Comunidad Underground de Mexico (http://underground.org.mx) and it allows attackers to extract the pppoe password. The configuration disclosure vulnerability was discovered by Pedro Joaquin (http://hakim.ws).\n\nReferences:\n*http://websec.ca/advisories/view/Huawei-HG520c-3.10.18.x-information-disclosure\n*http://routerpwn.com/#huawei",
+    "source": "External",
+    "url": "https://github.com/cldrn/nmap-nse-scripts"
+  },
+  {
+    "name": "http-joomla-brute.nse",
+    "description": "Performs a brute force password attack against Joomla installations.\n\nThis script initially reads the session cookie and parses the security token to perfom the brute force password auditing. \nIt uses the unpwdb and brute libraries to perform password guessing. Any successful guesses are stored using the \ncredentials library.\n\nJoomla's default uri and form names:\n* Default uri:<code>/administrator/index.php</code>\n* Default uservar: <code>username</code>\n* Default passvar: <code>passwd</code>",
+    "source": "External",
+    "url": "https://github.com/cldrn/nmap-nse-scripts"
+  },
+  {
+    "name": "http-litespeed-sourcecode-download.nse",
+    "description": "http-litespeed-sourcecode-download.nse exploits a null-byte poisoning vulnerability in Litespeed Web Servers 4.0.x before 4.0.15 to retrieve the target script's source code by sending a HTTP request with a null byte followed by a .txt file extension (CVE-2010-2333).\n\nIf the server is not vulnerable it returns an error 400. If index.php is not found, you may try /phpinfo.php which is also shipped with LiteSpeed Web Server. The attack payload looks like this:\n* <code>/index.php\\00.txt</code>\n\nReferences:\n* http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2010-2333\n* http://www.exploit-db.com/exploits/13850/",
+    "source": "External",
+    "url": "https://github.com/cldrn/nmap-nse-scripts"
+  },
+  {
+    "name": "http-majordomo2-dir-traversal.nse",
+    "description": "Exploits a directory traversal vulnerability existing in Majordomo2 to retrieve remote files. (CVE-2011-0049). \n\nVulnerability originally discovered by Michael Brooks.\n\nFor more information about this vulnerability:\n* http://www.mj2.org/\n* http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2011-0049\n* http://www.exploit-db.com/exploits/16103/",
+    "source": "External",
+    "url": "https://github.com/cldrn/nmap-nse-scripts"
+  },
+  {
+    "name": "http-phpself-xss.nse",
+    "description": "No description available",
+    "source": "External",
+    "url": "https://github.com/cldrn/nmap-nse-scripts"
+  },
+  {
+    "name": "http-phpselfxss-scan.nse",
+    "description": "No description available",
+    "source": "External",
+    "url": "https://github.com/cldrn/nmap-nse-scripts"
+  },
+  {
+    "name": "http-sitemap-dump.nse",
+    "description": "This script will crawl a web server and display a list of all the files found. This script is useful to determine all the possible file-targets/attack-surface when auditing web applications.",
+    "source": "External",
+    "url": "https://github.com/cldrn/nmap-nse-scripts"
+  },
+  {
+    "name": "http-sitemap.nse",
+    "description": "Returns a list of all web pages and files found in the web server.",
+    "source": "External",
+    "url": "https://github.com/cldrn/nmap-nse-scripts"
+  },
+  {
+    "name": "http-tomcat-brute.nse",
+    "description": "Performs a brute force password attack against Apache Tomcat installations.\n\nTomcat default:\n* uri: <code>/manager/html</code>",
+    "source": "External",
+    "url": "https://github.com/cldrn/nmap-nse-scripts"
+  },
+  {
+    "name": "http-trace.nse",
+    "description": "Sends an HTTP TRACE request and shows if the method TRACE is enabled. If debug is enabled, it returns the header fields that were modified in the response.",
+    "source": "External",
+    "url": "https://github.com/cldrn/nmap-nse-scripts"
+  },
+  {
+    "name": "http-vuln-cve2012-1823.nse",
+    "description": "Detects PHP-CGI installations that are vulnerable to CVE-2012-1823, This vulnerability is critical and it allows attackers to retrieve source code and execute code remotely.\n\nThe script works by appending \"?-s\" to the uri to make vulnerable php-cgi handlers return colour syntax highlighted source. We use the pattern \"<span style=.*>&lt;?\" to detect\nvulnerable installations.\n\nTODO:\n-Improve detection mechanism ( Execute certain payload and look for it in the response to confirm exploitability)\n-Add exploitation script",
+    "source": "External",
+    "url": "https://github.com/cldrn/nmap-nse-scripts"
+  },
+  {
+    "name": "http-waf-detect.nse",
+    "description": "Determines if a web server is protected by an IPS (Intrusion Prevention System), IDS (Intrusion Detection System) or WAF (Web Application Firewall) by probing the web server with malicious payloads and detecting changes in the response code and body.\n\nTo do this the script will send a \"good\" request and record the response, afterwards it will match this response against new requests containing \nmalicious payloads. In theory, web applications shouldn't react to malicious requests because we are storing the payloads in a variable that is \nnot used by the script/file and only WAF/IDS/IPS should react to it. \nIf aggro mode is set, the script will try all attack vectors (More noisy)\n\nThis script can detect numerous IDS, IPS, and WAF products since\nthey often protect web applications in the same way.  But it\nwon't detect products which don't alter the http traffic.\nResults can vary based on product configuration, but this script\nhas been tested to work against various configurations of the\nfollowing products:\n\n * Apache ModSecurity \n * Barracuda Web Application Firewall \n * PHPIDS \n * dotDefender\n * Imperva Web Firewall\n * Blue Coat SG 400",
+    "source": "External",
+    "url": "https://github.com/cldrn/nmap-nse-scripts"
+  },
+  {
+    "name": "http-wordpress-brute.nse",
+    "description": "Performs a brute force password attack against Wordpress installations.\n\nThis script uses the unpwdb and brute libraries to perform password guessing. Any successful guesses are \nstored using the credentials library.\n\nWordpress default uri and form names:\n* Default uri:<code>wp-login.php</code>\n* Default uservar: <code>log</code>\n* Default passvar: <code>pwd</code>",
+    "source": "External",
+    "url": "https://github.com/cldrn/nmap-nse-scripts"
+  },
+  {
+    "name": "http-wp-enum.nse",
+    "description": "http-wp-enum enumerates usernames in Wordpress installations by exploiting an information disclosure vulnerability \nexisting in versions 2.6, 3.1, 3.1.1, 3.1.3 and 3.2-beta2 and possibly others.\n\nOriginal advisory:\n* http://www.talsoft.com.ar/index.php/research/security-advisories/wordpress-user-id-and-user-name-disclosure",
+    "source": "External",
+    "url": "https://github.com/cldrn/nmap-nse-scripts"
+  },
+  {
+    "name": "huawei5xx-udp-info.nse",
+    "description": "Tries to obtain the PPPoE credentials, MAC address, firmware version and IP information of the aDSL modems \nHuawei Echolife 520, 520b, 530 and possibly others by exploiting an information disclosure vulnerability via UDP.\n\nThe script works by sending a crafted UDP packet to port 43690 and then parsing the response that contains \nthe configuration values. This exploit has been reported to be blocked in some ISPs, in those cases the exploit seems to work fine in local networks.\n\nVulnerability discovered by Pedro Joaquin. No CVE assigned.\n\nReferences:\n* http://www.hakim.ws/huawei/HG520_udpinfo.tar.gz\n* http://websec.ca/advisories/view/Huawei-HG520c-3.10.18.x-information-disclosure",
+    "source": "External",
+    "url": "https://github.com/cldrn/nmap-nse-scripts"
+  },
+  {
+    "name": "dicom-brute.nse",
+    "description": "Attempts to brute force the Application Entity Title of a DICOM server (DICOM Service Provider).\n\nApplication Entity Titles (AET) are used to restrict responses only to clients knowing the title. Hence,\n the called AET is used as a form of password.",
+    "source": "External",
+    "url": "https://github.com/cldrn/nmap-nse-scripts"
+  },
+  {
+    "name": "dicom-ping.nse",
+    "description": "Attempts to discover DICOM servers (DICOM Service Provider) through a partial C-ECHO request.\n It also detects if the server allows any called Application Entity Title or not.\n\nThe script responds with the message \"Called AET check enabled\" when the association request\n is rejected due configuration. This value can be bruteforced.\n\nC-ECHO requests are commonly known as DICOM ping as they are used to test connectivity.\nNormally, a 'DICOM ping' is formed as follows:\n* Client -> A-ASSOCIATE request -> Server\n* Server -> A-ASSOCIATE ACCEPT/REJECT -> Client\n* Client -> C-ECHO request -> Server\n* Server -> C-ECHO response -> Client\n* Client -> A-RELEASE request -> Server\n* Server -> A-RELEASE response -> Client\n\nFor this script we only send the A-ASSOCIATE request and look for the success code\n in the response as it seems to be a reliable way of detecting DICOM servers.",
+    "source": "External",
+    "url": "https://github.com/cldrn/nmap-nse-scripts"
+  },
+  {
+    "name": "dns-openresolvers-check.nse",
+    "description": "dns-openresolvers-check looks up the database \"dnsbl.openresolvers.org\" to detect DNS servers known to allow open recursion. If the DNS server is found, it will be marked as vulnerable as it can be abused via DNS amplification attacks.\n\nThis script queries a database provided by http://dns.measurement-factory.com.\n\nDaily reports of open resolvers found:\n* http://dns.measurement-factory.com/surveys/openresolvers/ASN-reports/\n\nDNS aplification attacks:\n* http://isotf.org/news/DNS-Amplification-Attacks.pdf",
+    "source": "External",
+    "url": "https://github.com/cldrn/nmap-nse-scripts"
+  },
+  {
+    "name": "google-people-enum.nse",
+    "description": "Attempts to enumerate valid email addresses using Google's Internal People API. If a valid email address is found, it \nalso grabs the display name and photo from the profile.\n\nThis script uses 'unpwdb' for username guessing but you can provide your own list (--script-args userdb=/tmp/user.lst). \nA valid Google account must be provided to communicate with the API.\n\nReferences:\nhttps://developers.google.com/people/api/rest/\n\nTODO:\n* Implement OAUTH to replace username and password.",
+    "source": "External",
+    "url": "https://github.com/cldrn/nmap-nse-scripts"
+  },
+  {
+    "name": "hostmap-crtsh.nse",
+    "description": "Finds subdomains of a web server by querying Google's \n Certificate Transparency logs database (https://crt.sh).\n\nNSE implementation of ctfr.py (https://github.com/UnaPibaGeek/ctfr.git) by Sheila Berta.\n\nReferences:\n* www.certificate-transparency.org",
+    "source": "External",
+    "url": "https://github.com/cldrn/nmap-nse-scripts"
+  },
+  {
+    "name": "hostmap-ip2hosts.nse",
+    "description": "Finds hostnames that resolve to the target's IP address by querying the online database:\n* http://www.ip2hosts.com ( Bing Search Results )\n\nThe script is in the \"external\" category because it sends target IPs to a third party in order to query their database.",
+    "source": "External",
+    "url": "https://github.com/cldrn/nmap-nse-scripts"
+  },
+  {
+    "name": "hostmap.nse",
+    "description": "Finds hostnames that resolve to the target's IP address by querying the online databases:\n* http://www.bfk.de/bfk_dnslogger.html \n* http://www.ip2hosts.com ( Bing Search Results )\n\nOptionally users can return results from a specific provider by using the argument <code>hostmap.provider</code>. \nThe supported provider identifiers are:\n* BFK\n* IP2HOSTS\n\nThe script is in the \"external\" category because it sends target IPs to a third party in order to query their database.",
+    "source": "External",
+    "url": "https://github.com/cldrn/nmap-nse-scripts"
+  },
+  {
+    "name": "http-adobe-coldfusion-apsa1301.nse",
+    "description": "Attempts to exploit an authentication bypass vulnerability (apsa13-01) to retrieve the administrator's session cookie of Adobe Coldfusion servers.",
+    "source": "External",
+    "url": "https://github.com/cldrn/nmap-nse-scripts"
+  },
+  {
+    "name": "http-awstatstotals-exec.nse",
+    "description": "Exploits a remote code execution vulnerability in Awstats Totals 1.0 up to 1.14 and possibly other products based on it (CVE: 2008-3922).\n\nThis vulnerability can be exploited through the GET variable sort. The script queries the web server with the command payload encoded using PHP's chr() function:\n<code>?sort={%24{passthru%28chr(117).chr(110).chr(97).chr(109).chr(101).chr(32).chr(45).chr(97)%29}}{%24{exit%28%29}}</code>\n\nCommon paths for Awstats Total:\n* <code>/awstats/index.php</code>\n* <code>/awstatstotals/index.php</code>\n* <code>/awstats/awstatstotals.php</code>\n\nReferences:\n* http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2008-3922 \n* http://www.exploit-db.com/exploits/17324/",
+    "source": "External",
+    "url": "https://github.com/cldrn/nmap-nse-scripts"
+  },
+  {
+    "name": "http-axis2-dir-traversal.nse",
+    "description": "Exploits a directory traversal vulnerability in Apache Axis2 version 1.4.1 by sending a specially crafted request to the parameter <code>xsd</code> (OSVDB-59001). By default it will try to retrieve the configuration file of the Axis2 service <code>'/conf/axis2.xml'</code> using the path <code>'/axis2/services/'</code> to return the username and password of the admin account.\n\nTo exploit this vulnerability we need to detect a valid service running on the installation so we extract it from <code>/listServices</code> before exploiting the directory traversal vulnerability.\nBy default it will retrieve the configuration file, if you wish to retrieve other files you need to set the argument <code>http-axis2-dir-traversal.file</code> correctly to traverse to the file's directory. Ex. <code>../../../../../../../../../etc/issue</code>\n\nTo check the version of an Apache Axis2 installation go to:\nhttp://domain/axis2/services/Version/getVersion\n\nReference:\n* http://osvdb.org/show/osvdb/59001\n* http://www.exploit-db.com/exploits/12721/",
+    "source": "External",
+    "url": "https://github.com/cldrn/nmap-nse-scripts"
+  },
+  {
+    "name": "http-brute.nse",
+    "description": "Performs brute force password auditing against http basic authentication.",
+    "source": "External",
+    "url": "https://github.com/cldrn/nmap-nse-scripts"
+  },
+  {
+    "name": "http-cakephp-version.nse",
+    "description": "Obtains the CakePHP version of a web application built with the CakePHP framework by fingerprinting default files shipped with the CakePHP framework.\n\nThis script queries the files 'vendors.php', 'cake.generic.css', 'cake.icon.png' and 'cake.icon.gif' to try to obtain the version of the CakePHP installation.\nSince installations that had been upgraded are prone to false positives due to old files that aren't removed, the script displays 3 different versions:\n* Codebase: Taken from the existence of vendors.php (1.1.x or 1.2.x if it does and 1.3.x otherwise)\n* Stylesheet: Taken from cake.generic.css \n* Icon: Taken from cake.icon.gif or cake.icon.png \n\nFor more information about CakePHP visit: http://www.cakephp.org/.",
+    "source": "External",
+    "url": "https://github.com/cldrn/nmap-nse-scripts"
+  },
+  {
+    "name": "http-coldfusion-subzero.nse",
+    "description": "Attempts to retrieve the version, installation path and password.properties files in vulnerable ColdFusion 9/10 installations.\n\nThis was based on the exploit 'ColdSub-Zero.pyFusion v2'.",
+    "source": "External",
+    "url": "https://github.com/cldrn/nmap-nse-scripts"
+  },
+  {
+    "name": "http-default-accounts.nse",
+    "description": "Tests for access with default credentials used by a variety of web applications and devices.  \n\nIt works similar to http-enum, we detect applications by matching known paths and launching a login routine using default credentials when found.\nThis script depends on a fingerprint file containing the target's information: name, category, location paths, default credentials and login routine.\n\nYou may select a category if you wish to reduce the number of requests. We have categories like:\n* <code>web</code> - Web applications\n* <code>router</code> - Routers\n* <code>voip</code> - VOIP devices\n* <code>security</code> \n\nPlease help improve this script by adding new entries to nselib/data/http-default-accounts.lua\n\nRemember each fingerprint must have:\n* <code>name</code> - Descriptive name\n* <code>category</code> - Category\n* <code>login_combos</code> - Table of login combinations\n* <code>paths</code> - Paths table containing the possible location of the target\n* <code>login_check</code> - Login function of the target\n\nDefault fingerprint file: /nselib/data/http-default-accounts-fingerprints.lua \nThis script was based on http-enum.",
+    "source": "External",
+    "url": "https://github.com/cldrn/nmap-nse-scripts"
+  },
+  {
+    "name": "http-email-harvest.nse",
+    "description": "Spiders a web site and collects e-mail addresses.",
+    "source": "External",
+    "url": "https://github.com/cldrn/nmap-nse-scripts"
+  },
+  {
+    "name": "http-form-brute.nse",
+    "description": "Performs brute force password auditing against http form-based authentication.",
+    "source": "External",
+    "url": "https://github.com/cldrn/nmap-nse-scripts"
+  },
+  {
+    "name": "http-google-malware.nse",
+    "description": "Checks if hosts are on Google's blacklist of suspected malware and phishing servers. These lists are constantly updated and are part of Google's Safe Browsing service.\n\nTo do this the script queries the Google's Safe Browsing service and you need to have your own API key to access Google's Safe Browsing Lookup services. Sign up for yours at http://code.google.com/apis/safebrowsing/key_signup.html\n\n* To learn more about Google's Safe Browsing:\nhttp://code.google.com/apis/safebrowsing/\n\n* To register and get your personal API key: \nhttp://code.google.com/apis/safebrowsing/key_signup.html",
+    "source": "External",
+    "url": "https://github.com/cldrn/nmap-nse-scripts"
+  },
+  {
+    "name": "http-httpoxy.nse",
+    "description": "Attempts to detect web applications vulnerable to \"httpoxy\" (CVE-2016-5385, CVE-2016-5386,\nCVE-2016-5387, CVE-2016-5388, CVE-2016-1000109, CVE-2016-1000110).\n\nThe script attempts to detect this vulnerability by measuring the response time when \nassigning a non-existing proxy to the headers. In theory, vulnerable applications will try \nto connect to the bad proxy increasing the response time. To reduce false positives we run \nthe test several times and we expect the response time from the request with the bad \nproxy to be twice as big to get marked as vulnerable.   \n\nReferences:\n* https://httpoxy.org",
+    "source": "External",
+    "url": "https://github.com/cldrn/nmap-nse-scripts"
+  },
+  {
+    "name": "http-huawei-hg5xx-vuln.nse",
+    "description": "Detects Huawei modems models HG530x, HG520x, HG510x (and possibly\nothers...) vulnerable to a remote credential and information\ndisclosure vulnerability. It also extracts the PPPoE credentials and\nother interesting configuration values.\n\nAttackers can query the URIs \"/Listadeparametros.html\" and \"/wanfun.js\" to extract sensitive information \nincluding PPPoE credentials, firmware version, model, gateway, dns servers and active connections among other values.\n\nThis script exploits two vulnerabilities. One was discovered and reported by Adiaz from Comunidad Underground de Mexico (http://underground.org.mx) and it allows attackers to extract the pppoe password. The configuration disclosure vulnerability was discovered by Pedro Joaquin (http://hakim.ws).\n\nReferences:\n*http://websec.ca/advisories/view/Huawei-HG520c-3.10.18.x-information-disclosure\n*http://routerpwn.com/#huawei",
+    "source": "External",
+    "url": "https://github.com/cldrn/nmap-nse-scripts"
+  },
+  {
+    "name": "http-iis-short-name-brute.nse",
+    "description": "Attempts to brute force the 8.3 filenames (commonly known as short names) of files and directories in the root folder of vulnerable IIS servers. This script is an implementation of the PoC \"iis shortname scanner\".\n\nThe script uses ~,? and * to bruteforce the short name of files present in the IIS document root. Short names have a restriction of 6 character file name followed by a three character extension.\n\nNotes:\n* The script might have to be run twice (according to the original author). \n* Tested against IIS 6.0 and 5.1.\n\nReferences:\n* Research paper: http://soroush.secproject.com/downloadable/microsoft_iis_tilde_character_vulnerability_feature.pdf\n* IIS Shortname Scanner PoC: http://code.google.com/p/iis-shortname-scanner-poc/",
+    "source": "External",
+    "url": "https://github.com/cldrn/nmap-nse-scripts"
+  },
+  {
+    "name": "http-iis-shortname-dos.nse",
+    "description": "http-iis-shortname-dos launches a Denial of Service attack that exploits a vulnerability in IIS/.NET installations with shortname support enabled.\n\nThis script sends specially crafted requests to cause the target to make numerous file system calls and run out of resources. A request looks like this:\n\nGET /190~0/~8/~8/~8/~8/~8/~8/~8/~8/~8/~8/~8/~8/~8/~8/~8/~8/~8/~8/~8/~8/~8/~8/~8/~8/~8/~8/~8/~8/~8/~8/~8/~8/\n    ~8/~8/~8/~8/~8/~8/~8/~8/~8/~8/~8/~8/~8/~8/~8/~8/~8/~8/~8/~8/~8/~8/~8/~8/~8/nMaP~.AsPx?aspxerrorpath=/ HTTP/1.1\n\n* Tested on .NET 4 with IIS 7\n\nReferences:\n* http://soroush.secproject.com/downloadable/iis_tilde_dos.txt\n* http://support.microsoft.com/kb/142982/en-us\n\nTodo:\n* Add monitoring check to see if target got DoSed and report properly.",
+    "source": "External",
+    "url": "https://github.com/cldrn/nmap-nse-scripts"
+  },
+  {
+    "name": "http-joomla-brute.nse",
+    "description": "Performs brute force password auditing against Joomla web CMS installations.\n\nThis script initially reads the session cookie and parses the security token to perfom the brute force password auditing. \nIt uses the unpwdb and brute libraries to perform password guessing. Any successful guesses are stored using the \ncredentials library.\n\nJoomla's default uri and form names:\n* Default uri:<code>/administrator/index.php</code>\n* Default uservar: <code>username</code>\n* Default passvar: <code>passwd</code>",
+    "source": "External",
+    "url": "https://github.com/cldrn/nmap-nse-scripts"
+  },
+  {
+    "name": "http-litespeed-sourcecode-download.nse",
+    "description": "Exploits a null-byte poisoning vulnerability in Litespeed Web Servers 4.0.x before 4.0.15 to retrieve the target script's source code by sending a HTTP request with a null byte followed by a .txt file extension (CVE-2010-2333).\n\nIf the server is not vulnerable it returns an error 400. If index.php is not found, you may try /phpinfo.php which is also shipped with LiteSpeed Web Server. The attack payload looks like this:\n* <code>/index.php\\00.txt</code>\n\nReferences:\n* http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2010-2333\n* http://www.exploit-db.com/exploits/13850/",
+    "source": "External",
+    "url": "https://github.com/cldrn/nmap-nse-scripts"
+  },
+  {
+    "name": "http-majordomo2-dir-traversal.nse",
+    "description": "Exploits a directory traversal vulnerability existing in Majordomo2 to retrieve remote files. (CVE-2011-0049). \n\nVulnerability originally discovered by Michael Brooks.\n\nFor more information about this vulnerability:\n* http://www.mj2.org/\n* http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2011-0049\n* http://www.exploit-db.com/exploits/16103/",
+    "source": "External",
+    "url": "https://github.com/cldrn/nmap-nse-scripts"
+  },
+  {
+    "name": "http-method-tamper.nse",
+    "description": "Attempts to bypass password protected resources (HTTP 401 status) by performing HTTP verb tampering. \nIf an array of paths to check is not set, it will crawl the web server and perform the check against any \npassword protected resource that it finds.\n\nThe script determines if the protected URI is vulnerable by performing HTTP verb tampering and monitoring\n the status codes. First, it uses a HEAD request, then a POST request and finally a random generated string \n( This last one is useful when web servers treat unknown request methods as a GET request. This is the case\n for PHP servers ).\n\nIf the table <code>paths</code> is set, it will attempt to access the given URIs. Otherwise, a web crawler \nis initiated to try to find protected resources. Note that in a PHP environment with .htacess files you need to specify a \npath to a file rather than a directory to find misconfigured .htaccess files.\n\nReferences:\n* http://www.imperva.com/resources/glossary/http_verb_tampering.html\n* https://www.owasp.org/index.php/Testing_for_HTTP_Methods_and_XST_%28OWASP-CM-008%29\n* http://www.mkit.com.ar/labs/htexploit/\n* http://capec.mitre.org/data/definitions/274.html",
+    "source": "External",
+    "url": "https://github.com/cldrn/nmap-nse-scripts"
+  },
+  {
+    "name": "http-phpself-xss.nse",
+    "description": "No description available",
+    "source": "External",
+    "url": "https://github.com/cldrn/nmap-nse-scripts"
+  },
+  {
+    "name": "http-shellshock-spider.nse",
+    "description": "No description available",
+    "source": "External",
+    "url": "https://github.com/cldrn/nmap-nse-scripts"
+  },
+  {
+    "name": "http-tplink-dir-traversal.nse",
+    "description": "Exploits a directory traversal vulnerability existing in several TP-Link wireless routers. Attackers may exploit this vulnerability to read any of the configuration and password files remotely and without authentication.\n\nThis vulnerability was confirmed in models WR740N, WR740ND and WR2543ND but there are several models that use the same HTTP server so I believe they could be vulnerable as well. I appreciate \nany help confirming the vulnerability in other models.\n\nAdvisory:\n* http://websec.ca/advisories/view/path-traversal-vulnerability-tplink-wdr740\n\nOther interesting files:\n* /tmp/topology.cnf (Wireless configuration)\n* /tmp/ath0.ap_bss (Wireless encryption key)",
+    "source": "External",
+    "url": "https://github.com/cldrn/nmap-nse-scripts"
+  },
+  {
+    "name": "http-trace.nse",
+    "description": "Sends an HTTP TRACE request and shows if the method TRACE is enabled. If debug is enabled, it returns the header fields that were modified in the response.",
+    "source": "External",
+    "url": "https://github.com/cldrn/nmap-nse-scripts"
+  },
+  {
+    "name": "http-trendnet-tvip110w.nse",
+    "description": "Attempts to find Trendnet TVIP110W webcams vulnerable to unauthenticated access to the video stream by querying the URI \"/anony/mjpg.cgi\".\n\nOriginal advisory: http://console-cowboys.blogspot.com/2012/01/trendnet-cameras-i-always-feel-like.html",
+    "source": "External",
+    "url": "https://github.com/cldrn/nmap-nse-scripts"
+  },
+  {
+    "name": "http-vuln-cve2012-1823.nse",
+    "description": "Detects PHP-CGI installations that are vulnerable to CVE-2012-1823, This critical vulnerability allows attackers to retrieve source code and execute code remotely.\n\nThe script works by appending \"?-s\" to the uri to make vulnerable php-cgi handlers return colour syntax highlighted source. We use the pattern \"<span style=.*>&lt;?\" to detect\nvulnerable installations.\n\nTODO:\n-Improve detection mechanism ( Execute certain payload and look for it in the response to confirm exploitability)\n-Add exploitation script",
+    "source": "External",
+    "url": "https://github.com/cldrn/nmap-nse-scripts"
+  },
+  {
+    "name": "http-vuln-cve2013-0156.nse",
+    "description": "Detects Ruby on Rails servers vulnerable to object injection, remote command executions and denial of service attacks. (CVE-2013-0156)\n\nAll Ruby on Rails versions before 2.3.15, 3.0.x before 3.0.19, 3.1.x before 3.1.10, and 3.2.x before 3.2.11 are vulnerable. This script \nsends 3 harmless yaml payloads to detect vulnerable installations. If the malformed object receives a status 500 response, the server \nis processing YAML objects and therefore is likely vulnerable. \n\nReferences:\n* https://community.rapid7.com/community/metasploit/blog/2013/01/10/exploiting-ruby-on-rails-with-metasploit-cve-2013-0156',\n* https://groups.google.com/forum/?fromgroups=#!msg/rubyonrails-security/61bkgvnSGTQ/nehwjA8tQ8EJ',\n* http://cvedetails.com/cve/2013-0156/\n\nTODO:\n* Add argument to exploit cmd exec vuln",
+    "source": "External",
+    "url": "https://github.com/cldrn/nmap-nse-scripts"
+  },
+  {
+    "name": "http-vuln-cve2015-1635.nse",
+    "description": "Checks for a remote code execution vulnerability (MS15-034) in Microsoft Windows systems (CVE2015-2015-1635).\n\nThe script sends a specially crafted HTTP request with no impact on the system to detect this vulnerability. \nThe affected versions are Windows 7, Windows Server 2008 R2, Windows 8, Windows Server 2012, Windows 8.1, \nand Windows Server 2012 R2.\n\nReferences:\n* https://technet.microsoft.com/library/security/MS15-034",
+    "source": "External",
+    "url": "https://github.com/cldrn/nmap-nse-scripts"
+  },
+  {
+    "name": "http-waf-detect.nse",
+    "description": "Attempts to determine whether a web server is protected by an IPS (Intrusion Prevention System), IDS (Intrusion Detection System) or WAF (Web Application Firewall) by probing the web server with malicious payloads and detecting changes in the response code and body.\n\nTo do this the script will send a \"good\" request and record the response, afterwards it will match this response against new requests containing \nmalicious payloads. In theory, web applications shouldn't react to malicious requests because we are storing the payloads in a variable that is \nnot used by the script/file and only WAF/IDS/IPS should react to it. \nIf aggro mode is set, the script will try all attack vectors (More noisy)\n\nThis script can detect numerous IDS, IPS, and WAF products since\nthey often protect web applications in the same way.  But it\nwon't detect products which don't alter the http traffic.\nResults can vary based on product configuration, but this script\nhas been tested to work against various configurations of the\nfollowing products:\n\n * Apache ModSecurity \n * Barracuda Web Application Firewall \n * PHPIDS \n * dotDefender\n * Imperva Web Firewall\n * Blue Coat SG 400",
+    "source": "External",
+    "url": "https://github.com/cldrn/nmap-nse-scripts"
+  },
+  {
+    "name": "http-wordpress-brute.nse",
+    "description": "performs brute force password auditing against Wordpress CMS/blog installations.\n\nThis script uses the unpwdb and brute libraries to perform password guessing. Any successful guesses are \nstored using the credentials library.\n\nWordpress default uri and form names:\n* Default uri:<code>wp-login.php</code>\n* Default uservar: <code>log</code>\n* Default passvar: <code>pwd</code>",
+    "source": "External",
+    "url": "https://github.com/cldrn/nmap-nse-scripts"
+  },
+  {
+    "name": "http-wordpress-enum.nse",
+    "description": "Enumerates usernames in Wordpress blog/CMS installations by exploiting an information disclosure vulnerability existing in versions 2.6, 3.1, 3.1.1, 3.1.3 and 3.2-beta2 and possibly others.\n\nOriginal advisory:\n* http://www.talsoft.com.ar/index.php/research/security-advisories/wordpress-user-id-and-user-name-disclosure",
+    "source": "External",
+    "url": "https://github.com/cldrn/nmap-nse-scripts"
+  },
+  {
+    "name": "huawei5xx-udp-info.nse",
+    "description": "Tries to obtain the PPPoE credentials, MAC address, firmware version and IP\ninformation of the aDSL modems Huawei Echolife 520, 520b, 530 and possibly\nothers by exploiting an information disclosure vulnerability via UDP.\n\nThe script works by sending a crafted UDP packet to port 43690 and then\nparsing the response that contains the configuration values. This exploit\nhas been reported to be blocked in some ISPs, in those cases the exploit\nseems to work fine in local networks.\n\nVulnerability discovered by Pedro Joaquin. No CVE assigned.\n\nReferences:\n* http://www.hakim.ws/huawei/HG520_udpinfo.tar.gz\n* http://websec.ca/advisories/view/Huawei-HG520c-3.10.18.x-information-disclosure",
+    "source": "External",
+    "url": "https://github.com/cldrn/nmap-nse-scripts"
+  },
+  {
+    "name": "mikrotik-routeros-brute.nse",
+    "description": "Performs brute force password auditing against Mikrotik RouterOS devices with the API RouterOS interface enabled.\n\nAdditional information:\n* http://wiki.mikrotik.com/wiki/API\n* http://wiki.mikrotik.com/wiki/API_in_C\n* https://github.com/mkbrutusproject/MKBRUTUS",
+    "source": "External",
+    "url": "https://github.com/cldrn/nmap-nse-scripts"
+  },
+  {
+    "name": "mysql-vuln-cve2012-2122.nse",
+    "description": "Attempts to bypass authentication in MySQL and MariaDB servers by exploiting CVE2012-2122. If its vulnerable, it will also attempt to dump the MySQL usernames and password hashes. All MariaDB and MySQL versions up to 5.1.61, 5.2.11, 5.3.5, 5.5.22 are\nvulnerable but depending if memcmp() returns an arbitrary integer outside of -128..127 range.\n\n\"When a user connects to MariaDB/MySQL, a token (SHA\nover a password and a random scramble string) is calculated and compared\nwith the expected value. Because of incorrect casting, it might've\nhappened that the token and the expected value were considered equal,\neven if the memcmp() returned a non-zero value. In this case\nMySQL/MariaDB would think that the password is correct, even while it is\nnot.  Because the protocol uses random strings, the probability of\nhitting this bug is about 1/256.\nWhich means, if one knows a user name to connect (and \"root\" almost\nalways exists), she can connect using *any* password by repeating\nconnection attempts. ~300 attempts takes only a fraction of second, so\nbasically account password protection is as good as nonexistent.\"\n\nOriginal public advisory:\n* http://seclists.org/oss-sec/2012/q2/493\nInteresting post about this vuln:\n* https://community.rapid7.com/community/metasploit/blog/2012/06/11/cve-2012-2122-a-tragically-comedic-security-flaw-in-mysql",
+    "source": "External",
+    "url": "https://github.com/cldrn/nmap-nse-scripts"
+  },
+  {
+    "name": "smb-vuln-conficker.nse",
+    "description": "Detects Microsoft Windows systems infected by the Conficker worm. This check is dangerous and \nit may crash systems.\n\nBased loosely on the Simple Conficker Scanner, found here:\n-- http://iv.cs.uni-bonn.de/wg/cs/applications/containing-conficker/\n\nThis check was previously part of smb-check-vulns.",
+    "source": "External",
+    "url": "https://github.com/cldrn/nmap-nse-scripts"
+  },
+  {
+    "name": "smb-vuln-cve2009-3103.nse",
+    "description": "Detects Microsoft Windows systems vulnerable to denial of service (CVE-2009-3103).\nThis script will crash the service if it is vulnerable.\n\nThe script performs a denial-of-service against the vulnerability disclosed in\nCVE-2009-3103. This works against Windows Vista and some versions of Windows 7, \nand causes a bluescreen if successful. The proof-of-concept code at \nhttp://seclists.org/fulldisclosure/2009/Sep/39 was used, with one small change.\n\nThis check was previously part of smb-check-vulns.",
+    "source": "External",
+    "url": "https://github.com/cldrn/nmap-nse-scripts"
+  },
+  {
+    "name": "smb-vuln-ms06-025.nse",
+    "description": "Detects Microsoft Windows systems with Ras RPC service vulnerable to MS06-025.\n\nMS06-025 targets the <code>RasRpcSumbitRequest()</code> RPC method which is\na part of RASRPC interface that serves as a RPC service for configuring and\ngetting information from the Remote Access and Routing service. RASRPC can be\naccessed using either \"\\ROUTER\" SMB pipe or the \"\\SRVSVC\" SMB pipe (usually on Windows XP machines).\nThis is in RPC world known as \"ncan_np\" RPC transport. <code>RasRpcSumbitRequest()</code>\nmethod is a generic method which provides different functionalities according\nto the <code>RequestBuffer</code> structure and particularly the <code>RegType</code> field within that\nstructure. <code>RegType</code> field is of <code>enum ReqTypes</code> type. This enum type lists all\nthe different available operation that can be performed using the <code>RasRpcSubmitRequest()</code>\nRPC method. The one particular operation that this vuln targets is the <code>REQTYPE_GETDEVCONFIG</code>\nrequest to get device information on the RRAS.\n\nThis script was previously part of smb-check-vulns.",
+    "source": "External",
+    "url": "https://github.com/cldrn/nmap-nse-scripts"
+  },
+  {
+    "name": "smb-vuln-ms07-029.nse",
+    "description": "Detects Microsoft Windows systems with Dns Server RPC vulnerable to MS07-029.\n\nMS07-029 targets the <code>R_DnssrvQuery()</code> and <code>R_DnssrvQuery2()</code> \nRPC method which isa part of DNS Server RPC interface that serves as a RPC service \nfor configuring and getting information from the DNS Server service. \nDNS Server RPC service can be accessed using \"\\dnsserver\" SMB named pipe. \nThe vulnerability is triggered when a long string is send as the \"zone\" parameter \nwhich causes the buffer overflow which crashes the service.\n\nThis check was previously part of smb-check-vulns.",
+    "source": "External",
+    "url": "https://github.com/cldrn/nmap-nse-scripts"
+  },
+  {
+    "name": "smb-vuln-ms08-067.nse",
+    "description": "Detects Microsoft Windows systems vulnerable to the remote code execution vulnerability \nknown as MS08-067. This check is dangerous and it may crash systems.\n\nOn a fairly wide scan conducted by Brandon Enright, we determined\nthat on average, a vulnerable system is more likely to crash than to survive\nthe check. Out of 82 vulnerable systems, 52 crashed. \nPlease consider this before running the script.\n\nThis check was previously part of smb-check-vulns.nse.",
+    "source": "External",
+    "url": "https://github.com/cldrn/nmap-nse-scripts"
+  },
+  {
+    "name": "smb-vuln-ms17-010.nse",
+    "description": "Attempts to detect if a Microsoft SMBv1 server is vulnerable to a remote code\n execution vulnerability (ms17-010, a.k.a. EternalBlue).\n The vulnerability is actively exploited by WannaCry and Petya ransomware and other malware.\n\nThe script connects to the $IPC tree, executes a transaction on FID 0 and\n checks if the error \"STATUS_INSUFF_SERVER_RESOURCES\" is returned to\n determine if the target is not patched against ms17-010. Additionally it checks\n for known error codes returned by patched systems.\n\nTested on Windows XP, 2003, 7, 8, 8.1, 10, 2008, 2012 and 2016.\n\nReferences:\n* https://technet.microsoft.com/en-us/library/security/ms17-010.aspx\n* https://blogs.technet.microsoft.com/msrc/2017/05/12/customer-guidance-for-wannacrypt-attacks/\n* https://msdn.microsoft.com/en-us/library/ee441489.aspx\n* https://github.com/rapid7/metasploit-framework/blob/master/modules/auxiliary/scanner/smb/smb_ms17_010.rb\n* https://github.com/cldrn/nmap-nse-scripts/wiki/Notes-about-smb-vuln-ms17-010",
+    "source": "External",
+    "url": "https://github.com/cldrn/nmap-nse-scripts"
+  },
+  {
+    "name": "smb-vuln-regsvc-dos.nse",
+    "description": "Checks if a Microsoft Windows 2000 system is vulnerable to a crash in regsvc caused by a null pointer \ndereference. This check will crash the service if it is vulnerable and requires a guest account or \nhigher to work.\n\nThe vulnerability was discovered by Ron Bowes while working on <code>smb-enum-sessions</code> and \nwas reported to Microsoft (Case #MSRC8742).",
+    "source": "External",
+    "url": "https://github.com/cldrn/nmap-nse-scripts"
+  },
+  {
+    "name": "smtp-dovecot-exim-exec.nse",
+    "description": "Attempts to exploit a remote command execution vulnerability in misconfigured Dovecot/Exim mail servers.\n\nIt is important to note that the mail server will not return the output of the command. The mail server \nalso wont allow space characters but they can be replaced with \"${IFS}\". Commands can also be \nconcatenated with \"``\". The script takes care of the conversion automatically.\n\nReferences:\n* https://www.redteam-pentesting.de/en/advisories/rt-sa-2013-001/-exim-with-dovecot-typical-misconfiguration-leads-to-remote-command-execution\n* http://immunityproducts.blogspot.mx/2013/05/how-common-is-common-exim-and-dovecot.html\n* CVE not available yet",
+    "source": "External",
+    "url": "https://github.com/cldrn/nmap-nse-scripts"
+  },
+  {
+    "name": "vulscan.nse",
+    "description": "Attempts to discover vulnerabilities by matching information from the \nversion detection engine with databases such as CVE, ExploitDB and \nScipvuldb. \n\nThis script uses version information (-sV) to match product names with \nvulnerability databases stored in Nmap's NSE data directory. The \ndatabases are distributed separately, hence they need to be download \n manually before using the script. Optionally you may create empty \nplaceholder files and execute the script update functionality to populate\n the databases (--script-args updatedb).\n\nThe following databases are supported at the moment (in nselib/data/):\n\n* Scipvuldb (http://www.scip.ch/en/?vuldb)\n  Vulnerability feed URL: http://www.scip.ch/vuldb/scipvuldb.csv\n* CVE (http://cve.mitre.org)\n  Vulnerability feed URL: http://cve.mitre.org/data/downloads/allitems.csv\n* ExploitDB (http://www.exploit-db.com)\n  Vulnerability feed URL: \n  https://raw.githubusercontent.com/offensive-security/exploit-database/master/files.csv\n\nIt is also possible to create and reference your own databases. This\nrequires to create a database file with the following structure:\n\n  <id>;<title>\n\nJust execute vulscan like you would by refering to one of the pre-\ndelivered databases. Feel free to share your own database and\nvulnerability connection with me, to add it to the official\nrepository.\n\nVulnerability detection of this script is only as good as Nmap version detection\nand the vulnerability database entries are. Some databases do not\nprovide conclusive version information, which may lead to a lot of\nfalse-positives.\n\nREPORTING\n\nIt is possible to use another pre-defined report structure with the\nscript argument vulscanoutput. The supported output formats are:\n* details\n* listid\n* listlink\n* listtitle\n\nYou may enforce your own report structure by using a format string \n as follows:\n* --script-args vulscanoutput='{link}\\n{title}\\n\\n'\n* --script-args vulscanoutput='ID: {id} - Title: {title} ({matches})\\n'\n* --script-args vulscanoutput='{id} | {product} | {version}\\n'\n\nThe supported elements in a dynamic report template are:\n\n* {id}      ID of the vulnerability\n* {title}   Title of the vulnerability\n* {matches} Count of matches\n* {product} Matched product string(s)\n* {version} Matched version string(s)\n* {link}    Link to the vulnerability database entry\n* \\n        Newline\n* \\t        Tab\n\nEvery default database comes with an url and a link, which is used\nduring the scanning and might be accessed as {link} within the\ncustomized report template. To use custom database links, use the\nscript argument 'vulscandblink':\n* --script-args \"vulscandblink=http://example.org/{id}\"\n\nSpecial credits go to Marc Ruef for creating the original vulscan script\n and maintaning the vulnerability database Scipvuldb.",
+    "source": "External",
+    "url": "https://github.com/cldrn/nmap-nse-scripts"
+  },
+  {
+    "name": "http-shellshock-spider.nse",
+    "description": "No description available",
+    "source": "External",
+    "url": "https://github.com/cldrn/nmap-nse-scripts"
+  },
+  {
+    "name": "nse-script-template.nse",
+    "description": "No description available",
+    "source": "External",
+    "url": "https://github.com/cldrn/nmap-nse-scripts"
+  }
+]

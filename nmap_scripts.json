@@ -1,0 +1,3022 @@
+[
+  {
+    "name": "acarsd-info",
+    "description": "Retrieves information from a listening acarsd daemon. Acarsd decodes\nACARS (Aircraft Communication Addressing and Reporting System) data in\nreal time.  The information retrieved by this script includes the\ndaemon version, API version, administrator e-mail address and\nlistening frequency.",
+    "source": "Nmap"
+  },
+  {
+    "name": "address-info",
+    "description": "Shows extra information about IPv6 addresses, such as embedded MAC or IPv4 addresses when available.",
+    "source": "Nmap"
+  },
+  {
+    "name": "afp-brute",
+    "description": "Performs password guessing against Apple Filing Protocol (AFP).",
+    "source": "Nmap"
+  },
+  {
+    "name": "afp-ls",
+    "description": "Attempts to get useful information about files from AFP volumes.\nThe output is intended to resemble the output of ls.",
+    "source": "Nmap"
+  },
+  {
+    "name": "afp-path-vuln",
+    "description": "Detects the Mac OS X AFP directory traversal vulnerability, CVE-2010-0533.",
+    "source": "Nmap"
+  },
+  {
+    "name": "afp-serverinfo",
+    "description": "Shows AFP server information. This information includes the server's\nhostname, IPv4 and IPv6 addresses, and hardware type (for example\nMacmini or MacBookPro).",
+    "source": "Nmap"
+  },
+  {
+    "name": "afp-showmount",
+    "description": "Shows AFP shares and ACLs.",
+    "source": "Nmap"
+  },
+  {
+    "name": "ajp-auth",
+    "description": "Retrieves the authentication scheme and realm of an AJP service (Apache JServ Protocol) that requires authentication.",
+    "source": "Nmap"
+  },
+  {
+    "name": "ajp-brute",
+    "description": "Performs brute force passwords auditing against the Apache JServ protocol.\nThe Apache JServ Protocol is commonly used by web servers to communicate with\nback-end Java application server containers.",
+    "source": "Nmap"
+  },
+  {
+    "name": "ajp-headers",
+    "description": "Performs a HEAD or GET request against either the root directory or any\noptional directory of an Apache JServ Protocol server and returns the server response headers.",
+    "source": "Nmap"
+  },
+  {
+    "name": "ajp-methods",
+    "description": "Discovers which options are supported by the AJP (Apache JServ\nProtocol) server by sending an OPTIONS request and lists potentially\nrisky methods.",
+    "source": "Nmap"
+  },
+  {
+    "name": "ajp-request",
+    "description": "Requests a URI over the Apache JServ Protocol and displays the result\n(or stores it in a file). Different AJP methods such as; GET, HEAD,\nTRACE, PUT or DELETE may be used.",
+    "source": "Nmap"
+  },
+  {
+    "name": "allseeingeye-info",
+    "description": "Detects the All-Seeing Eye service. Provided by some game servers for\nquerying the server's status.",
+    "source": "Nmap"
+  },
+  {
+    "name": "amqp-info",
+    "description": "Gathers information (a list of all server properties) from an AMQP (advanced message queuing protocol) server.",
+    "source": "Nmap"
+  },
+  {
+    "name": "asn-query",
+    "description": "Maps IP addresses to autonomous system (AS) numbers.",
+    "source": "Nmap"
+  },
+  {
+    "name": "auth-owners",
+    "description": "Attempts to find the owner of an open TCP port by querying an auth\ndaemon which must also be open on the target system. The auth service,\nalso known as identd, normally runs on port 113.",
+    "source": "Nmap"
+  },
+  {
+    "name": "auth-spoof",
+    "description": "Checks for an identd (auth) server which is spoofing its replies.",
+    "source": "Nmap"
+  },
+  {
+    "name": "backorifice-brute",
+    "description": "Performs brute force password auditing against the BackOrifice service. The\nbackorifice-brute.ports script argument is mandatory (it specifies ports to run\nthe script against).",
+    "source": "Nmap"
+  },
+  {
+    "name": "backorifice-info",
+    "description": "Connects to a BackOrifice service and gathers information about\nthe host and the BackOrifice service itself.",
+    "source": "Nmap"
+  },
+  {
+    "name": "bacnet-info",
+    "description": "Discovers and enumerates BACNet Devices collects device information based off\nstandard requests. In some cases, devices may not strictly follow the\nspecifications, or may comply with older versions of the specifications, and\nwill result in a BACNET error response. Presence of this error positively\nidentifies the device as a BACNet device, but no enumeration is possible.",
+    "source": "Nmap"
+  },
+  {
+    "name": "banner",
+    "description": "A simple banner grabber which connects to an open TCP port and prints out anything sent by the listening service within five seconds.",
+    "source": "Nmap"
+  },
+  {
+    "name": "bitcoin-getaddr",
+    "description": "Queries a Bitcoin server for a list of known Bitcoin nodes",
+    "source": "Nmap"
+  },
+  {
+    "name": "bitcoin-info",
+    "description": "Extracts version and node information from a Bitcoin server",
+    "source": "Nmap"
+  },
+  {
+    "name": "bitcoinrpc-info",
+    "description": "Obtains information from a Bitcoin server by calling getinfo on its JSON-RPC interface.",
+    "source": "Nmap"
+  },
+  {
+    "name": "bittorrent-discovery",
+    "description": "Discovers bittorrent peers sharing a file based on a user-supplied\ntorrent file or magnet link.  Peers implement the Bittorrent protocol\nand share the torrent, whereas the nodes (only shown if the\ninclude-nodes NSE argument is given) implement the DHT protocol and\nare used to track the peers. The sets of peers and nodes are not the\nsame, but they usually intersect.",
+    "source": "Nmap"
+  },
+  {
+    "name": "bjnp-discover",
+    "description": "Retrieves printer or scanner information from a remote device supporting the\nBJNP protocol. The protocol is known to be supported by network based Canon\ndevices.",
+    "source": "Nmap"
+  },
+  {
+    "name": "broadcast-ataoe-discover",
+    "description": "Discovers servers supporting the ATA over Ethernet protocol. ATA over Ethernet\nis an ethernet protocol developed by the Brantley Coile Company and allows for\nsimple, high-performance access to SATA drives over Ethernet.",
+    "source": "Nmap"
+  },
+  {
+    "name": "broadcast-avahi-dos",
+    "description": "Attempts to discover hosts in the local network using the DNS Service\nDiscovery protocol and sends a NULL UDP packet to each host to test\nif it is vulnerable to the Avahi NULL UDP packet denial of service\n(CVE-2011-1002).",
+    "source": "Nmap"
+  },
+  {
+    "name": "broadcast-bjnp-discover",
+    "description": "Attempts to discover Canon devices (Printers/Scanners) supporting the\nBJNP protocol by sending BJNP Discover requests to the network\nbroadcast address for both ports associated with the protocol.",
+    "source": "Nmap"
+  },
+  {
+    "name": "broadcast-db2-discover",
+    "description": "Attempts to discover DB2 servers on the network by sending a broadcast request to port 523/udp.",
+    "source": "Nmap"
+  },
+  {
+    "name": "broadcast-dhcp-discover",
+    "description": "Sends a DHCP request to the broadcast address (255.255.255.255) and reports\nthe results. By default, the script uses a static MAC address\n(DE:AD:CO:DE:CA:FE) in order to prevent IP pool exhaustion.",
+    "source": "Nmap"
+  },
+  {
+    "name": "broadcast-dhcp6-discover",
+    "description": "Sends a DHCPv6 request (Solicit) to the DHCPv6 multicast address,\nparses the response, then extracts and prints the address along with\nany options returned by the server.",
+    "source": "Nmap"
+  },
+  {
+    "name": "broadcast-dns-service-discovery",
+    "description": "Attempts to discover hosts' services using the DNS Service Discovery protocol.  It sends a multicast DNS-SD query and collects all the responses.",
+    "source": "Nmap"
+  },
+  {
+    "name": "broadcast-dropbox-listener",
+    "description": "Listens for the LAN sync information broadcasts that the Dropbox.com client\nbroadcasts every 20 seconds, then prints all the discovered client IP\naddresses, port numbers, version numbers, display names, and more.",
+    "source": "Nmap"
+  },
+  {
+    "name": "broadcast-eigrp-discovery",
+    "description": "Performs network discovery and routing information gathering through\nCisco's Enhanced Interior Gateway Routing Protocol (EIGRP).",
+    "source": "Nmap"
+  },
+  {
+    "name": "broadcast-hid-discoveryd",
+    "description": "Discovers HID devices on a LAN by sending a discoveryd network broadcast probe.",
+    "source": "Nmap"
+  },
+  {
+    "name": "broadcast-igmp-discovery",
+    "description": "Discovers targets that have IGMP Multicast memberships and grabs interesting information.",
+    "source": "Nmap"
+  },
+  {
+    "name": "broadcast-jenkins-discover",
+    "description": "Discovers Jenkins servers on a LAN by sending a discovery broadcast probe.",
+    "source": "Nmap"
+  },
+  {
+    "name": "broadcast-listener",
+    "description": "Sniffs the network for incoming broadcast communication and\nattempts to decode the received packets. It supports protocols like CDP, HSRP,\nSpotify, DropBox, DHCP, ARP and a few more. See packetdecoders.lua for more\ninformation.",
+    "source": "Nmap"
+  },
+  {
+    "name": "broadcast-ms-sql-discover",
+    "description": "Discovers Microsoft SQL servers in the same broadcast domain.",
+    "source": "Nmap"
+  },
+  {
+    "name": "broadcast-netbios-master-browser",
+    "description": "Attempts to discover master browsers and the domains they manage.",
+    "source": "Nmap"
+  },
+  {
+    "name": "broadcast-networker-discover",
+    "description": "Discovers EMC Networker backup software servers on a LAN by sending a network broadcast query.",
+    "source": "Nmap"
+  },
+  {
+    "name": "broadcast-novell-locate",
+    "description": "Attempts to use the Service Location Protocol to discover Novell NetWare Core Protocol (NCP) servers.",
+    "source": "Nmap"
+  },
+  {
+    "name": "broadcast-ospf2-discover",
+    "description": "Discover IPv4 networks using Open Shortest Path First version 2(OSPFv2) protocol.",
+    "source": "Nmap"
+  },
+  {
+    "name": "broadcast-pc-anywhere",
+    "description": "Sends a special broadcast probe to discover PC-Anywhere hosts running on a LAN.",
+    "source": "Nmap"
+  },
+  {
+    "name": "broadcast-pc-duo",
+    "description": "Discovers PC-DUO remote control hosts and gateways running on a LAN by sending a special broadcast UDP probe.",
+    "source": "Nmap"
+  },
+  {
+    "name": "broadcast-pim-discovery",
+    "description": "Discovers routers that are running PIM (Protocol Independent Multicast).",
+    "source": "Nmap"
+  },
+  {
+    "name": "broadcast-ping",
+    "description": "Sends broadcast pings on a selected interface using raw ethernet packets and\noutputs the responding hosts' IP and MAC addresses or (if requested) adds them\nas targets.  Root privileges on UNIX are required to run this script since it\nuses raw sockets.  Most operating systems don't respond to broadcast-ping\nprobes, but they can be configured to do so.",
+    "source": "Nmap"
+  },
+  {
+    "name": "broadcast-pppoe-discover",
+    "description": "Discovers PPPoE (Point-to-Point Protocol over Ethernet) servers using\nthe PPPoE Discovery protocol (PPPoED).  PPPoE is an ethernet based\nprotocol so the script has to know what ethernet interface to use for\ndiscovery. If no interface is specified, requests are sent out on all\navailable interfaces.",
+    "source": "Nmap"
+  },
+  {
+    "name": "broadcast-rip-discover",
+    "description": "Discovers hosts and routing information from devices running RIPv2 on the\nLAN. It does so by sending a RIPv2 Request command and collects the responses\nfrom all devices responding to the request.",
+    "source": "Nmap"
+  },
+  {
+    "name": "broadcast-ripng-discover",
+    "description": "Discovers hosts and routing information from devices running RIPng on the\nLAN by sending a broadcast RIPng Request command and collecting any responses.",
+    "source": "Nmap"
+  },
+  {
+    "name": "broadcast-sonicwall-discover",
+    "description": "Discovers Sonicwall firewalls which are directly attached (not routed) using\nthe same method as the manufacturers own 'SetupTool'. An interface needs to be\nconfigured, as the script broadcasts a UDP packet.",
+    "source": "Nmap"
+  },
+  {
+    "name": "broadcast-sybase-asa-discover",
+    "description": "Discovers Sybase Anywhere servers on the LAN by sending broadcast discovery messages.",
+    "source": "Nmap"
+  },
+  {
+    "name": "broadcast-tellstick-discover",
+    "description": "Discovers Telldus Technologies TellStickNet devices on the LAN. The Telldus\nTellStick is used to wirelessly control electric devices such as lights,\ndimmers and electric outlets. For more information: http://www.telldus.com/",
+    "source": "Nmap"
+  },
+  {
+    "name": "broadcast-upnp-info",
+    "description": "Attempts to extract system information from the UPnP service by sending a multicast query, then collecting, parsing, and displaying all responses.",
+    "source": "Nmap"
+  },
+  {
+    "name": "broadcast-versant-locate",
+    "description": "Discovers Versant object databases using the broadcast srvloc protocol.",
+    "source": "Nmap"
+  },
+  {
+    "name": "broadcast-wake-on-lan",
+    "description": "Wakes a remote system up from sleep by sending a Wake-On-Lan packet.",
+    "source": "Nmap"
+  },
+  {
+    "name": "broadcast-wpad-discover",
+    "description": "Retrieves a list of proxy servers on a LAN using the Web Proxy\nAutodiscovery Protocol (WPAD).  It implements both the DHCP and DNS\nmethods of doing so and starts by querying DHCP to get the address.\nDHCP discovery requires nmap to be running in privileged mode and will\nbe skipped when this is not the case.  DNS discovery relies on the\nscript being able to resolve the local domain either through a script\nargument or by attempting to reverse resolve the local IP.",
+    "source": "Nmap"
+  },
+  {
+    "name": "broadcast-wsdd-discover",
+    "description": "Uses a multicast query to discover devices supporting the Web Services\nDynamic Discovery (WS-Discovery) protocol. It also attempts to locate\nany published Windows Communication Framework (WCF) web services (.NET\n4.0 or later).",
+    "source": "Nmap"
+  },
+  {
+    "name": "broadcast-xdmcp-discover",
+    "description": "Discovers servers running the X Display Manager Control Protocol (XDMCP) by\nsending a XDMCP broadcast request to the LAN. Display managers allowing access\nare marked using the keyword Willing in the result.",
+    "source": "Nmap"
+  },
+  {
+    "name": "cassandra-brute",
+    "description": "Performs brute force password auditing against the Cassandra database.",
+    "source": "Nmap"
+  },
+  {
+    "name": "cassandra-info",
+    "description": "Attempts to get basic info and server status from a Cassandra database.",
+    "source": "Nmap"
+  },
+  {
+    "name": "cccam-version",
+    "description": "Detects the CCcam service (software for sharing subscription TV among\nmultiple receivers).",
+    "source": "Nmap"
+  },
+  {
+    "name": "cics-enum",
+    "description": "CICS transaction ID enumerator for IBM mainframes.\nThis script is based on mainframe_brute by Dominic White\n(https://github.com/sensepost/mainframe_brute). However, this script\ndoesn't rely on any third party libraries or tools and instead uses\nthe NSE TN3270 library which emulates a TN3270 screen in lua.",
+    "source": "Nmap"
+  },
+  {
+    "name": "cics-info",
+    "description": "Using the CICS transaction CEMT, this script attempts to gather information\nabout the current CICS transaction server region. It gathers OS information,\nDatasets (files), transactions and user ids. Based on CICSpwn script by\nAyoub ELAASSAL.",
+    "source": "Nmap"
+  },
+  {
+    "name": "cics-user-brute",
+    "description": "CICS User ID brute forcing script for the CESL login screen.",
+    "source": "Nmap"
+  },
+  {
+    "name": "cics-user-enum",
+    "description": "CICS User ID enumeration script for the CESL/CESN Login screen.",
+    "source": "Nmap"
+  },
+  {
+    "name": "citrix-brute-xml",
+    "description": "Attempts to guess valid credentials for the Citrix PN Web Agent XML\nService. The XML service authenticates against the local Windows server\nor the Active Directory.",
+    "source": "Nmap"
+  },
+  {
+    "name": "citrix-enum-apps",
+    "description": "Extracts a list of published applications from the ICA Browser service.",
+    "source": "Nmap"
+  },
+  {
+    "name": "citrix-enum-apps-xml",
+    "description": "Extracts a list of applications, ACLs, and settings from the Citrix XML\nservice.",
+    "source": "Nmap"
+  },
+  {
+    "name": "citrix-enum-servers",
+    "description": "Extracts a list of Citrix servers from the ICA Browser service.",
+    "source": "Nmap"
+  },
+  {
+    "name": "citrix-enum-servers-xml",
+    "description": "Extracts the name of the server farm and member servers from Citrix XML\nservice.",
+    "source": "Nmap"
+  },
+  {
+    "name": "clamav-exec",
+    "description": "Exploits ClamAV servers vulnerable to unauthenticated clamav comand execution.",
+    "source": "Nmap"
+  },
+  {
+    "name": "clock-skew",
+    "description": "Analyzes the clock skew between the scanner and various services that report timestamps.",
+    "source": "Nmap"
+  },
+  {
+    "name": "coap-resources",
+    "description": "Dumps list of available resources from CoAP endpoints.",
+    "source": "Nmap"
+  },
+  {
+    "name": "couchdb-databases",
+    "description": "Gets database tables from a CouchDB database.",
+    "source": "Nmap"
+  },
+  {
+    "name": "couchdb-stats",
+    "description": "Gets database statistics from a CouchDB database.",
+    "source": "Nmap"
+  },
+  {
+    "name": "creds-summary",
+    "description": "Lists all discovered credentials (e.g. from brute force and default password checking scripts) at end of scan.",
+    "source": "Nmap"
+  },
+  {
+    "name": "cups-info",
+    "description": "Lists printers managed by the CUPS printing service.",
+    "source": "Nmap"
+  },
+  {
+    "name": "cups-queue-info",
+    "description": "Lists currently queued print jobs of the remote CUPS service grouped by\nprinter.",
+    "source": "Nmap"
+  },
+  {
+    "name": "cvs-brute",
+    "description": "Performs brute force password auditing against CVS pserver authentication.",
+    "source": "Nmap"
+  },
+  {
+    "name": "cvs-brute-repository",
+    "description": "Attempts to guess the name of the CVS repositories hosted on the remote server.\nWith knowledge of the correct repository name, usernames and passwords can be guessed.",
+    "source": "Nmap"
+  },
+  {
+    "name": "daap-get-library",
+    "description": "Retrieves a list of music from a DAAP server. The list includes artist\nnames and album and song titles.",
+    "source": "Nmap"
+  },
+  {
+    "name": "daytime",
+    "description": "Retrieves the day and time from the Daytime service.",
+    "source": "Nmap"
+  },
+  {
+    "name": "db2-das-info",
+    "description": "Connects to the IBM DB2 Administration Server (DAS) on TCP or UDP port 523 and\nexports the server profile.  No authentication is required for this request.",
+    "source": "Nmap"
+  },
+  {
+    "name": "deluge-rpc-brute",
+    "description": "Performs brute force password auditing against the DelugeRPC daemon.",
+    "source": "Nmap"
+  },
+  {
+    "name": "dhcp-discover",
+    "description": "Sends a DHCPINFORM request to a host on UDP port 67 to obtain all the local configuration parameters\nwithout allocating a new address.",
+    "source": "Nmap"
+  },
+  {
+    "name": "dicom-brute",
+    "description": "Attempts to brute force the Application Entity Title of a DICOM server (DICOM Service Provider).",
+    "source": "Nmap"
+  },
+  {
+    "name": "dicom-ping",
+    "description": "Attempts to discover DICOM servers (DICOM Service Provider) through a partial C-ECHO request.\n It also detects if the server allows any called Application Entity Title or not.",
+    "source": "Nmap"
+  },
+  {
+    "name": "dict-info",
+    "description": "Connects to a dictionary server using the DICT protocol, runs the SHOW\nSERVER command, and displays the result. The DICT protocol is defined in RFC\n2229 and is a protocol which allows a client to query a dictionary server for\ndefinitions from a set of natural language dictionary databases.",
+    "source": "Nmap"
+  },
+  {
+    "name": "distcc-cve2004-2687",
+    "description": "Detects and exploits a remote code execution vulnerability in the distributed\ncompiler daemon distcc. The vulnerability was disclosed in 2002, but is still\npresent in modern implementation due to poor configuration of the service.",
+    "source": "Nmap"
+  },
+  {
+    "name": "dns-blacklist",
+    "description": "Checks target IP addresses against multiple DNS anti-spam and open\nproxy blacklists and returns a list of services for which an IP has been flagged.  Checks may be limited by service category (eg: SPAM,\nPROXY) or to a specific service name.",
+    "source": "Nmap"
+  },
+  {
+    "name": "dns-brute",
+    "description": "Attempts to enumerate DNS hostnames by brute force guessing of common\nsubdomains. With the dns-brute.srv argument, dns-brute will also\ntry to enumerate common DNS SRV records.",
+    "source": "Nmap"
+  },
+  {
+    "name": "dns-cache-snoop",
+    "description": "Performs DNS cache snooping against a DNS server.",
+    "source": "Nmap"
+  },
+  {
+    "name": "dns-check-zone",
+    "description": "Checks DNS zone configuration against best practices, including RFC 1912.\nThe configuration checks are divided into categories which each have a number\nof different tests.",
+    "source": "Nmap"
+  },
+  {
+    "name": "dns-client-subnet-scan",
+    "description": "Performs a domain lookup using the edns-client-subnet option which\nallows clients to specify the subnet that queries supposedly originate\nfrom.  The script uses this option to supply a number of\ngeographically distributed locations in an attempt to enumerate as\nmany different address records as possible. The script also supports\nrequests using a given subnet.",
+    "source": "Nmap"
+  },
+  {
+    "name": "dns-fuzz",
+    "description": "Launches a DNS fuzzing attack against DNS servers.",
+    "source": "Nmap"
+  },
+  {
+    "name": "dns-ip6-arpa-scan",
+    "description": "Performs a quick reverse DNS lookup of an IPv6 network using a technique\nwhich analyzes DNS server response codes to dramatically reduce the number of queries needed to enumerate large networks.",
+    "source": "Nmap"
+  },
+  {
+    "name": "dns-nsec-enum",
+    "description": "Enumerates DNS names using the DNSSEC NSEC-walking technique.",
+    "source": "Nmap"
+  },
+  {
+    "name": "dns-nsec3-enum",
+    "description": "Tries to enumerate domain names from the DNS server that supports DNSSEC\nNSEC3 records.",
+    "source": "Nmap"
+  },
+  {
+    "name": "dns-nsid",
+    "description": "Retrieves information from a DNS nameserver by requesting\nits nameserver ID (nsid) and asking for its id.server and\nversion.bind values. This script performs the same queries as the following\ntwo dig commands:\n  - dig CH TXT bind.version @target\n  - dig +nsid CH TXT id.server @target",
+    "source": "Nmap"
+  },
+  {
+    "name": "dns-random-srcport",
+    "description": "Checks a DNS server for the predictable-port recursion vulnerability.\nPredictable source ports can make a DNS server vulnerable to cache poisoning\nattacks (see CVE-2008-1447).",
+    "source": "Nmap"
+  },
+  {
+    "name": "dns-random-txid",
+    "description": "Checks a DNS server for the predictable-TXID DNS recursion\nvulnerability.  Predictable TXID values can make a DNS server vulnerable to\ncache poisoning attacks (see CVE-2008-1447).",
+    "source": "Nmap"
+  },
+  {
+    "name": "dns-recursion",
+    "description": "Checks if a DNS server allows queries for third-party names. It is\nexpected that recursion will be enabled on your own internal\nnameservers.",
+    "source": "Nmap"
+  },
+  {
+    "name": "dns-service-discovery",
+    "description": "Attempts to discover target hosts' services using the DNS Service Discovery protocol.",
+    "source": "Nmap"
+  },
+  {
+    "name": "dns-srv-enum",
+    "description": "Enumerates various common service (SRV) records for a given domain name.\nThe service records contain the hostname, port and priority of servers for a given service.\nThe following services are enumerated by the script:\n  - Active Directory Global Catalog\n  - Exchange Autodiscovery\n  - Kerberos KDC Service\n  - Kerberos Passwd Change Service\n  - LDAP Servers\n  - SIP Servers\n  - XMPP S2S\n  - XMPP C2S",
+    "source": "Nmap"
+  },
+  {
+    "name": "dns-update",
+    "description": "Attempts to perform a dynamic DNS update without authentication.",
+    "source": "Nmap"
+  },
+  {
+    "name": "dns-zeustracker",
+    "description": "Checks if the target IP range is part of a Zeus botnet by querying ZTDNS @ abuse.ch.\nPlease review the following information before you start to scan:",
+    "source": "Nmap"
+  },
+  {
+    "name": "dns-zone-transfer",
+    "description": "Requests a zone transfer (AXFR) from a DNS server.",
+    "source": "Nmap"
+  },
+  {
+    "name": "docker-version",
+    "description": "Detects the Docker service version.",
+    "source": "Nmap"
+  },
+  {
+    "name": "domcon-brute",
+    "description": "Performs brute force password auditing against the Lotus Domino Console.",
+    "source": "Nmap"
+  },
+  {
+    "name": "domcon-cmd",
+    "description": "Runs a console command on the Lotus Domino Console using the given authentication credentials (see also: domcon-brute)",
+    "source": "Nmap"
+  },
+  {
+    "name": "domino-enum-users",
+    "description": "Attempts to discover valid IBM Lotus Domino users and download their ID files by exploiting the CVE-2006-5835 vulnerability.",
+    "source": "Nmap"
+  },
+  {
+    "name": "dpap-brute",
+    "description": "Performs brute force password auditing against an iPhoto Library.",
+    "source": "Nmap"
+  },
+  {
+    "name": "drda-brute",
+    "description": "Performs password guessing against databases supporting the IBM DB2 protocol such as Informix, DB2 and Derby",
+    "source": "Nmap"
+  },
+  {
+    "name": "drda-info",
+    "description": "Attempts to extract information from database servers supporting the DRDA\nprotocol. The script sends a DRDA EXCSAT (exchange server attributes)\ncommand packet and parses the response.",
+    "source": "Nmap"
+  },
+  {
+    "name": "duplicates",
+    "description": "Attempts to discover multihomed systems by analysing and comparing\ninformation collected by other scripts. The information analyzed\ncurrently includes, SSL certificates, SSH host keys, MAC addresses,\nand Netbios server names.",
+    "source": "Nmap"
+  },
+  {
+    "name": "eap-info",
+    "description": "Enumerates the authentication methods offered by an EAP (Extensible\nAuthentication Protocol) authenticator for a given identity or for the\nanonymous identity if no argument is passed.",
+    "source": "Nmap"
+  },
+  {
+    "name": "enip-info",
+    "description": "This NSE script is used to send a EtherNet/IP packet to a remote device that\nhas TCP 44818 open. The script will send a Request Identity Packet and once a\nresponse is received, it validates that it was a proper response to the command\nthat was sent, and then will parse out the data. Information that is parsed\nincludes Device Type, Vendor ID, Product name, Serial Number, Product code,\nRevision Number, status, state, as well as the Device IP.",
+    "source": "Nmap"
+  },
+  {
+    "name": "epmd-info",
+    "description": "Connects to Erlang Port Mapper Daemon (epmd) and retrieves a list of nodes with their respective port numbers.",
+    "source": "Nmap"
+  },
+  {
+    "name": "eppc-enum-processes",
+    "description": "Attempts to enumerate process info over the Apple Remote Event protocol.\nWhen accessing an application over the Apple Remote Event protocol the\nservice responds with the uid and pid of the application, if it is running,\nprior to requesting authentication.",
+    "source": "Nmap"
+  },
+  {
+    "name": "fcrdns",
+    "description": "Performs a Forward-confirmed Reverse DNS lookup and reports anomalous results.",
+    "source": "Nmap"
+  },
+  {
+    "name": "finger",
+    "description": "Attempts to retrieve a list of usernames using the finger service.",
+    "source": "Nmap"
+  },
+  {
+    "name": "fingerprint-strings",
+    "description": "Prints the readable strings from service fingerprints of unknown services.",
+    "source": "Nmap"
+  },
+  {
+    "name": "firewalk",
+    "description": "Tries to discover firewall rules using an IP TTL expiration technique known\nas firewalking.",
+    "source": "Nmap"
+  },
+  {
+    "name": "firewall-bypass",
+    "description": "Detects a vulnerability in netfilter and other firewalls that use helpers to\ndynamically open ports for protocols such as ftp and sip.",
+    "source": "Nmap"
+  },
+  {
+    "name": "flume-master-info",
+    "description": "Retrieves information from Flume master HTTP pages.",
+    "source": "Nmap"
+  },
+  {
+    "name": "fox-info",
+    "description": "Tridium Niagara Fox is a protocol used within Building Automation Systems. Based\noff Billy Rios and Terry McCorkle's work this Nmap NSE will collect information\nfrom A Tridium Niagara system.",
+    "source": "Nmap"
+  },
+  {
+    "name": "freelancer-info",
+    "description": "Detects the Freelancer game server (FLServer.exe) service by sending a\nstatus query UDP probe.",
+    "source": "Nmap"
+  },
+  {
+    "name": "ftp-anon",
+    "description": "Checks if an FTP server allows anonymous logins.",
+    "source": "Nmap"
+  },
+  {
+    "name": "ftp-bounce",
+    "description": "Checks to see if an FTP server allows port scanning using the FTP bounce method.",
+    "source": "Nmap"
+  },
+  {
+    "name": "ftp-brute",
+    "description": "Performs brute force password auditing against FTP servers.",
+    "source": "Nmap"
+  },
+  {
+    "name": "ftp-libopie",
+    "description": "Checks if an FTPd is prone to CVE-2010-1938 (OPIE off-by-one stack overflow),\na vulnerability discovered by Maksymilian Arciemowicz and Adam \"pi3\" Zabrocki.\nSee the advisory at https://nmap.org/r/fbsd-sa-opie.\nBe advised that, if launched against a vulnerable host, this script will crash the FTPd.",
+    "source": "Nmap"
+  },
+  {
+    "name": "ftp-proftpd-backdoor",
+    "description": "Tests for the presence of the ProFTPD 1.3.3c backdoor reported as BID\n45150. This script attempts to exploit the backdoor using the innocuous\nid command by default, but that can be changed with the\nftp-proftpd-backdoor.cmd script argument.",
+    "source": "Nmap"
+  },
+  {
+    "name": "ftp-syst",
+    "description": "Sends FTP SYST and STAT commands and returns the result.",
+    "source": "Nmap"
+  },
+  {
+    "name": "ftp-vsftpd-backdoor",
+    "description": "Tests for the presence of the vsFTPd 2.3.4 backdoor reported on 2011-07-04\n(CVE-2011-2523). This script attempts to exploit the backdoor using the\ninnocuous id command by default, but that can be changed with\nthe exploit.cmd or ftp-vsftpd-backdoor.cmd script\narguments.",
+    "source": "Nmap"
+  },
+  {
+    "name": "ftp-vuln-cve2010-4221",
+    "description": "Checks for a stack-based buffer overflow in the ProFTPD server, version\nbetween 1.3.2rc3 and 1.3.3b. By sending a large number of TELNET_IAC escape\nsequence, the proftpd process miscalculates the buffer length, and a remote\nattacker will be able to corrupt the stack and execute arbitrary code within\nthe context of the proftpd process (CVE-2010-4221). Authentication is not\nrequired to exploit this vulnerability.",
+    "source": "Nmap"
+  },
+  {
+    "name": "ganglia-info",
+    "description": "Retrieves system information (OS version, available memory, etc.) from\na listening Ganglia Monitoring Daemon or Ganglia Meta Daemon.",
+    "source": "Nmap"
+  },
+  {
+    "name": "giop-info",
+    "description": "Queries a CORBA naming server for a list of objects.",
+    "source": "Nmap"
+  },
+  {
+    "name": "gkrellm-info",
+    "description": "Queries a GKRellM service for monitoring information. A single round of\ncollection is made, showing a snapshot of information at the time of the\nrequest.",
+    "source": "Nmap"
+  },
+  {
+    "name": "gopher-ls",
+    "description": "Lists files and directories at the root of a gopher service.",
+    "source": "Nmap"
+  },
+  {
+    "name": "gpsd-info",
+    "description": "Retrieves GPS time, coordinates and speed from the GPSD network daemon.",
+    "source": "Nmap"
+  },
+  {
+    "name": "hadoop-datanode-info",
+    "description": "Discovers information such as log directories from an Apache Hadoop DataNode\nHTTP status page.",
+    "source": "Nmap"
+  },
+  {
+    "name": "hadoop-jobtracker-info",
+    "description": "Retrieves information from an Apache Hadoop JobTracker HTTP status page.",
+    "source": "Nmap"
+  },
+  {
+    "name": "hadoop-namenode-info",
+    "description": "Retrieves information from an Apache Hadoop NameNode HTTP status page.",
+    "source": "Nmap"
+  },
+  {
+    "name": "hadoop-secondary-namenode-info",
+    "description": "Retrieves information from an Apache Hadoop secondary NameNode HTTP status page.",
+    "source": "Nmap"
+  },
+  {
+    "name": "hadoop-tasktracker-info",
+    "description": "Retrieves information from an Apache Hadoop TaskTracker HTTP status page.",
+    "source": "Nmap"
+  },
+  {
+    "name": "hbase-master-info",
+    "description": "Retrieves information from an Apache HBase (Hadoop database) master HTTP status page.",
+    "source": "Nmap"
+  },
+  {
+    "name": "hbase-region-info",
+    "description": "Retrieves information from an Apache HBase (Hadoop database) region server HTTP status page.",
+    "source": "Nmap"
+  },
+  {
+    "name": "hddtemp-info",
+    "description": "Reads hard disk information (such as brand, model, and sometimes temperature) from a listening hddtemp service.",
+    "source": "Nmap"
+  },
+  {
+    "name": "hnap-info",
+    "description": "Retrieve hardwares details and configuration information utilizing HNAP, the \"Home Network Administration Protocol\".\nIt is an HTTP-Simple Object Access Protocol (SOAP)-based protocol which allows for remote topology discovery,\nconfiguration, and management of devices (routers, cameras, PCs, NAS, etc.)",
+    "source": "Nmap"
+  },
+  {
+    "name": "hostmap-bfk",
+    "description": "Discovers hostnames that resolve to the target's IP address by querying the online database at http://www.bfk.de/bfk_dnslogger.html.",
+    "source": "Nmap"
+  },
+  {
+    "name": "hostmap-crtsh",
+    "description": "Finds subdomains of a web server by querying Google's Certificate Transparency\nlogs database (https://crt.sh).",
+    "source": "Nmap"
+  },
+  {
+    "name": "hostmap-robtex",
+    "description": "Discovers hostnames that resolve to the target's IP address by querying the online Robtex service at http://ip.robtex.com/.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-adobe-coldfusion-apsa1301",
+    "description": "Attempts to exploit an authentication bypass vulnerability in Adobe Coldfusion\nservers to retrieve a valid administrator's session cookie.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-affiliate-id",
+    "description": "Grabs affiliate network IDs (e.g. Google AdSense or Analytics, Amazon\nAssociates, etc.) from a web page. These can be used to identify pages\nwith the same owner.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-apache-negotiation",
+    "description": "Checks if the target http server has mod_negotiation enabled.  This\nfeature can be leveraged to find hidden resources and spider a web\nsite using fewer requests.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-apache-server-status",
+    "description": "Attempts to retrieve the server-status page for Apache webservers that\nhave mod_status enabled. If the server-status page exists and appears to\nbe from mod_status the script will parse useful information such as the\nsystem uptime, Apache version and recent HTTP requests.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-aspnet-debug",
+    "description": "Determines if a ASP.NET application has debugging enabled using a HTTP DEBUG request.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-auth",
+    "description": "Retrieves the authentication scheme and realm of a web service that requires\nauthentication.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-auth-finder",
+    "description": "Spiders a web site to find web pages requiring form-based or HTTP-based authentication. The results are returned in a table with each url and the\ndetected method.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-avaya-ipoffice-users",
+    "description": "Attempts to enumerate users in Avaya IP Office systems 7.x.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-awstatstotals-exec",
+    "description": "Exploits a remote code execution vulnerability in Awstats Totals 1.0 up to 1.14\nand possibly other products based on it (CVE: 2008-3922).",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-axis2-dir-traversal",
+    "description": "Exploits a directory traversal vulnerability in Apache Axis2 version 1.4.1 by\nsending a specially crafted request to the parameter xsd\n(BID 40343). By default it will try to retrieve the configuration file of the\nAxis2 service '/conf/axis2.xml' using the path\n'/axis2/services/' to return the username and password of the\nadmin account.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-backup-finder",
+    "description": "Spiders a website and attempts to identify backup copies of discovered files.\nIt does so by requesting a number of different combinations of the filename (eg. index.bak, index.html~, copy of index.html).",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-barracuda-dir-traversal",
+    "description": "Attempts to retrieve the configuration settings from a Barracuda\nNetworks Spam & Virus Firewall device using the directory traversal\nvulnerability described at\nhttp://seclists.org/fulldisclosure/2010/Oct/119.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-bigip-cookie",
+    "description": "Decodes any unencrypted F5 BIG-IP cookies in the HTTP response.\nBIG-IP cookies contain information on backend systems such as\ninternal IP addresses and port numbers.\nSee here for more info: https://support.f5.com/csp/article/K6917",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-brute",
+    "description": "Performs brute force password auditing against http basic, digest and ntlm authentication.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-cakephp-version",
+    "description": "Obtains the CakePHP version of a web application built with the CakePHP\nframework by fingerprinting default files shipped with the CakePHP framework.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-chrono",
+    "description": "Measures the time a website takes to deliver a web page and returns\nthe maximum, minimum and average time it took to fetch a page.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-cisco-anyconnect",
+    "description": "Connect as Cisco AnyConnect client to a Cisco SSL VPN and retrieves version\nand tunnel information.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-coldfusion-subzero",
+    "description": "Attempts to retrieve version, absolute path of administration panel and the\nfile 'password.properties' from vulnerable installations of ColdFusion 9 and\n10.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-comments-displayer",
+    "description": "Extracts and outputs HTML and JavaScript comments from HTTP responses.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-config-backup",
+    "description": "Checks for backups and swap files of common content management system\nand web server configuration files.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-cookie-flags",
+    "description": "Examines cookies set by HTTP services.  Reports any session cookies set\nwithout the httponly flag.  Reports any session cookies set over SSL without\nthe secure flag.  If http-enum.nse is also run, any interesting paths found\nby it will be checked in addition to the root.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-cors",
+    "description": "Tests an http server for Cross-Origin Resource Sharing (CORS), a way\nfor domains to explicitly opt in to having certain methods invoked by\nanother domain.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-cross-domain-policy",
+    "description": "Checks the cross-domain policy file (/crossdomain.xml) and the client-acces-policy file (/clientaccesspolicy.xml)\nin web applications and lists the trusted domains. Overly permissive settings enable Cross Site Request Forgery\nattacks and may allow attackers to access sensitive data. This script is useful to detect permissive\nconfigurations and possible domain names available for purchase to exploit the application.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-csrf",
+    "description": "This script detects Cross Site Request Forgeries (CSRF) vulnerabilities.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-date",
+    "description": "Gets the date from HTTP-like services. Also prints how much the date\ndiffers from local time. Local time is the time the HTTP request was\nsent, so the difference includes at least the duration of one RTT.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-default-accounts",
+    "description": "Tests for access with default credentials used by a variety of web applications and devices.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-devframework",
+    "description": "",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-dlink-backdoor",
+    "description": "Detects a firmware backdoor on some D-Link routers by changing the User-Agent\nto a \"secret\" value. Using the \"secret\" User-Agent bypasses authentication\nand allows admin access to the router.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-dombased-xss",
+    "description": "It looks for places where attacker-controlled information in the DOM may be used\nto affect JavaScript execution in certain ways. The attack is explained here:\nhttp://www.webappsec.org/projects/articles/071105.shtml",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-domino-enum-passwords",
+    "description": "Attempts to enumerate the hashed Domino Internet Passwords that are (by\ndefault) accessible by all authenticated users. This script can also download\nany Domino ID Files attached to the Person document.  Passwords are presented\nin a form suitable for running in John the Ripper.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-drupal-enum",
+    "description": "Enumerates the installed Drupal modules/themes by using a list of known modules and themes.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-drupal-enum-users",
+    "description": "Enumerates Drupal users by exploiting an information disclosure vulnerability\nin Views, Drupal's most popular module.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-enum",
+    "description": "Enumerates directories used by popular web applications and servers.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-errors",
+    "description": "This script crawls through the website and returns any error pages.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-exif-spider",
+    "description": "Spiders a site's images looking for interesting exif data embedded in\n.jpg files. Displays the make and model of the camera, the date the photo was\ntaken, and the embedded geotag information.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-favicon",
+    "description": "Gets the favicon (\"favorites icon\") from a web page and matches it against a\ndatabase of the icons of known web applications. If there is a match, the name\nof the application is printed; otherwise the MD5 hash of the icon data is\nprinted.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-feed",
+    "description": "This script crawls through the website to find any rss or atom feeds.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-fetch",
+    "description": "The script is used to fetch files from servers.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-fileupload-exploiter",
+    "description": "Exploits insecure file upload forms in web applications\nusing various techniques like changing the Content-type\nheader or creating valid image files containing the\npayload in the comment.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-form-brute",
+    "description": "Performs brute force password auditing against http form-based authentication.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-form-fuzzer",
+    "description": "Performs a simple form fuzzing against forms found on websites.\nTries strings and numbers of increasing length and attempts to\ndetermine if the fuzzing was successful.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-frontpage-login",
+    "description": "Checks whether target machines are vulnerable to anonymous Frontpage login.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-generator",
+    "description": "Displays the contents of the \"generator\" meta tag of a web page (default: /)\nif there is one.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-git",
+    "description": "Checks for a Git repository found in a website's document root\n/.git/<something>) and retrieves as much repo information as\npossible, including language/framework, remotes, last commit\nmessage, and repository description.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-gitweb-projects-enum",
+    "description": "Retrieves a list of Git projects, owners and descriptions from a gitweb (web interface to the Git revision control system).",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-google-malware",
+    "description": "Checks if hosts are on Google's blacklist of suspected malware and phishing\nservers. These lists are constantly updated and are part of Google's Safe\nBrowsing service.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-grep",
+    "description": "Spiders a website and attempts to match all pages and urls against a given\nstring. Matches are counted and grouped per url under which they were\ndiscovered.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-headers",
+    "description": "Performs a HEAD request for the root folder (\"/\") of a web server and displays the HTTP headers returned.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-hp-ilo-info",
+    "description": "Attempts to extract information from HP iLO boards including versions and addresses.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-huawei-hg5xx-vuln",
+    "description": "Detects Huawei modems models HG530x, HG520x, HG510x (and possibly others...)\nvulnerable to a remote credential and information disclosure vulnerability. It\nalso extracts the PPPoE credentials and other interesting configuration values.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-icloud-findmyiphone",
+    "description": "Retrieves the locations of all \"Find my iPhone\" enabled iOS devices by querying\nthe MobileMe web service (authentication required).",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-icloud-sendmsg",
+    "description": "Sends a message to a iOS device through the Apple MobileMe web service. The\ndevice has to be registered with an Apple ID using the Find My Iphone\napplication.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-iis-short-name-brute",
+    "description": "Attempts to brute force the 8.3 filenames (commonly known as short names) of files and directories in the root folder\nof vulnerable IIS servers. This script is an implementation of the PoC \"iis shortname scanner\".",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-iis-webdav-vuln",
+    "description": "Checks for a vulnerability in IIS 5.1/6.0 that allows arbitrary users to access\nsecured WebDAV folders by searching for a password-protected folder and\nattempting to access it. This vulnerability was patched in Microsoft Security\nBulletin MS09-020, https://nmap.org/r/ms09-020.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-internal-ip-disclosure",
+    "description": "Determines if the web server leaks its internal IP address when sending an HTTP/1.0 request without a Host header.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-joomla-brute",
+    "description": "Performs brute force password auditing against Joomla web CMS installations.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-jsonp-detection",
+    "description": "Attempts to discover JSONP endpoints in web servers. JSONP endpoints can be\nused to bypass Same-origin Policy restrictions in web browsers.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-litespeed-sourcecode-download",
+    "description": "Exploits a null-byte poisoning vulnerability in Litespeed Web Servers 4.0.x\nbefore 4.0.15 to retrieve the target script's source code by sending a HTTP\nrequest with a null byte followed by a .txt file extension (CVE-2010-2333).",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-ls",
+    "description": "Shows the content of an \"index\" Web page.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-majordomo2-dir-traversal",
+    "description": "Exploits a directory traversal vulnerability existing in Majordomo2 to retrieve remote files. (CVE-2011-0049).",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-malware-host",
+    "description": "Looks for signature of known server compromises.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-mcmp",
+    "description": "Checks if the webserver allows mod_cluster management protocol (MCMP) methods.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-method-tamper",
+    "description": "Attempts to bypass password protected resources (HTTP 401 status) by performing HTTP verb tampering.\nIf an array of paths to check is not set, it will crawl the web server and perform the check against any\npassword protected resource that it finds.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-methods",
+    "description": "Finds out what options are supported by an HTTP server by sending an\nOPTIONS request. Lists potentially risky methods. It tests those methods\nnot mentioned in the OPTIONS headers individually and sees if they are\nimplemented. Any output other than 501/405 suggests that the method is\nif not in the range 400 to 600. If the response falls under that range then\nit is compared to the response from a randomly generated method.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-mobileversion-checker",
+    "description": "Checks if the website holds a mobile version.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-ntlm-info",
+    "description": "This script enumerates information from remote HTTP services with NTLM\nauthentication enabled.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-open-proxy",
+    "description": "Checks if an HTTP proxy is open.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-open-redirect",
+    "description": "Spiders a website and attempts to identify open redirects. Open\nredirects are handlers which commonly take a URL as a parameter and\nresponds with a HTTP redirect (3XX) to the target.  Risks of open redirects are\ndescribed at http://cwe.mitre.org/data/definitions/601.html.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-passwd",
+    "description": "Checks if a web server is vulnerable to directory traversal by attempting to\nretrieve /etc/passwd or \\boot.ini.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-php-version",
+    "description": "Attempts to retrieve the PHP version from a web server. PHP has a number\nof magic queries that return images or text that can vary with the PHP\nversion. This script uses the following queries:",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-phpmyadmin-dir-traversal",
+    "description": "Exploits a directory traversal vulnerability in phpMyAdmin 2.6.4-pl1 (and\npossibly other versions) to retrieve remote files on the web server.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-phpself-xss",
+    "description": "Crawls a web server and attempts to find PHP files vulnerable to reflected\ncross site scripting via the variable $_SERVER[\"PHP_SELF\"].",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-proxy-brute",
+    "description": "Performs brute force password guessing against HTTP proxy servers.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-put",
+    "description": "Uploads a local file to a remote web server using the HTTP PUT method. You must specify the filename and URL path with NSE arguments.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-qnap-nas-info",
+    "description": "Attempts to retrieve the model, firmware version, and enabled services from a\nQNAP Network Attached Storage (NAS) device.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-referer-checker",
+    "description": "Informs about cross-domain include of scripts. Websites that include\nexternal javascript scripts are delegating part of their security to\nthird-party entities.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-rfi-spider",
+    "description": "Crawls webservers in search of RFI (remote file inclusion) vulnerabilities. It\ntests every form field it finds and every parameter of a URL containing a\nquery.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-robots.txt",
+    "description": "Checks for disallowed entries in /robots.txt on a web server.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-robtex-reverse-ip",
+    "description": "Obtains up to 100 forward DNS names for a target IP address by querying the Robtex service (https://www.robtex.com/ip-lookup/).",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-robtex-shared-ns",
+    "description": "Finds up to 100 domain names which use the same name server as the target by querying the Robtex service at http://www.robtex.com/dns/.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-sap-netweaver-leak",
+    "description": "Detects SAP Netweaver Portal instances that allow anonymous access to the\n KM unit navigation page. This page leaks file names, ldap users, etc.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-security-headers",
+    "description": "Checks for the HTTP response headers related to security given in OWASP Secure Headers Project\nand gives a brief description of the header and its configuration value.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-server-header",
+    "description": "Uses the HTTP Server header for missing version info. This is currently\ninfeasible with version probes because of the need to match non-HTTP services\ncorrectly.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-shellshock",
+    "description": "Attempts to exploit the \"shellshock\" vulnerability (CVE-2014-6271 and\nCVE-2014-7169) in web applications.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-sitemap-generator",
+    "description": "Spiders a web server and displays its directory structure along with\nnumber and types of files in each folder. Note that files listed as\nhaving an 'Other' extension are ones that have no extension or that\nare a root document.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-slowloris",
+    "description": "Tests a web server for vulnerability to the Slowloris DoS attack by launching a Slowloris attack.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-slowloris-check",
+    "description": "Tests a web server for vulnerability to the Slowloris DoS attack without\nactually launching a DoS attack.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-sql-injection",
+    "description": "Spiders an HTTP server looking for URLs containing queries vulnerable to an SQL\ninjection attack. It also extracts forms from found websites and tries to identify\nfields that are vulnerable.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-stored-xss",
+    "description": "Unfiltered '>' (greater than sign). An indication of potential XSS vulnerability.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-svn-enum",
+    "description": "Enumerates users of a Subversion repository by examining logs of most recent commits.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-svn-info",
+    "description": "Requests information from a Subversion repository.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-title",
+    "description": "Shows the title of the default page of a web server.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-tplink-dir-traversal",
+    "description": "Exploits a directory traversal vulnerability existing in several TP-Link\nwireless routers. Attackers may exploit this vulnerability to read any of the\nconfiguration and password files remotely and without authentication.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-trace",
+    "description": "Sends an HTTP TRACE request and shows if the method TRACE is enabled. If debug\nis enabled, it returns the header fields that were modified in the response.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-traceroute",
+    "description": "Exploits the Max-Forwards HTTP header to detect the presence of reverse proxies.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-trane-info",
+    "description": "Attempts to obtain information from Trane Tracer SC devices. Trane Tracer SC\n is an intelligent field panel for communicating with HVAC equipment controllers\n deployed across several sectors including commercial facilities and others.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-unsafe-output-escaping",
+    "description": "Spiders a website and attempts to identify output escaping problems\nwhere content is reflected back to the user.  This script locates all\nparameters, ?x=foo&y=bar and checks if the values are reflected on the\npage. If they are indeed reflected, the script will try to insert\nghz>hzx\"zxc'xcv and check which (if any) characters were reflected\nback onto the page without proper html escaping.  This is an\nindication of potential XSS vulnerability.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-useragent-tester",
+    "description": "Checks if various crawling utilities are allowed by the host.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-userdir-enum",
+    "description": "Attempts to enumerate valid usernames on web servers running with the mod_userdir\nmodule or similar enabled.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-vhosts",
+    "description": "Searches for web virtual hostnames by making a large number of HEAD requests against http servers using common hostnames.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-virustotal",
+    "description": "Checks whether a file has been determined as malware by Virustotal. Virustotal\nis a service that provides the capability to scan a file or check a checksum\nagainst a number of the major antivirus vendors. The script uses the public\nAPI which requires a valid API key and has a limit on 4 queries per minute.\nA key can be acquired by registering as a user on the virustotal web page:",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-vlcstreamer-ls",
+    "description": "Connects to a VLC Streamer helper service and lists directory contents. The\nVLC Streamer helper service is used by the iOS VLC Streamer application to\nenable streaming of multimedia content from the remote server to the device.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-vmware-path-vuln",
+    "description": "Checks for a path-traversal vulnerability in VMWare ESX, ESXi, and Server (CVE-2009-3733).",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-vuln-cve2006-3392",
+    "description": "Exploits a file disclosure vulnerability in Webmin (CVE-2006-3392)",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-vuln-cve2009-3960",
+    "description": "Exploits cve-2009-3960 also known as Adobe XML External Entity Injection.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-vuln-cve2010-0738",
+    "description": "Tests whether a JBoss target is vulnerable to jmx console authentication bypass (CVE-2010-0738).",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-vuln-cve2010-2861",
+    "description": "Executes a directory traversal attack against a ColdFusion\nserver and tries to grab the password hash for the administrator user. It\nthen uses the salt value (hidden in the web page) to create the SHA1\nHMAC hash that the web server needs for authentication as admin. You can\npass this value to the ColdFusion server as the admin without cracking\nthe password hash.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-vuln-cve2011-3192",
+    "description": "Detects a denial of service vulnerability in the way the Apache web server\nhandles requests for multiple overlapping/simple ranges of a page.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-vuln-cve2011-3368",
+    "description": "Tests for the CVE-2011-3368 (Reverse Proxy Bypass) vulnerability in Apache HTTP server's reverse proxy mode.\nThe script will run 3 tests:",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-vuln-cve2012-1823",
+    "description": "Detects PHP-CGI installations that are vulnerable to CVE-2012-1823, This\ncritical vulnerability allows attackers to retrieve source code and execute\ncode remotely.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-vuln-cve2013-0156",
+    "description": "Detects Ruby on Rails servers vulnerable to object injection, remote command\nexecutions and denial of service attacks. (CVE-2013-0156)",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-vuln-cve2013-6786",
+    "description": "Detects a URL redirection and reflected XSS vulnerability in Allegro RomPager\nWeb server. The vulnerability has been assigned CVE-2013-6786.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-vuln-cve2013-7091",
+    "description": "An 0 day was released on the 6th December 2013 by rubina119, and was patched in Zimbra 7.2.6.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-vuln-cve2014-2126",
+    "description": "Detects whether the Cisco ASA appliance is vulnerable to the Cisco ASA ASDM\nPrivilege Escalation Vulnerability (CVE-2014-2126).",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-vuln-cve2014-2127",
+    "description": "Detects whether the Cisco ASA appliance is vulnerable to the Cisco ASA SSL VPN\nPrivilege Escalation Vulnerability (CVE-2014-2127).",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-vuln-cve2014-2128",
+    "description": "Detects whether the Cisco ASA appliance is vulnerable to the Cisco ASA SSL VPN\nAuthentication Bypass Vulnerability (CVE-2014-2128).",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-vuln-cve2014-2129",
+    "description": "Detects whether the Cisco ASA appliance is vulnerable to the Cisco ASA SIP\nDenial of Service Vulnerability (CVE-2014-2129).",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-vuln-cve2014-3704",
+    "description": "Exploits CVE-2014-3704 also known as 'Drupageddon' in Drupal. Versions < 7.32\nof Drupal core are known to be affected.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-vuln-cve2014-8877",
+    "description": "Exploits a remote code injection vulnerability (CVE-2014-8877) in Wordpress CM\nDownload Manager plugin. Versions <= 2.0.0 are known to be affected.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-vuln-cve2015-1427",
+    "description": "This script attempts to detect a vulnerability, CVE-2015-1427, which  allows attackers\n to leverage features of this API to gain unauthenticated remote code execution (RCE).",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-vuln-cve2015-1635",
+    "description": "Checks for a remote code execution vulnerability (MS15-034) in Microsoft Windows systems (CVE2015-2015-1635).",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-vuln-cve2017-1001000",
+    "description": "Attempts to detect a privilege escalation vulnerability in Wordpress 4.7.0 and 4.7.1 that\nallows unauthenticated users to inject content in posts.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-vuln-cve2017-5638",
+    "description": "Detects whether the specified URL is vulnerable to the Apache Struts\nRemote Code Execution Vulnerability (CVE-2017-5638).",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-vuln-cve2017-5689",
+    "description": "Detects if a system with Intel Active Management Technology is vulnerable to the INTEL-SA-00075\nprivilege escalation vulnerability (CVE2017-5689).",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-vuln-cve2017-8917",
+    "description": "An SQL Injection vulnerability affecting Joomla! 3.7.x before 3.7.1 allows for\nunauthenticated users to execute arbitrary SQL commands. This vulnerability was\ncaused by a new component, com_fields, which was introduced in\nversion 3.7. This component is publicly accessible, which means this can be\nexploited by any malicious individual visiting the site.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-vuln-misfortune-cookie",
+    "description": "Detects the RomPager 4.07 Misfortune Cookie vulnerability by safely exploiting it.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-vuln-wnr1000-creds",
+    "description": "A vulnerability has been discovered in WNR 1000 series that allows an attacker\nto retrieve administrator credentials with the router interface.\nTested On Firmware Version(s): V1.0.2.60_60.0.86 (Latest) and V1.0.2.54_60.0.82NA",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-waf-detect",
+    "description": "Attempts to determine whether a web server is protected by an IPS (Intrusion\nPrevention System), IDS (Intrusion Detection System) or WAF (Web Application\nFirewall) by probing the web server with malicious payloads and detecting\nchanges in the response code and body.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-waf-fingerprint",
+    "description": "Tries to detect the presence of a web application firewall and its type and\nversion.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-webdav-scan",
+    "description": "A script to detect WebDAV installations. Uses the OPTIONS and PROPFIND methods.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-wordpress-brute",
+    "description": "performs brute force password auditing against Wordpress CMS/blog installations.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-wordpress-enum",
+    "description": "Enumerates themes and plugins of Wordpress installations. The script can also detect\n outdated plugins by comparing version numbers with information pulled from api.wordpress.org.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-wordpress-users",
+    "description": "Enumerates usernames in Wordpress blog/CMS installations by exploiting an\ninformation disclosure vulnerability existing in versions 2.6, 3.1, 3.1.1,\n3.1.3 and 3.2-beta2 and possibly others.",
+    "source": "Nmap"
+  },
+  {
+    "name": "http-xssed",
+    "description": "This script searches the xssed.com database and outputs the result.",
+    "source": "Nmap"
+  },
+  {
+    "name": "https-redirect",
+    "description": "Check for HTTP services that redirect to the HTTPS on the same port.",
+    "source": "Nmap"
+  },
+  {
+    "name": "iax2-brute",
+    "description": "Performs brute force password auditing against the Asterisk IAX2 protocol.\nGuessing fails when a large number of attempts is made due to the maxcallnumber limit (default 2048).\nIn case your getting \"ERROR: Too many retries, aborted ...\" after a while, this is most likely what's happening.\nIn order to avoid this problem try:\n  - reducing the size of your dictionary\n  - use the brute delay option to introduce a delay between guesses\n  - split the guessing up in chunks and wait for a while between them",
+    "source": "Nmap"
+  },
+  {
+    "name": "iax2-version",
+    "description": "Detects the UDP IAX2 service.",
+    "source": "Nmap"
+  },
+  {
+    "name": "icap-info",
+    "description": "Tests a list of known ICAP service names and prints information about\nany it detects. The Internet Content Adaptation Protocol (ICAP) is\nused to extend transparent proxy servers and is generally used for\ncontent filtering and antivirus scanning.",
+    "source": "Nmap"
+  },
+  {
+    "name": "iec-identify",
+    "description": "Attempts to identify IEC 60870-5-104 ICS protocol.",
+    "source": "Nmap"
+  },
+  {
+    "name": "ike-version",
+    "description": "Obtains information (such as vendor and device type where available) from an\nIKE service by sending four packets to the host.  This scripts tests with both\nMain and Aggressive Mode and sends multiple transforms per request.",
+    "source": "Nmap"
+  },
+  {
+    "name": "imap-brute",
+    "description": "Performs brute force password auditing against IMAP servers using either LOGIN, PLAIN, CRAM-MD5, DIGEST-MD5 or NTLM authentication.",
+    "source": "Nmap"
+  },
+  {
+    "name": "imap-capabilities",
+    "description": "Retrieves IMAP email server capabilities.",
+    "source": "Nmap"
+  },
+  {
+    "name": "imap-ntlm-info",
+    "description": "This script enumerates information from remote IMAP services with NTLM\nauthentication enabled.",
+    "source": "Nmap"
+  },
+  {
+    "name": "impress-remote-discover",
+    "description": "Tests for the presence of the LibreOffice Impress Remote server.\nChecks if a PIN is valid if provided and will bruteforce the PIN\nif requested.",
+    "source": "Nmap"
+  },
+  {
+    "name": "informix-brute",
+    "description": "Performs brute force password auditing against IBM Informix Dynamic Server.",
+    "source": "Nmap"
+  },
+  {
+    "name": "informix-query",
+    "description": "Runs a query against IBM Informix Dynamic Server using the given\nauthentication credentials (see also: informix-brute).",
+    "source": "Nmap"
+  },
+  {
+    "name": "informix-tables",
+    "description": "Retrieves a list of tables and column definitions for each database on an Informix server.",
+    "source": "Nmap"
+  },
+  {
+    "name": "ip-forwarding",
+    "description": "Detects whether the remote device has ip forwarding or \"Internet connection\nsharing\" enabled, by sending an ICMP echo request to a given target using\nthe scanned host as default gateway.",
+    "source": "Nmap"
+  },
+  {
+    "name": "ip-geolocation-geoplugin",
+    "description": "Tries to identify the physical location of an IP address using the\nGeoplugin geolocation web service (http://www.geoplugin.com/). There\nis no limit on lookups using this service.",
+    "source": "Nmap"
+  },
+  {
+    "name": "ip-geolocation-ipinfodb",
+    "description": "Tries to identify the physical location of an IP address using the\nIPInfoDB geolocation web service\n(http://ipinfodb.com/ip_location_api.php).",
+    "source": "Nmap"
+  },
+  {
+    "name": "ip-geolocation-map-bing",
+    "description": "This script queries the Nmap registry for the GPS coordinates of targets stored\nby previous geolocation scripts and renders a Bing Map of markers representing\nthe targets.",
+    "source": "Nmap"
+  },
+  {
+    "name": "ip-geolocation-map-google",
+    "description": "This script queries the Nmap registry for the GPS coordinates of targets stored\nby previous geolocation scripts and renders a Google Map of markers representing\nthe targets.",
+    "source": "Nmap"
+  },
+  {
+    "name": "ip-geolocation-map-kml",
+    "description": "This script queries the Nmap registry for the GPS coordinates of targets stored\nby previous geolocation scripts and produces a KML file of points representing\nthe targets.",
+    "source": "Nmap"
+  },
+  {
+    "name": "ip-geolocation-maxmind",
+    "description": "Tries to identify the physical location of an IP address using a\nGeolocation Maxmind database file (available from\nhttp://www.maxmind.com/app/ip-location). This script supports queries\nusing all Maxmind databases that are supported by their API including\nthe commercial ones.",
+    "source": "Nmap"
+  },
+  {
+    "name": "ip-https-discover",
+    "description": "Checks if the IP over HTTPS (IP-HTTPS) Tunneling Protocol [1] is supported.",
+    "source": "Nmap"
+  },
+  {
+    "name": "ipidseq",
+    "description": "Classifies a host's IP ID sequence (test for susceptibility to idle\nscan).",
+    "source": "Nmap"
+  },
+  {
+    "name": "ipmi-brute",
+    "description": "Performs brute force password auditing against IPMI RPC server.",
+    "source": "Nmap"
+  },
+  {
+    "name": "ipmi-cipher-zero",
+    "description": "IPMI 2.0 Cipher Zero Authentication Bypass Scanner. This module identifies IPMI 2.0\n  compatible systems that are vulnerable to an authentication bypass vulnerability\n  through the use of cipher zero.",
+    "source": "Nmap"
+  },
+  {
+    "name": "ipmi-version",
+    "description": "Performs IPMI Information Discovery through Channel Auth probes.",
+    "source": "Nmap"
+  },
+  {
+    "name": "ipv6-multicast-mld-list",
+    "description": "Uses Multicast Listener Discovery to list the multicast addresses subscribed to\nby IPv6 multicast listeners on the link-local scope. Addresses in the IANA IPv6\nMulticast Address Space Registry have their descriptions listed.",
+    "source": "Nmap"
+  },
+  {
+    "name": "ipv6-node-info",
+    "description": "Obtains hostnames, IPv4 and IPv6 addresses through IPv6 Node Information Queries.",
+    "source": "Nmap"
+  },
+  {
+    "name": "ipv6-ra-flood",
+    "description": "Generates a flood of Router Advertisements (RA) with random source MAC\naddresses and IPv6 prefixes. Computers, which have stateless autoconfiguration\nenabled by default (every major OS), will start to compute IPv6 suffix and\nupdate their routing table to reflect the accepted announcement. This will\ncause 100% CPU usage on Windows and platforms, preventing to process other\napplication requests.",
+    "source": "Nmap"
+  },
+  {
+    "name": "irc-botnet-channels",
+    "description": "Checks an IRC server for channels that are commonly used by malicious botnets.",
+    "source": "Nmap"
+  },
+  {
+    "name": "irc-brute",
+    "description": "Performs brute force password auditing against IRC (Internet Relay Chat) servers.",
+    "source": "Nmap"
+  },
+  {
+    "name": "irc-info",
+    "description": "Gathers information from an IRC server.",
+    "source": "Nmap"
+  },
+  {
+    "name": "irc-sasl-brute",
+    "description": "Performs brute force password auditing against IRC (Internet Relay Chat) servers supporting SASL authentication.",
+    "source": "Nmap"
+  },
+  {
+    "name": "irc-unrealircd-backdoor",
+    "description": "Checks if an IRC server is backdoored by running a time-based command (ping)\nand checking how long it takes to respond.",
+    "source": "Nmap"
+  },
+  {
+    "name": "iscsi-brute",
+    "description": "Performs brute force password auditing against iSCSI targets.",
+    "source": "Nmap"
+  },
+  {
+    "name": "iscsi-info",
+    "description": "Collects and displays information from remote iSCSI targets.",
+    "source": "Nmap"
+  },
+  {
+    "name": "isns-info",
+    "description": "Lists portals and iSCSI nodes registered with the Internet Storage Name\nService (iSNS).",
+    "source": "Nmap"
+  },
+  {
+    "name": "jdwp-exec",
+    "description": "Attempts to exploit java's remote debugging port. When remote debugging\nport is left open, it is possible to inject java bytecode and achieve\nremote code execution.  This script abuses this to inject and execute\na Java class file that executes the supplied shell command and returns\nits output.",
+    "source": "Nmap"
+  },
+  {
+    "name": "jdwp-info",
+    "description": "Attempts to exploit java's remote debugging port.  When remote\ndebugging port is left open, it is possible to inject java bytecode\nand achieve remote code execution.  This script injects and execute a\nJava class file that returns remote system information.",
+    "source": "Nmap"
+  },
+  {
+    "name": "jdwp-inject",
+    "description": "Attempts to exploit java's remote debugging port.  When remote debugging port\nis left open, it is possible to inject  java bytecode and achieve remote code\nexecution.  This script allows injection of arbitrary class files.",
+    "source": "Nmap"
+  },
+  {
+    "name": "jdwp-version",
+    "description": "Detects the Java Debug Wire Protocol. This protocol is used by Java programs\nto be debugged via the network. It should not be open to the public Internet,\nas it does not provide any security against malicious attackers who can inject\ntheir own bytecode into the debugged process.",
+    "source": "Nmap"
+  },
+  {
+    "name": "knx-gateway-discover",
+    "description": "Discovers KNX gateways by sending a KNX Search Request to the multicast address\n224.0.23.12 including a UDP payload with destination port 3671. KNX gateways\nwill respond with a KNX Search Response including various information about the\ngateway, such as KNX address and supported services.",
+    "source": "Nmap"
+  },
+  {
+    "name": "knx-gateway-info",
+    "description": "Identifies a KNX gateway on UDP port 3671 by sending a KNX Description Request.",
+    "source": "Nmap"
+  },
+  {
+    "name": "krb5-enum-users",
+    "description": "Discovers valid usernames by brute force querying likely usernames against a Kerberos service.\nWhen an invalid username is requested the server will respond using the\nKerberos error code KRB5KDC_ERR_C_PRINCIPAL_UNKNOWN, allowing us to determine\nthat the user name was invalid. Valid user names will illicit either the\nTGT in a AS-REP response or the error KRB5KDC_ERR_PREAUTH_REQUIRED, signaling\nthat the user is required to perform pre authentication.",
+    "source": "Nmap"
+  },
+  {
+    "name": "ldap-brute",
+    "description": "Attempts to brute-force LDAP authentication. By default\nit uses the built-in username and password lists. In order to use your\nown lists use the userdb and passdb script arguments.",
+    "source": "Nmap"
+  },
+  {
+    "name": "ldap-novell-getpass",
+    "description": "Universal Password enables advanced password policies, including extended\ncharacters in passwords, synchronization of passwords from eDirectory to\nother systems, and a single password for all access to eDirectory.",
+    "source": "Nmap"
+  },
+  {
+    "name": "ldap-rootdse",
+    "description": "Retrieves the LDAP root DSA-specific Entry (DSE)",
+    "source": "Nmap"
+  },
+  {
+    "name": "ldap-search",
+    "description": "Attempts to perform an LDAP search and returns all matches.",
+    "source": "Nmap"
+  },
+  {
+    "name": "lexmark-config",
+    "description": "Retrieves configuration information from a Lexmark S300-S400 printer.",
+    "source": "Nmap"
+  },
+  {
+    "name": "llmnr-resolve",
+    "description": "Resolves a hostname by using the LLMNR (Link-Local Multicast Name Resolution) protocol.",
+    "source": "Nmap"
+  },
+  {
+    "name": "lltd-discovery",
+    "description": "Uses the Microsoft LLTD protocol to discover hosts on a local network.",
+    "source": "Nmap"
+  },
+  {
+    "name": "lu-enum",
+    "description": "Attempts to enumerate Logical Units (LU) of TN3270E servers.",
+    "source": "Nmap"
+  },
+  {
+    "name": "maxdb-info",
+    "description": "Retrieves version and database information from a SAP Max DB database.",
+    "source": "Nmap"
+  },
+  {
+    "name": "mcafee-epo-agent",
+    "description": "Check if ePO agent is running on port 8081 or port identified as ePO Agent port.",
+    "source": "Nmap"
+  },
+  {
+    "name": "membase-brute",
+    "description": "Performs brute force password auditing against Couchbase Membase servers.",
+    "source": "Nmap"
+  },
+  {
+    "name": "membase-http-info",
+    "description": "Retrieves information (hostname, OS, uptime, etc.) from the CouchBase\nWeb Administration port.  The information retrieved by this script\ndoes not require any credentials.",
+    "source": "Nmap"
+  },
+  {
+    "name": "memcached-info",
+    "description": "Retrieves information (including system architecture, process ID, and\nserver time) from distributed memory object caching system memcached.",
+    "source": "Nmap"
+  },
+  {
+    "name": "metasploit-info",
+    "description": "Gathers info from the Metasploit rpc service.  It requires a valid login pair.\nAfter authentication it tries to determine Metasploit version and deduce the OS\ntype.  Then it creates a new console and executes few commands to get\nadditional info.",
+    "source": "Nmap"
+  },
+  {
+    "name": "metasploit-msgrpc-brute",
+    "description": "Performs brute force username and password auditing against\nMetasploit msgrpc interface.",
+    "source": "Nmap"
+  },
+  {
+    "name": "metasploit-xmlrpc-brute",
+    "description": "Performs brute force password auditing against a Metasploit RPC server using the XMLRPC protocol.",
+    "source": "Nmap"
+  },
+  {
+    "name": "mikrotik-routeros-brute",
+    "description": "Performs brute force password auditing against Mikrotik RouterOS devices with the API RouterOS interface enabled.",
+    "source": "Nmap"
+  },
+  {
+    "name": "mmouse-brute",
+    "description": "Performs brute force password auditing against the RPA Tech Mobile Mouse\nservers.",
+    "source": "Nmap"
+  },
+  {
+    "name": "mmouse-exec",
+    "description": "Connects to an RPA Tech Mobile Mouse server, starts an application and\nsends a sequence of keys to it. Any application that the user has\naccess to can be started and the key sequence is sent to the\napplication after it has been started.",
+    "source": "Nmap"
+  },
+  {
+    "name": "modbus-discover",
+    "description": "Enumerates SCADA Modbus slave ids (sids) and collects their device information.",
+    "source": "Nmap"
+  },
+  {
+    "name": "mongodb-brute",
+    "description": "Performs brute force password auditing against the MongoDB database.",
+    "source": "Nmap"
+  },
+  {
+    "name": "mongodb-databases",
+    "description": "Attempts to get a list of tables from a MongoDB database.",
+    "source": "Nmap"
+  },
+  {
+    "name": "mongodb-info",
+    "description": "Attempts to get build info and server status from a MongoDB database.",
+    "source": "Nmap"
+  },
+  {
+    "name": "mqtt-subscribe",
+    "description": "Dumps message traffic from MQTT brokers.",
+    "source": "Nmap"
+  },
+  {
+    "name": "mrinfo",
+    "description": "Queries targets for multicast routing information.",
+    "source": "Nmap"
+  },
+  {
+    "name": "ms-sql-brute",
+    "description": "Performs password guessing against Microsoft SQL Server (ms-sql). Works best in\nconjunction with the broadcast-ms-sql-discover script.",
+    "source": "Nmap"
+  },
+  {
+    "name": "ms-sql-config",
+    "description": "Queries Microsoft SQL Server (ms-sql) instances for a list of databases, linked servers,\nand configuration settings.",
+    "source": "Nmap"
+  },
+  {
+    "name": "ms-sql-dac",
+    "description": "Queries the Microsoft SQL Browser service for the DAC (Dedicated Admin\nConnection) port of a given (or all) SQL Server instance. The DAC port\nis used to connect to the database instance when normal connection\nattempts fail, for example, when server is hanging, out of memory or\nin other bad states. In addition, the DAC port provides an admin with\naccess to system objects otherwise not accessible over normal\nconnections.",
+    "source": "Nmap"
+  },
+  {
+    "name": "ms-sql-dump-hashes",
+    "description": "Dumps the password hashes from an MS-SQL server in a format suitable for\ncracking by tools such as John-the-ripper. In order to do so the user\nneeds to have the appropriate DB privileges.",
+    "source": "Nmap"
+  },
+  {
+    "name": "ms-sql-empty-password",
+    "description": "Attempts to authenticate to Microsoft SQL Servers using an empty password for\nthe sysadmin (sa) account.",
+    "source": "Nmap"
+  },
+  {
+    "name": "ms-sql-hasdbaccess",
+    "description": "Queries Microsoft SQL Server (ms-sql) instances for a list of databases a user has\naccess to.",
+    "source": "Nmap"
+  },
+  {
+    "name": "ms-sql-info",
+    "description": "Attempts to determine configuration and version information for Microsoft SQL\nServer instances.",
+    "source": "Nmap"
+  },
+  {
+    "name": "ms-sql-ntlm-info",
+    "description": "This script enumerates information from remote Microsoft SQL services with NTLM\nauthentication enabled.",
+    "source": "Nmap"
+  },
+  {
+    "name": "ms-sql-query",
+    "description": "Runs a query against Microsoft SQL Server (ms-sql).",
+    "source": "Nmap"
+  },
+  {
+    "name": "ms-sql-tables",
+    "description": "Queries Microsoft SQL Server (ms-sql) for a list of tables per database.",
+    "source": "Nmap"
+  },
+  {
+    "name": "ms-sql-xp-cmdshell",
+    "description": "Attempts to run a command using the command shell of Microsoft SQL\nServer (ms-sql).",
+    "source": "Nmap"
+  },
+  {
+    "name": "msrpc-enum",
+    "description": "Queries an MSRPC endpoint mapper for a list of mapped\nservices and displays the gathered information.",
+    "source": "Nmap"
+  },
+  {
+    "name": "mtrace",
+    "description": "Queries for the multicast path from a source to a destination host.",
+    "source": "Nmap"
+  },
+  {
+    "name": "murmur-version",
+    "description": "Detects the Murmur service (server for the Mumble voice communication\nclient) versions 1.2.X.",
+    "source": "Nmap"
+  },
+  {
+    "name": "mysql-audit",
+    "description": "Audits MySQL database server security configuration against parts of\nthe CIS MySQL v1.0.2 benchmark (the engine can be used for other MySQL\naudits by creating appropriate audit files).",
+    "source": "Nmap"
+  },
+  {
+    "name": "mysql-brute",
+    "description": "Performs password guessing against MySQL.",
+    "source": "Nmap"
+  },
+  {
+    "name": "mysql-databases",
+    "description": "Attempts to list all databases on a MySQL server.",
+    "source": "Nmap"
+  },
+  {
+    "name": "mysql-dump-hashes",
+    "description": "Dumps the password hashes from an MySQL server in a format suitable for\ncracking by tools such as John the Ripper.  Appropriate DB privileges (root) are required.",
+    "source": "Nmap"
+  },
+  {
+    "name": "mysql-empty-password",
+    "description": "Checks for MySQL servers with an empty password for root or\nanonymous.",
+    "source": "Nmap"
+  },
+  {
+    "name": "mysql-enum",
+    "description": "Performs valid-user enumeration against MySQL server using a bug\ndiscovered and published by Kingcope\n(http://seclists.org/fulldisclosure/2012/Dec/9).",
+    "source": "Nmap"
+  },
+  {
+    "name": "mysql-info",
+    "description": "Connects to a MySQL server and prints information such as the protocol and\nversion numbers, thread ID, status, capabilities, and the password salt.",
+    "source": "Nmap"
+  },
+  {
+    "name": "mysql-query",
+    "description": "Runs a query against a MySQL database and returns the results as a table.",
+    "source": "Nmap"
+  },
+  {
+    "name": "mysql-users",
+    "description": "Attempts to list all users on a MySQL server.",
+    "source": "Nmap"
+  },
+  {
+    "name": "mysql-variables",
+    "description": "Attempts to show all variables on a MySQL server.",
+    "source": "Nmap"
+  },
+  {
+    "name": "mysql-vuln-cve2012-2122",
+    "description": "",
+    "source": "Nmap"
+  },
+  {
+    "name": "nat-pmp-info",
+    "description": "Gets the routers WAN IP using the NAT Port Mapping Protocol (NAT-PMP).\nThe NAT-PMP protocol is supported by a broad range of routers including:",
+    "source": "Nmap"
+  },
+  {
+    "name": "nat-pmp-mapport",
+    "description": "Maps a WAN port on the router to a local port on the client using the NAT Port Mapping Protocol (NAT-PMP).  It supports the following operations:",
+    "source": "Nmap"
+  },
+  {
+    "name": "nbd-info",
+    "description": "Displays protocol and block device information from NBD servers.",
+    "source": "Nmap"
+  },
+  {
+    "name": "nbns-interfaces",
+    "description": "Retrieves IP addresses of the target's network interfaces via NetBIOS NS.\nAdditional network interfaces may reveal more information about the target,\nincluding finding paths to hidden non-routed networks via multihomed systems.",
+    "source": "Nmap"
+  },
+  {
+    "name": "nbstat",
+    "description": "Attempts to retrieve the target's NetBIOS names and MAC address.",
+    "source": "Nmap"
+  },
+  {
+    "name": "ncp-enum-users",
+    "description": "Retrieves a list of all eDirectory users from the Novell NetWare Core Protocol (NCP) service.",
+    "source": "Nmap"
+  },
+  {
+    "name": "ncp-serverinfo",
+    "description": "Retrieves eDirectory server information (OS version, server name,\nmounts, etc.) from the Novell NetWare Core Protocol (NCP) service.",
+    "source": "Nmap"
+  },
+  {
+    "name": "ndmp-fs-info",
+    "description": "Lists remote file systems by querying the remote device using the Network\nData Management Protocol (ndmp). NDMP is a protocol intended to transport\ndata between a NAS device and the backup device, removing the need for the\ndata to pass through the backup server. The following products are known\nto support the protocol:",
+    "source": "Nmap"
+  },
+  {
+    "name": "ndmp-version",
+    "description": "Retrieves version information from the remote Network Data Management Protocol\n(ndmp) service. NDMP is a protocol intended to transport data between a NAS\ndevice and the backup device, removing the need for the data to pass through\nthe backup server. The following products are known to support the protocol:",
+    "source": "Nmap"
+  },
+  {
+    "name": "nessus-brute",
+    "description": "Performs brute force password auditing against a Nessus vulnerability scanning daemon using the NTP 1.2 protocol.",
+    "source": "Nmap"
+  },
+  {
+    "name": "nessus-xmlrpc-brute",
+    "description": "Performs brute force password auditing against a Nessus vulnerability scanning daemon using the XMLRPC protocol.",
+    "source": "Nmap"
+  },
+  {
+    "name": "netbus-auth-bypass",
+    "description": "Checks if a NetBus server is vulnerable to an authentication bypass\nvulnerability which allows full access without knowing the password.",
+    "source": "Nmap"
+  },
+  {
+    "name": "netbus-brute",
+    "description": "Performs brute force password auditing against the Netbus backdoor (\"remote administration\") service.",
+    "source": "Nmap"
+  },
+  {
+    "name": "netbus-info",
+    "description": "Opens a connection to a NetBus server and extracts information about\nthe host and the NetBus service itself.",
+    "source": "Nmap"
+  },
+  {
+    "name": "netbus-version",
+    "description": "Extends version detection to detect NetBuster, a honeypot service\nthat mimes NetBus.",
+    "source": "Nmap"
+  },
+  {
+    "name": "nexpose-brute",
+    "description": "Performs brute force password auditing against a Nexpose vulnerability scanner\nusing the API 1.1.",
+    "source": "Nmap"
+  },
+  {
+    "name": "nfs-ls",
+    "description": "Attempts to get useful information about files from NFS exports.\nThe output is intended to resemble the output of ls.",
+    "source": "Nmap"
+  },
+  {
+    "name": "nfs-showmount",
+    "description": "Shows NFS exports, like the showmount -e command.",
+    "source": "Nmap"
+  },
+  {
+    "name": "nfs-statfs",
+    "description": "Retrieves disk space statistics and information from a remote NFS share.\nThe output is intended to resemble the output of df.",
+    "source": "Nmap"
+  },
+  {
+    "name": "nje-node-brute",
+    "description": "z/OS JES Network Job Entry (NJE) target node name brute force.",
+    "source": "Nmap"
+  },
+  {
+    "name": "nje-pass-brute",
+    "description": "z/OS JES Network Job Entry (NJE) 'I record' password brute forcer.",
+    "source": "Nmap"
+  },
+  {
+    "name": "nntp-ntlm-info",
+    "description": "This script enumerates information from remote NNTP services with NTLM\nauthentication enabled.",
+    "source": "Nmap"
+  },
+  {
+    "name": "nping-brute",
+    "description": "Performs brute force password auditing against an Nping Echo service.",
+    "source": "Nmap"
+  },
+  {
+    "name": "nrpe-enum",
+    "description": "Queries Nagios Remote Plugin Executor (NRPE) daemons to obtain information such\nas load averages, process counts, logged in user information, etc.",
+    "source": "Nmap"
+  },
+  {
+    "name": "ntp-info",
+    "description": "Gets the time and configuration variables from an NTP server. We send two\nrequests: a time request and a \"read variables\" (opcode 2) control message.\nWithout verbosity, the script shows the time and the value of the\nversion, processor, system,\nrefid, and stratum variables. With verbosity, all\nvariables are shown.",
+    "source": "Nmap"
+  },
+  {
+    "name": "ntp-monlist",
+    "description": "Obtains and prints an NTP server's monitor data.",
+    "source": "Nmap"
+  },
+  {
+    "name": "omp2-brute",
+    "description": "Performs brute force password auditing against the OpenVAS manager using OMPv2.",
+    "source": "Nmap"
+  },
+  {
+    "name": "omp2-enum-targets",
+    "description": "Attempts to retrieve the list of target systems and networks from an OpenVAS Manager server.",
+    "source": "Nmap"
+  },
+  {
+    "name": "omron-info",
+    "description": "This NSE script is used to send a FINS packet to a remote device. The script\nwill send a Controller Data Read Command and once a response is received, it\nvalidates that it was a proper response to the command that was sent, and then\nwill parse out the data.",
+    "source": "Nmap"
+  },
+  {
+    "name": "openflow-info",
+    "description": "Queries OpenFlow controllers for information. Newer versions of the OpenFlow\nprotocol (1.3 and greater) will return a list of all protocol versions supported\nby the controller. Versions prior to 1.3 only return their own version number.",
+    "source": "Nmap"
+  },
+  {
+    "name": "openlookup-info",
+    "description": "Parses and displays the banner information of an OpenLookup (network key-value store) server.",
+    "source": "Nmap"
+  },
+  {
+    "name": "openvas-otp-brute",
+    "description": "Performs brute force password auditing against a OpenVAS vulnerability scanner daemon using the OTP 1.0 protocol.",
+    "source": "Nmap"
+  },
+  {
+    "name": "openwebnet-discovery",
+    "description": "OpenWebNet is a communications protocol developed by Bticino since 2000.\nRetrieves device identifying information and number of connected devices.",
+    "source": "Nmap"
+  },
+  {
+    "name": "oracle-brute",
+    "description": "Performs brute force password auditing against Oracle servers.",
+    "source": "Nmap"
+  },
+  {
+    "name": "oracle-brute-stealth",
+    "description": "Exploits the CVE-2012-3137 vulnerability, a weakness in Oracle's\nO5LOGIN authentication scheme.  The vulnerability exists in Oracle 11g\nR1/R2 and allows linking the session key to a password hash.  When\ninitiating an authentication attempt as a valid user the server will\nrespond with a session key and salt.  Once received the script will\ndisconnect the connection thereby not recording the login attempt.\nThe session key and salt can then be used to brute force the users\npassword.",
+    "source": "Nmap"
+  },
+  {
+    "name": "oracle-enum-users",
+    "description": "Attempts to enumerate valid Oracle user names against unpatched Oracle 11g\nservers (this bug was fixed in Oracle's October 2009 Critical Patch Update).",
+    "source": "Nmap"
+  },
+  {
+    "name": "oracle-sid-brute",
+    "description": "Guesses Oracle instance/SID names against the TNS-listener.",
+    "source": "Nmap"
+  },
+  {
+    "name": "oracle-tns-version",
+    "description": "Decodes the VSNNUM version number from an Oracle TNS listener.",
+    "source": "Nmap"
+  },
+  {
+    "name": "ovs-agent-version",
+    "description": "Detects the version of an Oracle Virtual Server Agent by fingerprinting\nresponses to an HTTP GET request and an XML-RPC method call.",
+    "source": "Nmap"
+  },
+  {
+    "name": "p2p-conficker",
+    "description": "Checks if a host is infected with Conficker.C or higher, based on\nConficker's peer to peer communication.",
+    "source": "Nmap"
+  },
+  {
+    "name": "path-mtu",
+    "description": "Performs simple Path MTU Discovery to target hosts.",
+    "source": "Nmap"
+  },
+  {
+    "name": "pcanywhere-brute",
+    "description": "Performs brute force password auditing against the pcAnywhere remote access protocol.",
+    "source": "Nmap"
+  },
+  {
+    "name": "pcworx-info",
+    "description": "This NSE script will query and parse pcworx protocol to a remote PLC.\nThe script will send a initial request packets and once a response is received,\nit validates that it was a proper response to the command that was sent, and then\nwill parse out the data. PCWorx is a protocol and Program by Phoenix Contact.",
+    "source": "Nmap"
+  },
+  {
+    "name": "pgsql-brute",
+    "description": "Performs password guessing against PostgreSQL.",
+    "source": "Nmap"
+  },
+  {
+    "name": "pjl-ready-message",
+    "description": "Retrieves or sets the ready message on printers that support the Printer\nJob Language. This includes most PostScript printers that listen on port\n9100. Without an argument, displays the current ready message. With the\npjl_ready_message script argument, displays the old ready\nmessage and changes it to the message given.",
+    "source": "Nmap"
+  },
+  {
+    "name": "pop3-brute",
+    "description": "Tries to log into a POP3 account by guessing usernames and passwords.",
+    "source": "Nmap"
+  },
+  {
+    "name": "pop3-capabilities",
+    "description": "Retrieves POP3 email server capabilities.",
+    "source": "Nmap"
+  },
+  {
+    "name": "pop3-ntlm-info",
+    "description": "This script enumerates information from remote POP3 services with NTLM\nauthentication enabled.",
+    "source": "Nmap"
+  },
+  {
+    "name": "port-states",
+    "description": "Prints a list of ports found in each state.",
+    "source": "Nmap"
+  },
+  {
+    "name": "pptp-version",
+    "description": "Attempts to extract system information from the point-to-point tunneling protocol (PPTP) service.",
+    "source": "Nmap"
+  },
+  {
+    "name": "puppet-naivesigning",
+    "description": "Detects if naive signing is enabled on a Puppet server. This enables attackers\nto create any Certificate Signing Request and have it signed, allowing them\nto impersonate as a puppet agent. This can leak the configuration of the agents\nas well as any other sensitive information found in the configuration files.",
+    "source": "Nmap"
+  },
+  {
+    "name": "qconn-exec",
+    "description": "Attempts to identify whether a listening QNX QCONN daemon allows\nunauthenticated users to execute arbitrary operating system commands.",
+    "source": "Nmap"
+  },
+  {
+    "name": "qscan",
+    "description": "Repeatedly probe open and/or closed ports on a host to obtain a series\nof round-trip time values for each port.  These values are used to\ngroup collections of ports which are statistically different from other\ngroups.  Ports being in different groups (or \"families\") may be due to\nnetwork mechanisms such as port forwarding to machines behind a NAT.",
+    "source": "Nmap"
+  },
+  {
+    "name": "quake1-info",
+    "description": "Extracts information from Quake game servers and other game servers\nwhich use the same protocol.",
+    "source": "Nmap"
+  },
+  {
+    "name": "quake3-info",
+    "description": "Extracts information from a Quake3 game server and other games which use the same protocol.",
+    "source": "Nmap"
+  },
+  {
+    "name": "quake3-master-getservers",
+    "description": "Queries Quake3-style master servers for game servers (many games other than Quake 3 use this same protocol).",
+    "source": "Nmap"
+  },
+  {
+    "name": "rdp-enum-encryption",
+    "description": "Determines which Security layer and Encryption level is supported by the\nRDP service. It does so by cycling through all existing protocols and ciphers.\nWhen run in debug mode, the script also returns the protocols and ciphers that\nfail and any errors that were reported.",
+    "source": "Nmap"
+  },
+  {
+    "name": "rdp-ntlm-info",
+    "description": "This script enumerates information from remote RDP services with CredSSP\n(NLA) authentication enabled.",
+    "source": "Nmap"
+  },
+  {
+    "name": "rdp-vuln-ms12-020",
+    "description": "Checks if a machine is vulnerable to MS12-020 RDP vulnerability.",
+    "source": "Nmap"
+  },
+  {
+    "name": "realvnc-auth-bypass",
+    "description": "Checks if a VNC server is vulnerable to the RealVNC authentication bypass\n(CVE-2006-2369).",
+    "source": "Nmap"
+  },
+  {
+    "name": "redis-brute",
+    "description": "Performs brute force passwords auditing against a Redis key-value store.",
+    "source": "Nmap"
+  },
+  {
+    "name": "redis-info",
+    "description": "Retrieves information (such as version number and architecture) from a Redis key-value store.",
+    "source": "Nmap"
+  },
+  {
+    "name": "resolveall",
+    "description": "NOTE: This script has been replaced by the --resolve-all\ncommand-line option in Nmap 7.70",
+    "source": "Nmap"
+  },
+  {
+    "name": "reverse-index",
+    "description": "Creates a reverse index at the end of scan output showing which hosts run a\nparticular service.  This is in addition to Nmap's normal output listing the\nservices on each host.",
+    "source": "Nmap"
+  },
+  {
+    "name": "rexec-brute",
+    "description": "Performs brute force password auditing against the classic UNIX rexec (remote exec) service.",
+    "source": "Nmap"
+  },
+  {
+    "name": "rfc868-time",
+    "description": "Retrieves the day and time from the Time service.",
+    "source": "Nmap"
+  },
+  {
+    "name": "riak-http-info",
+    "description": "Retrieves information (such as node name and architecture) from a Basho Riak distributed database using the HTTP protocol.",
+    "source": "Nmap"
+  },
+  {
+    "name": "rlogin-brute",
+    "description": "Performs brute force password auditing against the classic UNIX rlogin (remote\nlogin) service.  This script must be run in privileged mode on UNIX because it\nmust bind to a low source port number.",
+    "source": "Nmap"
+  },
+  {
+    "name": "rmi-dumpregistry",
+    "description": "Connects to a remote RMI registry and attempts to dump all of its\nobjects.",
+    "source": "Nmap"
+  },
+  {
+    "name": "rmi-vuln-classloader",
+    "description": "Tests whether Java rmiregistry allows class loading.  The default\nconfiguration of rmiregistry allows loading classes from remote URLs,\nwhich can lead to remote code execution. The vendor (Oracle/Sun)\nclassifies this as a design feature.",
+    "source": "Nmap"
+  },
+  {
+    "name": "rpc-grind",
+    "description": "Fingerprints the target RPC port to extract the target service, RPC number and version.",
+    "source": "Nmap"
+  },
+  {
+    "name": "rpcap-brute",
+    "description": "Performs brute force password auditing against the WinPcap Remote Capture\nDaemon (rpcap).",
+    "source": "Nmap"
+  },
+  {
+    "name": "rpcap-info",
+    "description": "Connects to the rpcap service (provides remote sniffing capabilities\nthrough WinPcap) and retrieves interface information. The service can either be\nsetup to require authentication or not and also supports IP restrictions.",
+    "source": "Nmap"
+  },
+  {
+    "name": "rpcinfo",
+    "description": "Connects to portmapper and fetches a list of all registered programs.  It then\nprints out a table including (for each program) the RPC program number,\nsupported version numbers, port number and protocol, and program name.",
+    "source": "Nmap"
+  },
+  {
+    "name": "rsa-vuln-roca",
+    "description": "Detects RSA keys vulnerable to Return Of Coppersmith Attack (ROCA) factorization.",
+    "source": "Nmap"
+  },
+  {
+    "name": "rsync-brute",
+    "description": "Performs brute force password auditing against the rsync remote file syncing protocol.",
+    "source": "Nmap"
+  },
+  {
+    "name": "rsync-list-modules",
+    "description": "Lists modules available for rsync (remote file sync) synchronization.",
+    "source": "Nmap"
+  },
+  {
+    "name": "rtsp-methods",
+    "description": "Determines which methods are supported by the RTSP (real time streaming protocol) server.",
+    "source": "Nmap"
+  },
+  {
+    "name": "rtsp-url-brute",
+    "description": "Attempts to enumerate RTSP media URLS by testing for common paths on devices such as surveillance IP cameras.",
+    "source": "Nmap"
+  },
+  {
+    "name": "rusers",
+    "description": "Connects to rusersd RPC service and retrieves a list of logged-in users.",
+    "source": "Nmap"
+  },
+  {
+    "name": "s7-info",
+    "description": "Enumerates Siemens S7 PLC Devices and collects their device information. This\nscript is based off PLCScan that was developed by Positive Research and\nScadastrangelove (https://code.google.com/p/plcscan/). This script is meant to\nprovide the same functionality as PLCScan inside of Nmap. Some of the\ninformation that is collected by PLCScan was not ported over; this\ninformation can be parsed out of the packets that are received.",
+    "source": "Nmap"
+  },
+  {
+    "name": "samba-vuln-cve-2012-1182",
+    "description": "Checks if target machines are vulnerable to the Samba heap overflow vulnerability CVE-2012-1182.",
+    "source": "Nmap"
+  },
+  {
+    "name": "servicetags",
+    "description": "Attempts to extract system information (OS, hardware, etc.) from the Sun Service Tags service agent (UDP port 6481).",
+    "source": "Nmap"
+  },
+  {
+    "name": "shodan-api",
+    "description": "Queries Shodan API for given targets and produces similar output to\na -sV nmap scan. The ShodanAPI key can be set with the 'apikey' script\nargument, or hardcoded in the .nse file itself. You can get a free key from\nhttps://developer.shodan.io",
+    "source": "Nmap"
+  },
+  {
+    "name": "sip-brute",
+    "description": "Performs brute force password auditing against Session Initiation Protocol\n(SIP) accounts. This protocol is most commonly associated with VoIP sessions.",
+    "source": "Nmap"
+  },
+  {
+    "name": "sip-call-spoof",
+    "description": "Spoofs a call to a SIP phone and detects the action taken by the target (busy, declined, hung up, etc.)",
+    "source": "Nmap"
+  },
+  {
+    "name": "sip-enum-users",
+    "description": "Enumerates a SIP server's valid extensions (users).",
+    "source": "Nmap"
+  },
+  {
+    "name": "sip-methods",
+    "description": "Enumerates a SIP Server's allowed methods (INVITE, OPTIONS, SUBSCRIBE, etc.)",
+    "source": "Nmap"
+  },
+  {
+    "name": "skypev2-version",
+    "description": "Detects the Skype version 2 service.",
+    "source": "Nmap"
+  },
+  {
+    "name": "smb-brute",
+    "description": "Attempts to guess username/password combinations over SMB, storing discovered combinations\nfor use in other scripts. Every attempt will be made to get a valid list of users and to\nverify each username before actually using them. When a username is discovered, besides\nbeing printed, it is also saved in the Nmap registry so other Nmap scripts can use it. That\nmeans that if you're going to run smb-brute.nse, you should run other smb scripts you want.\nThis checks passwords in a case-insensitive way, determining case after a password is found,\nfor Windows versions before Vista.",
+    "source": "Nmap"
+  },
+  {
+    "name": "smb-double-pulsar-backdoor",
+    "description": "Checks if the target machine is running the Double Pulsar SMB backdoor.",
+    "source": "Nmap"
+  },
+  {
+    "name": "smb-enum-domains",
+    "description": "Attempts to enumerate domains on a system, along with their policies. This generally requires\ncredentials, except against Windows 2000. In addition to the actual domain, the \"Builtin\"\ndomain is generally displayed. Windows returns this in the list of domains, but its policies\ndon't appear to be used anywhere.",
+    "source": "Nmap"
+  },
+  {
+    "name": "smb-enum-groups",
+    "description": "Obtains a list of groups from the remote Windows system, as well as a list of the group's users.\nThis works similarly to enum.exe with the /G switch.",
+    "source": "Nmap"
+  },
+  {
+    "name": "smb-enum-processes",
+    "description": "Pulls a list of processes from the remote server over SMB. This will determine\nall running processes, their process IDs, and their parent processes. It is done\nby querying the remote registry service, which is disabled by default on Vista;\non all other Windows versions, it requires Administrator privileges.",
+    "source": "Nmap"
+  },
+  {
+    "name": "smb-enum-services",
+    "description": "Retrieves the list of services running on a remote Windows system.\nEach service attribute contains service name, display name and service status of\neach service.",
+    "source": "Nmap"
+  },
+  {
+    "name": "smb-enum-sessions",
+    "description": "Enumerates the users logged into a system either locally or through an SMB share. The local users\ncan be logged on either physically on the machine, or through a terminal services session.\nConnections to a SMB share are, for example, people connected to fileshares or making RPC calls.\nNmap's connection will also show up, and is generally identified by the one that connected \"0\nseconds ago\".",
+    "source": "Nmap"
+  },
+  {
+    "name": "smb-enum-shares",
+    "description": "Attempts to list shares using the srvsvc.NetShareEnumAll MSRPC function and\nretrieve more information about them using srvsvc.NetShareGetInfo. If access\nto those functions is denied, a list of common share names are checked.",
+    "source": "Nmap"
+  },
+  {
+    "name": "smb-enum-users",
+    "description": "Attempts to enumerate the users on a remote Windows system, with as much\ninformation as possible, through two different techniques (both over MSRPC,\nwhich uses port 445 or 139; see smb.lua). The goal of this script\nis to discover all user accounts that exist on a remote system. This can be\nhelpful for administration, by seeing who has an account on a server, or for\npenetration testing or network footprinting, by determining which accounts\nexist on a system.",
+    "source": "Nmap"
+  },
+  {
+    "name": "smb-flood",
+    "description": "Exhausts a remote SMB server's connection limit by by opening as many\nconnections as we can.  Most implementations of SMB have a hard global\nlimit of 11 connections for user accounts and 10 connections for\nanonymous. Once that limit is reached, further connections are\ndenied. This script exploits that limit by taking up all the\nconnections and holding them.",
+    "source": "Nmap"
+  },
+  {
+    "name": "smb-ls",
+    "description": "Attempts to retrieve useful information about files shared on SMB volumes.\nThe output is intended to resemble the output of the UNIX ls command.",
+    "source": "Nmap"
+  },
+  {
+    "name": "smb-mbenum",
+    "description": "Queries information managed by the Windows Master Browser.",
+    "source": "Nmap"
+  },
+  {
+    "name": "smb-os-discovery",
+    "description": "Attempts to determine the operating system, computer name, domain, workgroup, and current\ntime over the SMB protocol (ports 445 or 139).\nThis is done by starting a session with the anonymous\naccount (or with a proper user account, if one is given; it likely doesn't make\na difference); in response to a session starting, the server will send back all this\ninformation.",
+    "source": "Nmap"
+  },
+  {
+    "name": "smb-print-text",
+    "description": "Attempts to print text on a shared printer by calling Print Spooler Service RPC functions.",
+    "source": "Nmap"
+  },
+  {
+    "name": "smb-protocols",
+    "description": "Attempts to list the supported protocols and dialects of a SMB server.",
+    "source": "Nmap"
+  },
+  {
+    "name": "smb-psexec",
+    "description": "Implements remote process execution similar to the Sysinternals' psexec\ntool, allowing a user to run a series of programs on a remote machine and\nread the output. This is great for gathering information about servers,\nrunning the same tool on a range of system, or even installing a backdoor on\na collection of computers.",
+    "source": "Nmap"
+  },
+  {
+    "name": "smb-security-mode",
+    "description": "Returns information about the SMB security level determined by SMB.",
+    "source": "Nmap"
+  },
+  {
+    "name": "smb-server-stats",
+    "description": "Attempts to grab the server's statistics over SMB and MSRPC, which uses TCP\nports 445 or 139.",
+    "source": "Nmap"
+  },
+  {
+    "name": "smb-system-info",
+    "description": "Pulls back information about the remote system from the registry. Getting all\nof the information requires an administrative account, although a user account\nwill still get a lot of it. Guest probably won't get any, nor will anonymous.\nThis goes for all operating systems, including Windows 2000.",
+    "source": "Nmap"
+  },
+  {
+    "name": "smb-vuln-conficker",
+    "description": "Detects Microsoft Windows systems infected by the Conficker worm. This check is dangerous and\nit may crash systems.",
+    "source": "Nmap"
+  },
+  {
+    "name": "smb-vuln-cve-2017-7494",
+    "description": "Checks if target machines are vulnerable to the arbitrary shared library load\nvulnerability CVE-2017-7494.",
+    "source": "Nmap"
+  },
+  {
+    "name": "smb-vuln-cve2009-3103",
+    "description": "Detects Microsoft Windows systems vulnerable to denial of service (CVE-2009-3103).\nThis script will crash the service if it is vulnerable.",
+    "source": "Nmap"
+  },
+  {
+    "name": "smb-vuln-ms06-025",
+    "description": "Detects Microsoft Windows systems with Ras RPC service vulnerable to MS06-025.",
+    "source": "Nmap"
+  },
+  {
+    "name": "smb-vuln-ms07-029",
+    "description": "Detects Microsoft Windows systems with Dns Server RPC vulnerable to MS07-029.",
+    "source": "Nmap"
+  },
+  {
+    "name": "smb-vuln-ms08-067",
+    "description": "Detects Microsoft Windows systems vulnerable to the remote code execution vulnerability\nknown as MS08-067. This check is dangerous and it may crash systems.",
+    "source": "Nmap"
+  },
+  {
+    "name": "smb-vuln-ms10-054",
+    "description": "Tests whether target machines are vulnerable to the ms10-054 SMB remote memory\ncorruption vulnerability.",
+    "source": "Nmap"
+  },
+  {
+    "name": "smb-vuln-ms10-061",
+    "description": "Tests whether target machines are vulnerable to ms10-061 Printer Spooler impersonation vulnerability.",
+    "source": "Nmap"
+  },
+  {
+    "name": "smb-vuln-ms17-010",
+    "description": "Attempts to detect if a Microsoft SMBv1 server is vulnerable to a remote code\n execution vulnerability (ms17-010, a.k.a. EternalBlue).\n The vulnerability is actively exploited by WannaCry and Petya ransomware and other malware.",
+    "source": "Nmap"
+  },
+  {
+    "name": "smb-vuln-regsvc-dos",
+    "description": "Checks if a Microsoft Windows 2000 system is vulnerable to a crash in regsvc caused by a null pointer\ndereference. This check will crash the service if it is vulnerable and requires a guest account or\nhigher to work.",
+    "source": "Nmap"
+  },
+  {
+    "name": "smb-vuln-webexec",
+    "description": "A critical remote code execution vulnerability exists in WebExService (WebExec).",
+    "source": "Nmap"
+  },
+  {
+    "name": "smb-webexec-exploit",
+    "description": "Attempts to run a command via WebExService, using the WebExec vulnerability.\nGiven a Windows account (local or domain), this will start an arbitrary\nexecutable with SYSTEM privileges over the SMB protocol.",
+    "source": "Nmap"
+  },
+  {
+    "name": "smb2-capabilities",
+    "description": "Attempts to list the supported capabilities in a SMBv2 server for each\n enabled dialect.",
+    "source": "Nmap"
+  },
+  {
+    "name": "smb2-security-mode",
+    "description": "Determines the message signing configuration in SMBv2 servers\n for all supported dialects.",
+    "source": "Nmap"
+  },
+  {
+    "name": "smb2-time",
+    "description": "Attempts to obtain the current system date and the start date of a SMB2 server.",
+    "source": "Nmap"
+  },
+  {
+    "name": "smb2-vuln-uptime",
+    "description": "Attempts to detect missing patches in Windows systems by checking the\nuptime returned during the SMB2 protocol negotiation.",
+    "source": "Nmap"
+  },
+  {
+    "name": "smtp-brute",
+    "description": "Performs brute force password auditing against SMTP servers using either LOGIN, PLAIN, CRAM-MD5, DIGEST-MD5 or NTLM authentication.",
+    "source": "Nmap"
+  },
+  {
+    "name": "smtp-commands",
+    "description": "Attempts to use EHLO and HELP to gather the Extended commands supported by an\nSMTP server.",
+    "source": "Nmap"
+  },
+  {
+    "name": "smtp-enum-users",
+    "description": "Attempts to enumerate the users on a SMTP server by issuing the VRFY, EXPN or RCPT TO\ncommands. The goal of this script is to discover all the user accounts in the remote\nsystem.",
+    "source": "Nmap"
+  },
+  {
+    "name": "smtp-ntlm-info",
+    "description": "This script enumerates information from remote SMTP services with NTLM\nauthentication enabled.",
+    "source": "Nmap"
+  },
+  {
+    "name": "smtp-open-relay",
+    "description": "Attempts to relay mail by issuing a predefined combination of SMTP commands. The goal\nof this script is to tell if a SMTP server is vulnerable to mail relaying.",
+    "source": "Nmap"
+  },
+  {
+    "name": "smtp-strangeport",
+    "description": "Checks if SMTP is running on a non-standard port.",
+    "source": "Nmap"
+  },
+  {
+    "name": "smtp-vuln-cve2010-4344",
+    "description": "Checks for and/or exploits a heap overflow within versions of Exim\nprior to version 4.69 (CVE-2010-4344) and a privilege escalation\nvulnerability in Exim 4.72 and prior (CVE-2010-4345).",
+    "source": "Nmap"
+  },
+  {
+    "name": "smtp-vuln-cve2011-1720",
+    "description": "Checks for a memory corruption in the Postfix SMTP server when it uses\nCyrus SASL library authentication mechanisms (CVE-2011-1720).  This\nvulnerability can allow denial of service and possibly remote code\nexecution.",
+    "source": "Nmap"
+  },
+  {
+    "name": "smtp-vuln-cve2011-1764",
+    "description": "Checks for a format string vulnerability in the Exim SMTP server\n(version 4.70 through 4.75) with DomainKeys Identified Mail (DKIM) support\n(CVE-2011-1764).  The DKIM logging mechanism did not use format string\nspecifiers when logging some parts of the DKIM-Signature header field.\nA remote attacker who is able to send emails, can exploit this vulnerability\nand execute arbitrary code with the privileges of the Exim daemon.",
+    "source": "Nmap"
+  },
+  {
+    "name": "sniffer-detect",
+    "description": "Checks if a target on a local Ethernet has its network card in promiscuous mode.",
+    "source": "Nmap"
+  },
+  {
+    "name": "snmp-brute",
+    "description": "Attempts to find an SNMP community string by brute force guessing.",
+    "source": "Nmap"
+  },
+  {
+    "name": "snmp-hh3c-logins",
+    "description": "Attempts to enumerate Huawei / HP/H3C Locally Defined Users through the\nhh3c-user.mib OID",
+    "source": "Nmap"
+  },
+  {
+    "name": "snmp-info",
+    "description": "Extracts basic information from an SNMPv3 GET request. The same probe is used\nhere as in the service version detection scan.",
+    "source": "Nmap"
+  },
+  {
+    "name": "snmp-interfaces",
+    "description": "Attempts to enumerate network interfaces through SNMP.",
+    "source": "Nmap"
+  },
+  {
+    "name": "snmp-ios-config",
+    "description": "Attempts to downloads Cisco router IOS configuration files using SNMP RW (v1) and display or save them.",
+    "source": "Nmap"
+  },
+  {
+    "name": "snmp-netstat",
+    "description": "Attempts to query SNMP for a netstat like output. The script can be used to\nidentify and automatically add new targets to the scan by supplying the\nnewtargets script argument.",
+    "source": "Nmap"
+  },
+  {
+    "name": "snmp-processes",
+    "description": "Attempts to enumerate running processes through SNMP.",
+    "source": "Nmap"
+  },
+  {
+    "name": "snmp-sysdescr",
+    "description": "Attempts to extract system information from an SNMP service.",
+    "source": "Nmap"
+  },
+  {
+    "name": "snmp-win32-services",
+    "description": "Attempts to enumerate Windows services through SNMP.",
+    "source": "Nmap"
+  },
+  {
+    "name": "snmp-win32-shares",
+    "description": "Attempts to enumerate Windows Shares through SNMP.",
+    "source": "Nmap"
+  },
+  {
+    "name": "snmp-win32-software",
+    "description": "Attempts to enumerate installed software through SNMP.",
+    "source": "Nmap"
+  },
+  {
+    "name": "snmp-win32-users",
+    "description": "Attempts to enumerate Windows user accounts through SNMP",
+    "source": "Nmap"
+  },
+  {
+    "name": "socks-auth-info",
+    "description": "Determines the supported authentication mechanisms of a remote SOCKS\nproxy server.  Starting with SOCKS version 5 socks servers may support\nauthentication.  The script checks for the following authentication\ntypes:\n  0 - No authentication\n  1 - GSSAPI\n  2 - Username and password",
+    "source": "Nmap"
+  },
+  {
+    "name": "socks-brute",
+    "description": "Performs brute force password auditing against SOCKS 5 proxy servers.",
+    "source": "Nmap"
+  },
+  {
+    "name": "socks-open-proxy",
+    "description": "Checks if an open socks proxy is running on the target.",
+    "source": "Nmap"
+  },
+  {
+    "name": "ssh-auth-methods",
+    "description": "Returns authentication methods that a SSH server supports.",
+    "source": "Nmap"
+  },
+  {
+    "name": "ssh-brute",
+    "description": "Performs brute-force password guessing against ssh servers.",
+    "source": "Nmap"
+  },
+  {
+    "name": "ssh-hostkey",
+    "description": "Shows SSH hostkeys.",
+    "source": "Nmap"
+  },
+  {
+    "name": "ssh-publickey-acceptance",
+    "description": "This script takes a table of paths to private keys, passphrases, and usernames\nand checks each pair to see if the target ssh server accepts them for publickey\nauthentication. If no keys are given or the known-bad option is given, the\nscript will check if a list of known static public keys are accepted for\nauthentication.",
+    "source": "Nmap"
+  },
+  {
+    "name": "ssh-run",
+    "description": "Runs remote command on ssh server and returns command output.",
+    "source": "Nmap"
+  },
+  {
+    "name": "ssh2-enum-algos",
+    "description": "Reports the number of algorithms (for encryption, compression, etc.) that\nthe target SSH2 server offers. If verbosity is set, the offered algorithms\nare each listed by type.",
+    "source": "Nmap"
+  },
+  {
+    "name": "sshv1",
+    "description": "Checks if an SSH server supports the obsolete and less secure SSH Protocol Version 1.",
+    "source": "Nmap"
+  },
+  {
+    "name": "ssl-ccs-injection",
+    "description": "Detects whether a server is vulnerable to the SSL/TLS \"CCS Injection\"\nvulnerability (CVE-2014-0224), first discovered by Masashi Kikuchi.\nThe script is based on the ccsinjection.c code authored by Ramon de C Valle\n(https://gist.github.com/rcvalle/71f4b027d61a78c42607)",
+    "source": "Nmap"
+  },
+  {
+    "name": "ssl-cert",
+    "description": "Retrieves a server's SSL certificate. The amount of information printed\nabout the certificate depends on the verbosity level. With no extra\nverbosity, the script prints the validity period and the commonName,\norganizationName, stateOrProvinceName, and countryName of the subject.",
+    "source": "Nmap"
+  },
+  {
+    "name": "ssl-cert-intaddr",
+    "description": "Reports any private (RFC1918) IPv4 addresses found in the various fields of\nan SSL service's certificate.  These will only be reported if the target\naddress itself is not private.  Nmap v7.30 or later is required.",
+    "source": "Nmap"
+  },
+  {
+    "name": "ssl-date",
+    "description": "Retrieves a target host's time and date from its TLS ServerHello response.",
+    "source": "Nmap"
+  },
+  {
+    "name": "ssl-dh-params",
+    "description": "Weak ephemeral Diffie-Hellman parameter detection for SSL/TLS services.",
+    "source": "Nmap"
+  },
+  {
+    "name": "ssl-enum-ciphers",
+    "description": "This script repeatedly initiates SSLv3/TLS connections, each time trying a new\ncipher or compressor while recording whether a host accepts or rejects it. The\nend result is a list of all the ciphersuites and compressors that a server accepts.",
+    "source": "Nmap"
+  },
+  {
+    "name": "ssl-heartbleed",
+    "description": "Detects whether a server is vulnerable to the OpenSSL Heartbleed bug (CVE-2014-0160).\nThe code is based on the Python script ssltest.py authored by Katie Stafford (katie@ktpanda.org)",
+    "source": "Nmap"
+  },
+  {
+    "name": "ssl-known-key",
+    "description": "Checks whether the SSL certificate used by a host has a fingerprint\nthat matches an included database of problematic keys.",
+    "source": "Nmap"
+  },
+  {
+    "name": "ssl-poodle",
+    "description": "Checks whether SSLv3 CBC ciphers are allowed (POODLE)",
+    "source": "Nmap"
+  },
+  {
+    "name": "sslv2",
+    "description": "Determines whether the server supports obsolete and less secure SSLv2, and discovers which ciphers it\nsupports.",
+    "source": "Nmap"
+  },
+  {
+    "name": "sslv2-drown",
+    "description": "Determines whether the server supports SSLv2, what ciphers it supports and tests for\nCVE-2015-3197, CVE-2016-0703 and CVE-2016-0800 (DROWN)",
+    "source": "Nmap"
+  },
+  {
+    "name": "sstp-discover",
+    "description": "Check if the Secure Socket Tunneling Protocol is supported. This is\naccomplished by trying to establish the HTTPS layer which is used to\ncarry SSTP traffic as described in:\n    - http://msdn.microsoft.com/en-us/library/cc247364.aspx",
+    "source": "Nmap"
+  },
+  {
+    "name": "stun-info",
+    "description": "Retrieves the external IP address of a NAT:ed host using the STUN protocol.",
+    "source": "Nmap"
+  },
+  {
+    "name": "stun-version",
+    "description": "Sends a binding request to the server and attempts to extract version\ninformation from the response, if the server attribute is present.",
+    "source": "Nmap"
+  },
+  {
+    "name": "stuxnet-detect",
+    "description": "Detects whether a host is infected with the Stuxnet worm (http://en.wikipedia.org/wiki/Stuxnet).",
+    "source": "Nmap"
+  },
+  {
+    "name": "supermicro-ipmi-conf",
+    "description": "Attempts to download an unprotected configuration file containing plain-text\nuser credentials in vulnerable Supermicro Onboard IPMI controllers.",
+    "source": "Nmap"
+  },
+  {
+    "name": "svn-brute",
+    "description": "Performs brute force password auditing against Subversion source code control servers.",
+    "source": "Nmap"
+  },
+  {
+    "name": "targets-asn",
+    "description": "Produces a list of IP prefixes for a given routing AS number (ASN).",
+    "source": "Nmap"
+  },
+  {
+    "name": "targets-ipv6-map4to6",
+    "description": "This script runs in the pre-scanning phase to map IPv4 addresses onto IPv6\nnetworks and add them to the scan queue.",
+    "source": "Nmap"
+  },
+  {
+    "name": "targets-ipv6-multicast-echo",
+    "description": "Sends an ICMPv6 echo request packet to the all-nodes link-local\nmulticast address (ff02::1) to discover responsive hosts\non a LAN without needing to individually ping each IPv6 address.",
+    "source": "Nmap"
+  },
+  {
+    "name": "targets-ipv6-multicast-invalid-dst",
+    "description": "Sends an ICMPv6 packet with an invalid extension header to the\nall-nodes link-local multicast address (ff02::1) to\ndiscover (some) available hosts on the LAN. This works because some\nhosts will respond to this probe with an ICMPv6 Parameter Problem\npacket.",
+    "source": "Nmap"
+  },
+  {
+    "name": "targets-ipv6-multicast-mld",
+    "description": "Attempts to discover available IPv6 hosts on the LAN by sending an MLD\n(multicast listener discovery) query to the link-local multicast address\n(ff02::1) and listening for any responses.  The query's maximum response delay\nset to 1 to provoke hosts to respond immediately rather than waiting for other\nresponses from their multicast group.",
+    "source": "Nmap"
+  },
+  {
+    "name": "targets-ipv6-multicast-slaac",
+    "description": "Performs IPv6 host discovery by triggering stateless address auto-configuration\n(SLAAC).",
+    "source": "Nmap"
+  },
+  {
+    "name": "targets-ipv6-wordlist",
+    "description": "Adds IPv6 addresses to the scan queue using a wordlist of hexadecimal \"words\"\nthat form addresses in a given subnet.",
+    "source": "Nmap"
+  },
+  {
+    "name": "targets-sniffer",
+    "description": "Sniffs the local network for a configurable amount of time (10 seconds\nby default) and prints discovered addresses. If the\nnewtargets script argument is set, discovered addresses\nare added to the scan queue.",
+    "source": "Nmap"
+  },
+  {
+    "name": "targets-traceroute",
+    "description": "Inserts traceroute hops into the Nmap scanning queue. It only functions if\nNmap's --traceroute option is used and the newtargets\nscript argument is given.",
+    "source": "Nmap"
+  },
+  {
+    "name": "targets-xml",
+    "description": "Loads addresses from an Nmap XML output file for scanning.",
+    "source": "Nmap"
+  },
+  {
+    "name": "teamspeak2-version",
+    "description": "Detects the TeamSpeak 2 voice communication server and attempts to determine\nversion and configuration information.",
+    "source": "Nmap"
+  },
+  {
+    "name": "telnet-brute",
+    "description": "Performs brute-force password auditing against telnet servers.",
+    "source": "Nmap"
+  },
+  {
+    "name": "telnet-encryption",
+    "description": "Determines whether the encryption option is supported on a remote telnet\nserver.  Some systems (including FreeBSD and the krb5 telnetd available in many\nLinux distributions) implement this option incorrectly, leading to a remote\nroot vulnerability. This script currently only tests whether encryption is\nsupported, not for that particular vulnerability.",
+    "source": "Nmap"
+  },
+  {
+    "name": "telnet-ntlm-info",
+    "description": "This script enumerates information from remote Microsoft Telnet services with NTLM\nauthentication enabled.",
+    "source": "Nmap"
+  },
+  {
+    "name": "tftp-enum",
+    "description": "Enumerates TFTP (trivial file transfer protocol) filenames by testing\nfor a list of common ones.",
+    "source": "Nmap"
+  },
+  {
+    "name": "tls-alpn",
+    "description": "Enumerates a TLS server's supported application-layer protocols using the ALPN protocol.",
+    "source": "Nmap"
+  },
+  {
+    "name": "tls-nextprotoneg",
+    "description": "Enumerates a TLS server's supported protocols by using the next protocol\nnegotiation extension.",
+    "source": "Nmap"
+  },
+  {
+    "name": "tls-ticketbleed",
+    "description": "Detects whether a server is vulnerable to the F5 Ticketbleed bug (CVE-2016-9244).",
+    "source": "Nmap"
+  },
+  {
+    "name": "tn3270-screen",
+    "description": "Connects to a tn3270 'server' and returns the screen.",
+    "source": "Nmap"
+  },
+  {
+    "name": "tor-consensus-checker",
+    "description": "Checks if a target is a known Tor node.",
+    "source": "Nmap"
+  },
+  {
+    "name": "traceroute-geolocation",
+    "description": "Lists the geographic locations of each hop in a traceroute and optionally\nsaves the results to a KML file, plottable on Google earth and maps.",
+    "source": "Nmap"
+  },
+  {
+    "name": "tso-brute",
+    "description": "TSO account brute forcer.",
+    "source": "Nmap"
+  },
+  {
+    "name": "tso-enum",
+    "description": "TSO User ID enumerator for IBM mainframes (z/OS). The TSO logon panel\ntells you when a user ID is valid or invalid with the message:\n IKJ56420I Userid <user ID> not authorized to use TSO.",
+    "source": "Nmap"
+  },
+  {
+    "name": "ubiquiti-discovery",
+    "description": "Extracts information from Ubiquiti networking devices.",
+    "source": "Nmap"
+  },
+  {
+    "name": "unittest",
+    "description": "Runs unit tests on all NSE libraries.",
+    "source": "Nmap"
+  },
+  {
+    "name": "unusual-port",
+    "description": "Compares the detected service on a port against the expected service for that\nport number (e.g. ssh on 22, http on 80) and reports deviations. The script\nrequires that a version scan has been run in order to be able to discover what\nservice is actually running on each port.",
+    "source": "Nmap"
+  },
+  {
+    "name": "upnp-info",
+    "description": "Attempts to extract system information from the UPnP service.",
+    "source": "Nmap"
+  },
+  {
+    "name": "uptime-agent-info",
+    "description": "Gets system information from an Idera Uptime Infrastructure Monitor agent.",
+    "source": "Nmap"
+  },
+  {
+    "name": "url-snarf",
+    "description": "Sniffs an interface for HTTP traffic and dumps any URLs, and their\noriginating IP address. Script output differs from other script as\nURLs are written to stdout directly. There is also an option to log\nthe results to file.",
+    "source": "Nmap"
+  },
+  {
+    "name": "ventrilo-info",
+    "description": "Detects the Ventrilo voice communication server service versions 2.1.2\nand above and tries to determine version and configuration\ninformation. Some of the older versions (pre 3.0.0) may not have the\nUDP service that this probe relies on enabled by default.",
+    "source": "Nmap"
+  },
+  {
+    "name": "versant-info",
+    "description": "Extracts information, including file paths, version and database names from\na Versant object database.",
+    "source": "Nmap"
+  },
+  {
+    "name": "vmauthd-brute",
+    "description": "Performs brute force password auditing against the VMWare Authentication Daemon (vmware-authd).",
+    "source": "Nmap"
+  },
+  {
+    "name": "vmware-version",
+    "description": "Queries VMware server (vCenter, ESX, ESXi) SOAP API to extract the version information.",
+    "source": "Nmap"
+  },
+  {
+    "name": "vnc-brute",
+    "description": "Performs brute force password auditing against VNC servers.",
+    "source": "Nmap"
+  },
+  {
+    "name": "vnc-info",
+    "description": "Queries a VNC server for its protocol version and supported security types.",
+    "source": "Nmap"
+  },
+  {
+    "name": "vnc-title",
+    "description": "Tries to log into a VNC server and get its desktop name. Uses credentials\ndiscovered by vnc-brute, or None authentication types. If\nrealvnc-auth-bypass was run and returned VULNERABLE, this script\nwill use that vulnerability to bypass authentication.",
+    "source": "Nmap"
+  },
+  {
+    "name": "voldemort-info",
+    "description": "Retrieves cluster and store information from the Voldemort distributed key-value store using the Voldemort Native Protocol.",
+    "source": "Nmap"
+  },
+  {
+    "name": "vtam-enum",
+    "description": "Many mainframes use VTAM screens to connect to various applications\n(CICS, IMS, TSO, and many more).",
+    "source": "Nmap"
+  },
+  {
+    "name": "vulners",
+    "description": "For each available CPE the script prints out known vulns (links to the correspondent info) and correspondent CVSS scores.",
+    "source": "Nmap"
+  },
+  {
+    "name": "vuze-dht-info",
+    "description": "Retrieves some basic information, including protocol version from a Vuze filesharing node.",
+    "source": "Nmap"
+  },
+  {
+    "name": "wdb-version",
+    "description": "Detects vulnerabilities and gathers information (such as version\nnumbers and hardware support) from VxWorks Wind DeBug agents.",
+    "source": "Nmap"
+  },
+  {
+    "name": "weblogic-t3-info",
+    "description": "Detect the T3 RMI protocol and Weblogic version",
+    "source": "Nmap"
+  },
+  {
+    "name": "whois-domain",
+    "description": "Attempts to retrieve information about the domain name of the target",
+    "source": "Nmap"
+  },
+  {
+    "name": "whois-ip",
+    "description": "Queries the WHOIS services of Regional Internet Registries (RIR) and attempts to retrieve information about the IP Address\nAssignment which contains the Target IP Address.",
+    "source": "Nmap"
+  },
+  {
+    "name": "wsdd-discover",
+    "description": "Retrieves and displays information from devices supporting the Web\nServices Dynamic Discovery (WS-Discovery) protocol. It also attempts\nto locate any published Windows Communication Framework (WCF) web\nservices (.NET 4.0 or later).",
+    "source": "Nmap"
+  },
+  {
+    "name": "x11-access",
+    "description": "Checks if you're allowed to connect to the X server.",
+    "source": "Nmap"
+  },
+  {
+    "name": "xdmcp-discover",
+    "description": "Requests an XDMCP (X display manager control protocol) session and lists supported authentication and authorization mechanisms.",
+    "source": "Nmap"
+  },
+  {
+    "name": "xmlrpc-methods",
+    "description": "Performs XMLRPC Introspection via the system.listMethods method.",
+    "source": "Nmap"
+  },
+  {
+    "name": "xmpp-brute",
+    "description": "Performs brute force password auditing against XMPP (Jabber) instant messaging servers.",
+    "source": "Nmap"
+  },
+  {
+    "name": "xmpp-info",
+    "description": "Connects to XMPP server (port 5222) and collects server information such as:\nsupported auth mechanisms, compression methods, whether TLS is supported\nand mandatory, stream management, language, support of In-Band registration,\nserver capabilities.  If possible, studies server vendor.",
+    "source": "Nmap"
+  }
+]
