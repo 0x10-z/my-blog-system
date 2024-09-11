@@ -27,17 +27,8 @@ function constructGitApiUrl(gitUrl: string, path = '') {
 }
 
 // Función que comprueba si el archivo existe y su antigüedad
-function isFileOlderThan(filePath: string, days: number): boolean {
-  if (!fs.existsSync(filePath)) {
-    return true
-  }
-
-  const stats = fs.statSync(filePath)
-  const fileModifiedTime = new Date(stats.mtime)
-  const currentTime = new Date()
-
-  const ageInDays = (currentTime.getTime() - fileModifiedTime.getTime()) / (1000 * 60 * 60 * 24)
-  return ageInDays > days
+function fileExists(filePath: string, days: number): boolean {
+  return fs.existsSync(filePath)
 }
 
 // Función recursiva para obtener todos los archivos .nse de un repositorio de GitHub mediante la API
@@ -128,7 +119,7 @@ async function scrapeExternalScripts() {
     let externalScripts: { name: string; description: string; source: string; url?: string }[] = []
 
     // Comprobar si el archivo ya existe y es reciente
-    if (isFileOlderThan(repoFilePath, 5)) {
+    if (fileExists(repoFilePath, 5)) {
       console.log(`Iniciando descarga de scripts del repositorio: ${repo.name} (${repo.url})`)
 
       try {
@@ -167,7 +158,7 @@ export async function GET() {
   let nmapScripts: { name: string; description: string; source: string }[] = []
 
   // Verificar si los scripts de Nmap son recientes
-  if (isFileOlderThan(jsonFilePath, 5)) {
+  if (fileExists(jsonFilePath, 5)) {
     nmapScripts = await scrapeNmapScripts()
   } else {
     const fileData = fs.readFileSync(jsonFilePath, 'utf-8')
