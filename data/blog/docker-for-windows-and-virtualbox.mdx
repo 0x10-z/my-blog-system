@@ -1,0 +1,74 @@
+---
+title: "Convivir con Docker for Windows y VirtualBox en el mismo equipo"
+date: "2024-09-13"
+tags: ["Docker", "Virtualbox", "Windows"]
+draft: false
+authors: ['default']
+summary: "Cómo alternar entre Docker for Windows y VirtualBox con aceleración por hardware en un mismo equipo, desactivando y activando Hyper-V."
+images: ["/static/images/uploads/docker-for-windows-and-virtualbox/docker-for-windows-and-virtualbox.webp"]
+---
+
+# Convivir con Docker for Windows y VirtualBox en el mismo equipo
+
+Cuando utilizamos Docker for Windows en el mismo equipo que VirtualBox, puede surgir un problema debido a la interacción entre **Hyper-V** y las tecnologías de virtualización **VT-x** (para procesadores Intel) y **AMD-V** (para procesadores AMD). Este post explica el problema y una solución para alternar entre Docker y VirtualBox sin sacrificar rendimiento.
+
+## ¿Qué es Hyper-V?
+
+**Hyper-V** es una tecnología de virtualización desarrollada por Microsoft, que permite ejecutar máquinas virtuales con aislamiento total en un equipo con Windows. Docker for Windows depende de Hyper-V para crear y gestionar contenedores en un entorno virtualizado.
+
+El problema es que **cuando Docker está en funcionamiento, se habilita automáticamente Hyper-V**, lo que bloquea el acceso a las tecnologías de virtualización **VT-x** y **AMD-V** necesarias para que VirtualBox funcione con aceleración por hardware.
+
+## Problema: VirtualBox sin aceleración por hardware
+
+Cuando Hyper-V está activado (por ejemplo, al ejecutar Docker), **VirtualBox sigue funcionando**, pero **sin aceleración por hardware**, lo que resulta en un rendimiento muy lento. Esto se debe a que Hyper-V se apropia de los recursos de virtualización del equipo, impidiendo a VirtualBox usar la aceleración VT-x o AMD-V.
+
+Aunque es posible utilizar VirtualBox en este estado, el rendimiento de las máquinas virtuales será considerablemente peor debido a la falta de acceso a las tecnologías de virtualización directa del procesador.
+
+## Solución: Alternar entre Docker y VirtualBox
+
+Para poder usar VirtualBox con aceleración por hardware, es necesario deshabilitar Hyper-V. La buena noticia es que se puede alternar entre ambos mediante simples comandos de PowerShell que se ejecutan como administrador.
+
+### Deshabilitar Hyper-V para usar VirtualBox con VT-x/AMD-V
+
+Para desactivar Hyper-V y permitir que VirtualBox utilice la aceleración por hardware, debes ejecutar el siguiente comando en una terminal PowerShell con privilegios de administrador:
+
+```powershell
+bcdedit /set hypervisorlaunchtype off
+```
+
+Después de ejecutar este comando, es necesario **reiniciar el equipo** para aplicar los cambios. Con Hyper-V deshabilitado, VirtualBox podrá usar VT-x o AMD-V y el rendimiento de las máquinas virtuales mejorará significativamente.
+
+### Habilitar Hyper-V para usar Docker
+
+Cuando quieras volver a usar Docker, es necesario habilitar de nuevo Hyper-V. Para hacerlo, utiliza este comando:
+
+```powershell
+bcdedit /set hypervisorlaunchtype auto
+```
+
+Una vez más, **debes reiniciar el equipo** para que Hyper-V se vuelva a activar, permitiendo que Docker funcione correctamente.
+
+## Conclusión
+
+Si trabajas con Docker for Windows y VirtualBox en el mismo equipo, tendrás que alternar entre habilitar y deshabilitar Hyper-V dependiendo de cuál necesites usar. Mientras Hyper-V esté activado, VirtualBox funcionará sin aceleración por hardware, resultando en un rendimiento muy bajo. Siguiendo los pasos anteriores, podrás alternar entre Docker y VirtualBox de manera eficiente, optimizando el uso de las tecnologías de virtualización.
+
+Comandos clave:
+
+- Para desactivar Hyper-V y usar VirtualBox con aceleración:  
+  ```bash
+  bcdedit /set hypervisorlaunchtype off
+  ```
+
+- Para reactivar Hyper-V y usar Docker:  
+  ```bash
+  bcdedit /set hypervisorlaunchtype auto
+  ```
+
+Recuerda reiniciar el equipo después de ejecutar cada comando.
+
+¡Espero que esta solución te sea útil!
+
+Dejo una imágen cortesía de [Dall·E2](https://openai.com/index/dall-e-2/)
+
+![](/static/images/uploads/docker-for-windows-and-virtualbox/docker-for-windows-and-virtualbox.webp)
+
