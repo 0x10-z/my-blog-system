@@ -1,0 +1,106 @@
+---
+title: 'Como recuperar archivos en un sistema Windows con línea de comandos'
+date: '2024-10-30'
+tags: ['recuperar archivos', 'usb', 'powershell']
+draft: false
+authors: ['default']
+summary: 'En este post, aprenderás cómo recuperar archivos borrados de un USB formateado utilizando la herramienta nativa de Windows File Recovery. Incluye una guía paso a paso para instalar la herramienta, ejecutar comandos de recuperación, y resolver problemas comunes. También se discuten modos avanzados y alternativas gráficas para usuarios menos familiarizados con la línea de comandos.'
+images: ["/static/images/uploads/como-recuperar-winfr/como-recuperar-winfr.webp"]
+---
+
+## Introducción
+
+Con el lanzamiento de Windows 10, Microsoft incluyó una herramienta gratuita y poderosa para la recuperación de archivos llamada **Windows File Recovery**. Esta herramienta, disponible desde la versión 19041, permite a los usuarios recuperar archivos borrados de sus discos duros, memorias USB y otros dispositivos de almacenamiento. 
+
+**Windows File Recovery** es una solución nativa y completamente gratuita que puedes instalar desde la [Microsoft Store](https://apps.microsoft.com/detail/9n26s50ln705?hl=en-US&gl=US), y aunque se utiliza a través de la línea de comandos, ofrece una amplia gama de modos para la recuperación de archivos en diferentes tipos de sistemas de archivos (NTFS, FAT, exFAT, y ReFS).
+
+En este post, te guiaremos paso a paso para recuperar archivos de un USB que ha sido formateado utilizando **Windows File Recovery**
+
+[Link a soporte oficial de Microsoft](https://support.microsoft.com/es-es/windows/recuperar-archivos-perdidos-en-windows-10-61f5b28a-f5b8-3cc2-0f8e-a63cb4e1d4c4)
+
+## Proceso de Recuperación
+
+Primero, añadimos algunas fotos a un dispositivo USB con el que vamos a realizar la demostración.
+
+![/static/images/uploads/como-recuperar-winfr/1.png](/static/images/uploads/como-recuperar-winfr/1.png)
+
+Forzamos un formateo de la unidad E: para proceder a intentar recuperar los archivos formateados.
+
+![/static/images/uploads/como-recuperar-winfr/2.png](/static/images/uploads/como-recuperar-winfr/2.png)
+
+
+## Instalar Windows File Recovery
+
+Para comenzar, instala la herramienta Windows File Recovery desde la Microsoft Store.
+
+![/static/images/uploads/como-recuperar-winfr/3.png](/static/images/uploads/como-recuperar-winfr/3.png)
+
+
+Abre PowerShell como administrador para tener los permisos necesarios. Ejecuta el siguiente comando para iniciar la recuperación:
+
+```ps
+winfr E: D:\UsbRecovery\ /extensive /n *.*
+```
+
+![/static/images/uploads/como-recuperar-winfr/4.png](/static/images/uploads/como-recuperar-winfr/4.png)
+
+
+Después de varios minutos, habremos recuperado una cantidad significativa de archivos, más incluso de los que te imaginabas al principio de la prueba.
+Ten en cuenta que vas a detectar archivos de hace varios años, habiendo incluso formateado el dispositivo en numerosas ocasiones.
+
+Navegando por las carpetas, encontramos las imagenes del inicio.
+
+![/static/images/uploads/como-recuperar-winfr/6.png](/static/images/uploads/como-recuperar-winfr/6.png)
+
+En esta prueba, hemos hecho un uso muy simple del comando que nos brinda Windows, pero debemos tener en cuenta varias caracteristicas de la herramienta.
+
+## Decidir que modo usar
+
+Usa la tabla siguiente para ayudarte a decidir qué modo usar. Si no estás seguro, empieza con el modo predeterminado.
+
+| Circunstancias                              | Modo Recomendado                                                                     |
+| ------------------------------------------- | -------------------------------------------------------------------------------------|
+| **NTFS** Eliminado recientemente            | Valor predeterminado                                                                 |
+| **NTFS** Eliminado hace un tiempo           | Segmento, seguido de Firma                                                           |
+| **NTFS** Después de dar formato a un disco  | Segmento, seguido de Firma                                                           |
+| **NTFS** Un disco dañado                    | Segmento, seguido de Firma                                                           |
+| **FAT, exFAT**                              | Firma (si se admite el tipo de archivo de recuperación, consulta la tabla siguiente) |
+
+### Tipos de Archivo y Grupos de Extensiones de Modo de Firma
+
+En la tabla siguiente se resumen los grupos de extensiones y los tipos de archivo admitidos para cada grupo al usar el modificador `/y:<tipo(s)>`:
+Ten en cuenta que `winfr` no admite todo tipo de archivos, como por ejemplo `.webp`. Si es tu caso, no uses este enfoque y prueba con otras herramientas
+como **Recuva** o **Disk Drill**.
+
+| Grupo Extensión | Tipo de Archivo                                                                                       |
+| --------------- | ----------------------------------------------------------------------------------------------------- |
+| **ASF**         | wma, wmv, asf                                                                                         |
+| **JPEG**        | jpg, jpeg, jpe, jif, jfif, jfi                                                                        |
+| **MP3**         | mp3                                                                                                   |
+| **MPEG**        | mpeg, mp4, mpg, m4a, m4v, m4b, m4r, mov, 3gp, qt                                                      |
+| **PDF**         | pdf                                                                                                   |
+| **PNG**         | png                                                                                                   |
+| **CÓDIGO**      | zip, docx, xlsx, pptx, odt, ods, odp, odg, odi, odf, odc, odm, ott, otg, otp, ots, otc, oti, otf, oth |
+
+## Tiempo de Espera
+
+Dependiendo del tamaño del USB o disco, la recuperación puede tardar desde unos minutos hasta varias horas. Esto varía según la cantidad de datos que tenga que procesar.
+
+## Compatibilidad
+
+Esta herramienta está disponible para Windows 10, versión 19041.0 o superior. Admite los sistemas de archivos NTFS, FAT, exFAT y ReFS.
+
+## Herramientas Alternativas
+
+Existen otras herramientas de recuperación de archivos, como **Recuva**, pero Windows File Recovery tiene la ventaja de ser una solución nativa y gratuita para los usuarios de Windows.
+
+### No pude recuperar el archivo, ¿y ahora qué?
+
+Si los modos predeterminado o de segmento no funcionan, intenta usar el **modo de firma** si el tipo de archivo es compatible. A veces, los archivos pueden estar sobrescritos, especialmente en SSD.
+
+### WinfrGUI - Una opción más amigable
+
+Si prefieres evitar la línea de comandos, existe una aplicación llamada **WinfrGUI** que ofrece una interfaz gráfica muy sencilla para realizar las mismas operaciones de recuperación.
+
+![/static/images/uploads/como-recuperar-winfr/5.png](/static/images/uploads/como-recuperar-winfr/5.png)
+
