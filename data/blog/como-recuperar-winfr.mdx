@@ -1,8 +1,8 @@
 ---
 title: 'Cómo recuperar archivos en un sistema Windows con línea de comandos'
-date: '2024-10-30'
+date: '2024-10-20'
 tags: ['recuperar archivos', 'usb', 'powershell']
-draft: true
+draft: false
 authors: ['default']
 summary: 'En este post, aprenderás cómo recuperar archivos borrados de un USB formateado utilizando la herramienta nativa de Windows File Recovery. Incluye una guía paso a paso para instalar la herramienta, ejecutar comandos de recuperación, y resolver problemas comunes. También se discuten modos avanzados y alternativas gráficas para usuarios menos familiarizados con la línea de comandos.'
 images: ["/static/images/uploads/como-recuperar-winfr/como-recuperar-winfr.webp"]
@@ -30,19 +30,24 @@ Forzamos un formateo de la unidad E: para proceder a intentar recuperar los arch
 
 ## Instalar Windows File Recovery
 
-Para comenzar, instala la herramienta Windows File Recovery desde la Microsoft Store.
+Despues, debemos instalar la herramienta Windows File Recovery desde la Microsoft Store.
 
 ![Instalación de Windows File Recovery](/static/images/uploads/como-recuperar-winfr/3.webp)
 
-Abre PowerShell como administrador para tener los permisos necesarios. Ejecuta el siguiente comando para iniciar la recuperación:
+Abrimos PowerShell como administrador para tener los permisos necesarios y ejecutamos el siguiente comando para iniciar la recuperación:
 
 ```ps
 winfr E: D:\UsbRecovery\ /extensive /n *.*
 ```
 
+1. `E:`: Es la primera opción, especifica el dispositivo o unidad donde queremos intentar la recuperación de los archivos (en este caso, la unidad E:).
+2. `D:\UsbRecovery\`: Es la segunda opción, especifica el directorio donde se guardarán los archivos recuperados (en este caso, en D:\UsbRecovery\).
+3. `/extensive`: Es la opción que indica que se realizará un escaneo extensivo. Este tipo de escaneo es más profundo y se recomienda cuando los archivos se han perdido por formateo o daño en el sistema de archivos.
+3. `/n *.*`: Es el filtro que especifica los archivos que deseas recuperar. En este caso, `*.*` indica que se intentará recuperar todos los archivos de cualquier tipo.
+
 ![Ejecución de Windows File Recovery](/static/images/uploads/como-recuperar-winfr/4.webp)
 
-Después de varios minutos, habremos recuperado una cantidad significativa de archivos, más incluso de los que te imaginabas al principio de la prueba. Ten en cuenta que puedes recuperar archivos de hace varios años, incluso si has formateado el dispositivo en numerosas ocasiones.
+Después de varios minutos, habremos recuperado una cantidad significativa de archivos, más incluso de los que podíamos pensar al principio de la prueba. Ten en cuenta que puedes recuperar archivos de hace varios años, incluso si has formateado el dispositivo en numerosas ocasiones.
 
 Navegando por las carpetas, encontramos las imágenes que añadimos inicialmente.
 
@@ -86,7 +91,7 @@ Esta herramienta está disponible para Windows 10, versión 19041.0 o superior. 
 
 ## Herramientas Alternativas
 
-Existen otras herramientas de recuperación de archivos, como **Recuva**, pero Windows File Recovery tiene la ventaja de ser una solución nativa y gratuita para los usuarios de Windows.
+Existen otras herramientas de recuperación de archivos, como **Recuva** (dejo un [post](https://www.iortizdezarate.com/blog/recuperando-un-usb-que-pide-formatear) muy interesante al respecto), pero Windows File Recovery tiene la ventaja de ser una solución nativa y gratuita para los usuarios de Windows.
 
 ### No pude recuperar el archivo, ¿y ahora qué?
 
@@ -97,3 +102,8 @@ Si los modos predeterminado o de segmento no funcionan, intenta usar el **modo d
 Si prefieres evitar la línea de comandos, existe una aplicación llamada **WinfrGUI** que ofrece una interfaz gráfica muy sencilla para realizar las mismas operaciones de recuperación.
 
 ![WinfrGUI](/static/images/uploads/como-recuperar-winfr/5.webp)
+
+## Conclusión
+
+Bueno, espero que este tutorial te haya sido de utilidad para recuperar tus archivos en sistemas Windows utilizando la línea de comandos. Si tienes alguna duda o te encuentras con algún problema durante el proceso, no dudes en dejar tu consulta en los comentarios. ¡Estaré encantado de ayudarte! Además, si conoces otras herramientas o métodos que te hayan funcionado, compártelos también para que podamos aprender juntos.
+
