@@ -47,7 +47,7 @@ export default function Home({ posts }: { posts: CoreContent<Blog>[] }) {
                               alt={selectedImage}
                               width={250}
                               height={250}
-                              className="rounded-lg  shadow-md"
+                              className="rounded-lg shadow-md"
                             />
                           </div>
                         </dd>
