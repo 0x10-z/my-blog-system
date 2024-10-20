@@ -5,10 +5,10 @@ tags: ["OWASP", "OWASP2021", "Programación segura", "Ciberseguridad", "Vulnerab
 draft: true
 authors: ['default']
 summary: 'Explora las vulnerabilidades más críticas en aplicaciones web según OWASP y cómo han evolucionado en el OWASP Top Ten 2021. Descubre qué nuevas amenazas enfrentarán los desarrolladores en la actualización de 2025 y por qué es crucial integrar la seguridad desde las primeras fases del desarrollo.'
-images: [/static/images/uploads/owasp-top-10-2021/0.png]
+images: [/static/images/uploads/owasp-top-10-2021/0.webp]
 ---
 
-![](/static/images/uploads/owasp-top-10-2021/0.png)
+![](/static/images/uploads/owasp-top-10-2021/0.webp)
 
 ## **Introducción: ¿Qué es OWASP?**
 
@@ -20,7 +20,7 @@ A continuación, exploraremos algunas de las vulnerabilidades más comunes de es
 
 ## Top 10 de 2021
 
-![](/static/images/uploads/owasp-top-10-2021/1.png)
+![](/static/images/uploads/owasp-top-10-2021/1.webp)
 
 El gráfico muestra cómo el OWASP Top Ten ha cambiado entre 2017 y 2021:
 
@@ -43,7 +43,7 @@ Las vulnerabilidades se categorizan como A01-A10 seguido del año y una breve de
 
 Imaginemos que estamos visitando nuestra cuenta del banco:
 
-![](/static/images/uploads/owasp-top-10-2021/image1.png)
+![](/static/images/uploads/owasp-top-10-2021/image1.webp)
 
 Observamos la URL y vemos algo como lo siguiente:
 
@@ -53,7 +53,7 @@ https://banco.com/cuenta?user_id=1
 
 Si cambiamos el `user_id` por otro número aleatorio, podríamos acceder a la cuenta de otro usuario:
 
-![](/static/images/uploads/owasp-top-10-2021/image2.png)
+![](/static/images/uploads/owasp-top-10-2021/image2.webp)
 
 Aunque esta vulnerabilidad parezca simple, es bastante común cuando no se implementan las verificaciones necesarias para controlar el acceso. No es solo responsabilidad del desarrollador, debe considerarse en todas las fases del **SDLC** (Ciclo de Vida del Desarrollo de Software):
 1. **Requisitos**
@@ -99,11 +99,11 @@ El diseño inseguro se refiere a vulnerabilidades inherentes a la arquitectura d
 
 Hace un tiempo, Instagram permitía restablecer contraseñas mediante un código de 6 dígitos enviado al móvil del usuario. Un atacante podía intentar forzar el código por fuerza bruta, pero Instagram limitaba los intentos a 250 por IP antes de bloquear más intentos.
 
-![](/static/images/uploads/owasp-top-10-2021/2.png)
+![](/static/images/uploads/owasp-top-10-2021/2.webp)
 
 Sin embargo, se descubrió que el límite solo se aplicaba a cada IP individual. Un atacante con varias IPs podía intentar 250 códigos por cada una. Para un código de 6 dígitos (un millón de combinaciones posibles), un atacante necesitaría 4000 IPs para cubrir todos los códigos, algo factible mediante servicios en la nube.
 
-![](/static/images/uploads/owasp-top-10-2021/3.png)
+![](/static/images/uploads/owasp-top-10-2021/3.webp)
 
 Este problema radica en el **diseño**, no en la implementación. Se asumió erróneamente que los usuarios no podrían usar múltiples IPs para atacar el sistema.
 
@@ -111,13 +111,13 @@ Este problema radica en el **diseño**, no en la implementación. Se asumió err
 
 Dado que las vulnerabilidades de diseño inseguro se introducen en una fase temprana del desarrollo, resolverlas puede requerir reconstruir partes de la aplicación desde cero, lo que suele ser más difícil que corregir vulnerabilidades relacionadas con el código. **La mejor forma de evitar este tipo de vulnerabilidades es realizar un modelado de amenazas en las primeras etapas del ciclo de desarrollo**.
 
-![](/static/images/uploads/owasp-top-10-2021/4.png)
+![](/static/images/uploads/owasp-top-10-2021/4.webp)
 
 Por ejemplo, aquí se está filtrando información de usuarios registrados, lo que podría permitir ataques dirigidos. Esta información no debería ser visible. En su lugar, se debería enviar un correo de recuperación de contraseña si el usuario existe, pero el resultado visible para el usuario debería ser siempre el mismo.
 
 Además, la forma de recuperar contraseñas puede ser insegura si se utilizan preguntas de seguridad fáciles de adivinar con pocas pruebas.
 
-![](/static/images/uploads/owasp-top-10-2021/5.png)
+![](/static/images/uploads/owasp-top-10-2021/5.webp)
 
 ¿Cuántos colores hay? **Rojo**, **verde**, **azul**, **amarillo**, **naranja**,... con unos pocos intentos se puede adivinar la contraseña.
 
