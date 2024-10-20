@@ -1,7 +1,7 @@
 import fs from 'fs'
 import { glob } from 'glob'
 import sharp from 'sharp'
-import replace from 'replace-in-file'
+import { replaceInFile } from 'replace-in-file'
 
 const imagesDirectory = 'public/static/images/uploads'
 
@@ -58,7 +58,7 @@ async function replaceImageReferences(convertedImages) {
           to: image.webp,
         }
 
-        const results = await replace(options)
+        const results = await replaceInFile(options)
 
         if (results && results.length > 0 && results[0].hasChanged) {
           numberOfReplacements++
