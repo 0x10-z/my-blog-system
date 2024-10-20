@@ -1,0 +1,152 @@
+---
+title: 'OWASP Top Ten: Amenazas en seguridad web y cómo mitigarlas'
+date: '2024-10-26'
+tags: ["OWASP", "OWASP2021", "Programación segura", "Ciberseguridad", "Vulnerabilidades"]
+draft: true
+authors: ['default']
+summary: 'Explora las vulnerabilidades más críticas en aplicaciones web según OWASP y cómo han evolucionado en el OWASP Top Ten 2021. Descubre qué nuevas amenazas enfrentarán los desarrolladores en la actualización de 2025 y por qué es crucial integrar la seguridad desde las primeras fases del desarrollo.'
+images: [/static/images/uploads/owasp-top-10-2021/0.png]
+---
+
+![](/static/images/uploads/owasp-top-10-2021/0.png)
+
+## **Introducción: ¿Qué es OWASP?**
+
+**OWASP** (Open Web Application Security Project) es una organización sin fines de lucro dedicada a mejorar la seguridad del software. Su recurso más conocido es el **[OWASP Top Ten](https://owasp.org/www-project-top-ten/)**, una lista de las vulnerabilidades más críticas en aplicaciones web. 
+
+Actualmente, seguimos el **[OWASP Top Ten 2021](https://owasp.org/Top10/)**, pero ya se está preparando la actualización para **2025**, que reflejará nuevas amenazas emergentes.
+
+A continuación, exploraremos algunas de las vulnerabilidades más comunes de esta lista y su impacto en la seguridad de las aplicaciones.
+
+## Top 10 de 2021
+
+![](/static/images/uploads/owasp-top-10-2021/1.png)
+
+El gráfico muestra cómo el OWASP Top Ten ha cambiado entre 2017 y 2021:
+
+1. **Consolidación**: Algunas vulnerabilidades se han agrupado, como "Broken Authentication" dentro de "Identification and Authentication Failures".
+2. **Nuevas amenazas**: Se agregaron "Insecure Design" y "Server-Side Request Forgery (SSRF)" en 2021.
+3. **Cambio de enfoque**: Se amplió el foco en fallos criptográficos, como "Cryptographic Failures".
+4. **Persistencia**: Problemas como "Broken Access Control" siguen siendo prioritarios.
+
+La lista se adapta a nuevas amenazas mientras mantiene la atención en fallos persistentes.
+
+## Vulnerabilidades
+
+Las vulnerabilidades se categorizan como A01-A10 seguido del año y una breve descripción. A continuación, exploraremos algunas de ellas.
+
+---
+
+### A01:2021 Broken Access Control (IDOR)
+
+**IDOR** (Insecure Direct Object Reference) ocurre cuando al cambiar el ID en una URL puedes acceder a contenido al que no deberías tener acceso.
+
+Imaginemos que estamos visitando nuestra cuenta del banco:
+
+![](/static/images/uploads/owasp-top-10-2021/image1.png)
+
+Observamos la URL y vemos algo como lo siguiente:
+
+```
+https://banco.com/cuenta?user_id=1
+```
+
+Si cambiamos el `user_id` por otro número aleatorio, podríamos acceder a la cuenta de otro usuario:
+
+![](/static/images/uploads/owasp-top-10-2021/image2.png)
+
+Aunque esta vulnerabilidad parezca simple, es bastante común cuando no se implementan las verificaciones necesarias para controlar el acceso. No es solo responsabilidad del desarrollador, debe considerarse en todas las fases del **SDLC** (Ciclo de Vida del Desarrollo de Software):
+1. **Requisitos**
+2. **Análisis**
+3. **Diseño**
+4. **Desarrollo**
+5. **Pruebas**
+6. **Despliegue**
+7. **Mantenimiento**
+
+---
+
+### A02:2021 Cryptographic failure
+
+A veces, las protecciones iniciales de una aplicación fallan y un atacante logra penetrar el sistema, accediendo a su base de datos.
+
+Si el atacante puede ver el contenido de la base de datos, una implementación deficiente de las medidas criptográficas podría facilitar que obtenga las contraseñas de los usuarios.
+
+En este ejemplo, las contraseñas se almacenan como hashes en **MD5**, lo cual no es suficiente para protegerlas. Esto se debe no solo a la debilidad de **MD5** como algoritmo de hashing, sino también a la simplicidad de las contraseñas utilizadas y la ausencia de un salt al generar los hashes.
+
+```shell
+file example.db
+# example.db: SQLite 3.x database, last written using SQLite version 3039002, file counter 1, database pages 2, cookie 0x1, schema 4, UTF-8, version-valid-for 1
+sqlite3 example.db
+sqlite> .tables;
+sqlite> PRAGMA table_info(<tablename>);
+sqlite> SELECT * FROM customers;
+# 0|Iker Ocio      |5f4dcc3b5aa765d61d8327deb882cf99
+# 1|David Puente   |f25a2fc72690b780b2a14e140ef6a9e0
+# 2|Gari Rodriguez |81dc9bdb52d04dc20036dbd8313ed055
+# 3|Asier Rabanal  |a6a7c0ce5a93f77cf3be0980da5f7da3
+```
+
+Te invito a probar con [Crackstation](https://crackstation.net/) y ver si puedes descifrar las contraseñas de estos usuarios que claramente no han seguido buenas prácticas. 😜
+
+---
+
+### A04:2021 Insecure design
+
+El diseño inseguro se refiere a vulnerabilidades inherentes a la arquitectura de la aplicación. No se trata de malas implementaciones o configuraciones, sino de fallos en la concepción de la aplicación desde el principio. Estas vulnerabilidades suelen ocurrir cuando no se realiza un modelado de amenazas adecuado durante las fases de planificación, y se propagan hasta la versión final. Además, los desarrolladores pueden introducir estas vulnerabilidades al agregar "atajos" en el código para facilitar pruebas. Un ejemplo sería desactivar la validación OTP para agilizar las pruebas y olvidarse de reactivarla antes de pasar la aplicación a producción.
+
+#### Vulnerabilidad en Instagram
+
+Hace un tiempo, Instagram permitía restablecer contraseñas mediante un código de 6 dígitos enviado al móvil del usuario. Un atacante podía intentar forzar el código por fuerza bruta, pero Instagram limitaba los intentos a 250 por IP antes de bloquear más intentos.
+
+![](/static/images/uploads/owasp-top-10-2021/2.png)
+
+Sin embargo, se descubrió que el límite solo se aplicaba a cada IP individual. Un atacante con varias IPs podía intentar 250 códigos por cada una. Para un código de 6 dígitos (un millón de combinaciones posibles), un atacante necesitaría 4000 IPs para cubrir todos los códigos, algo factible mediante servicios en la nube.
+
+![](/static/images/uploads/owasp-top-10-2021/3.png)
+
+Este problema radica en el **diseño**, no en la implementación. Se asumió erróneamente que los usuarios no podrían usar múltiples IPs para atacar el sistema.
+
+#### Diseño de una mala ventana de Login
+
+Dado que las vulnerabilidades de diseño inseguro se introducen en una fase temprana del desarrollo, resolverlas puede requerir reconstruir partes de la aplicación desde cero, lo que suele ser más difícil que corregir vulnerabilidades relacionadas con el código. **La mejor forma de evitar este tipo de vulnerabilidades es realizar un modelado de amenazas en las primeras etapas del ciclo de desarrollo**.
+
+![](/static/images/uploads/owasp-top-10-2021/4.png)
+
+Por ejemplo, aquí se está filtrando información de usuarios registrados, lo que podría permitir ataques dirigidos. Esta información no debería ser visible. En su lugar, se debería enviar un correo de recuperación de contraseña si el usuario existe, pero el resultado visible para el usuario debería ser siempre el mismo.
+
+Además, la forma de recuperar contraseñas puede ser insegura si se utilizan preguntas de seguridad fáciles de adivinar con pocas pruebas.
+
+![](/static/images/uploads/owasp-top-10-2021/5.png)
+
+¿Cuántos colores hay? **Rojo**, **verde**, **azul**, **amarillo**, **naranja**,... con unos pocos intentos se puede adivinar la contraseña.
+
+---
+
+### A08:2021 Software and Data integrity Failures
+
+Es recomendable que, al publicar un artefacto de software, adjuntes un hash para que cualquiera pueda verificar la integridad del archivo. Si descargas un archivo de una fuente externa y no estás seguro de si ha sido manipulado, puedes verificar su hash para asegurarte de que no ha sido alterado.
+
+Cuando incluyes scripts de terceros en tu web, como por ejemplo:
+```html
+<script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+```
+Este script podría ser alterado si el servidor que lo aloja es hackeado. Para evitar esto, puedes usar **Subresource Integrity (SRI)**, asegurándote de que el archivo no ha sido modificado:
+
+```html
+<script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+```
+
+Genera el hash con herramientas como [SRI Hash Generator](https://www.srihash.org/).
+
+
+Aquí tienes la versión corregida y ajustada de la conclusión:
+
+## **Conclusión**
+
+El OWASP Top Ten es una herramienta esencial para identificar las vulnerabilidades más comunes y críticas en aplicaciones web. Las amenazas han evolucionado con el tiempo, lo que ha llevado a la consolidación de algunas categorías y la incorporación de nuevas, como **Insecure Design** y **Server-Side Request Forgery (SSRF)**. Sin embargo, problemas persistentes como el **Broken Access Control** continúan siendo un reto.
+
+Es importante que la seguridad forme parte del **diseño de la aplicación** desde el principio. Posponer su implementación puede hacer que la resolución de vulnerabilidades sea mucho más costosa y complicada en fases posteriores. Al incluir la seguridad en las primeras etapas del desarrollo, se pueden evitar problemas que, de otro modo, requerirían reconstruir grandes partes del sistema.
+
+Estar preparados para las actualizaciones del **OWASP Top Ten 2025** nos ayudará a enfrentar las nuevas amenazas y a fortalecer la seguridad de nuestras aplicaciones. 
+
