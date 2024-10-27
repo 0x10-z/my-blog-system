@@ -36,6 +36,12 @@ Para desactivar Hyper-V y permitir que VirtualBox utilice la aceleración por ha
 bcdedit /set hypervisorlaunchtype off
 ```
 
+En ocasiones, es necesario tambien deshabilitar la caracteristica de Hyper-V del sistema.
+
+```powershell
+DISM /Online /Disable-Feature:Microsoft-Hyper-V
+```
+
 Después de ejecutar este comando, es necesario **reiniciar el equipo** para aplicar los cambios. Con Hyper-V deshabilitado, VirtualBox podrá usar VT-x o AMD-V y el rendimiento de las máquinas virtuales mejorará significativamente.
 
 ### Habilitar Hyper-V para usar Docker
@@ -44,6 +50,12 @@ Cuando quieras volver a usar Docker, es necesario habilitar de nuevo Hyper-V. Pa
 
 ```powershell
 bcdedit /set hypervisorlaunchtype auto
+```
+
+Si has deshabilitado Hyper-V del sistema, debes habilitarlo de nuevo.
+
+```powershell
+DISM /Online /Enable-Feature:Microsoft-Hyper-V
 ```
 
 Una vez más, **debes reiniciar el equipo** para que Hyper-V se vuelva a activar, permitiendo que Docker funcione correctamente.
