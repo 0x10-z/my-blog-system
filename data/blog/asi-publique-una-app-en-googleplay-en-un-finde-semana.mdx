@@ -1,0 +1,146 @@
+---
+title: 'One Cat a Day: Un Juego de Colección Felina'
+date: '2024-11-01'
+tags: []
+draft: true
+authors: ['default']
+summary: 'One Cat a Day es un juego para coleccionar gatos a diario, ganar insignias especiales y explorar la diversión gatuna sin límites. ¡No te pierdas ni un gato!'
+images: ['']
+---
+
+# One Cat a Day: Un Juego de Colección Felina
+
+Todo empezó un viernes aburrido en casa. Un día perfecto para hacer algo totalmente útil, ¿verdad?
+
+Hacía un par de años que había empezado a jugar con **React**. Fue una odisea lanzarme porque, la verdad, cambiar el chip cuando estás acostumbrado al backend da una pereza mortal. Imagínate: yo, tan cómodo en mis servidores, y de repente ver código de frontend y JavaScript. Pero al final, después de morder el polvo un rato, me animé y probé **React Native**. Ya había publicado apps en iOS y Android con **PhoneGap** (¡clásico!) y algunas cosas en **Java**. Pero vamos, eso es historia antigua. Hoy en día, Android es **Kotlin** y en iOS, el **Objective-C** es casi una leyenda, pues ahora reina **Swift**.
+
+La idea de hacer apps "agnósticas" (que no discriminan entre iOS, Android, o web) fue lo que realmente me convenció de React Native. Total, ¿para qué elegir un lado si puedes tenerlo todo?
+
+Así que, en un fin de semana, me dije: "¿Por qué no hacer un juego donde cada día consigas un gato?" Así nació **One Cat a Day**. ¡Literalmente, un fin de semana de código y aquí estamos! 😹
+
+## ¿De Qué Trata el Juego?
+
+La aplicación consiste en coleccionar tarjetas de gatos y conseguir insignias con gatos especiales. Cada tarjeta viene con el nombre de un gato y una descripción graciosa, ¡y tengo 365 gatos esperando a ser capturados! 😸 
+
+¿Que cómo hice las descripciones y nombres? Fácil. **ChatGPT** me echó una pata (¡o varias!). Le pedí nombres y descripciones de gatos épicos, porque, sinceramente, ¡tenía prisa por pasar a la parte divertida!
+
+```json
+funny_names = {
+    "El Conde Maullido": {
+        ...
+    },
+    "Miaucesar": {
+        ...
+    },
+    "Gatín Tarantino": {
+        ...
+    },
+    "Señor Garras": {
+        ...
+    },
+    "Miau de Nieve": {
+        ...
+    },
+    "Minino Destructor": {
+        ...
+    },
+    "Sir Ronroneo": {
+        ...
+    },
+    "Misi Kitsch": {
+        ...
+    },
+    "Gatón de Guerra": {
+        ...
+    },
+    "Miauestro": {
+        ...
+    },
+    "Zar Purrinski": {
+        ...
+    },
+    "El Felino Feroz": {
+        ...
+```
+
+Para el desarrollo usé **React Native** y **Expo**, lo que hizo mucho más sencillo el compilado y despliegue. Puedes echar un vistazo a la app en la [versión web](https://one-cat-a-day.vercel.app/) gracias a la flexibilidad de React Native. Y, para los que quieran trastear, aquí está el [repositorio](https://github.com/0x10-z/One-Cat-a-Day).
+
+<Image src="/images/one-cat-a-day.png" alt="One Cat a Day screenshot" width={600} height={400} />
+
+## ¿Cómo lo Hice?
+
+Al principio, busqué fotos en [thecatapi.com](https://thecatapi.com/), pero no encontraba el toque cómico que quería. Hasta que di con **Cat As a Service** [https://cataas.com/](https://cataas.com/) (sí, en serio, existe), un servicio que permite descargar memes y gifs gatunos con ese toque de aleatoriedad que buscaba. Me descargué fotos "a cholón", y luego seleccioné manualmente los mejores 365. Todo un casting de gatos de primera.
+
+Como últimamente estoy en modo rácano, no quería pagar por un servidor para almacenar las fotos y la lógica de "un gato al día". La solución: meter todo en el propio **repositorio** de GitHub. Sé que probablemente esté rozando los límites de los términos de servicio de GitHub, pero bueno, si alguien se queja, ¡me habrán pillado! 😆
+
+Aquí tenéis todas las fotos [en GitHub](https://github.com/0x10-z/One-Cat-a-Day/tree/master/scrap/cataas_webp). Y la secuencia de gatos está en [un JSON](https://github.com/0x10-z/One-Cat-a-Day/blob/master/scrap/cataas.json), para tener control absoluto de qué gato sale cada día.
+
+```json
+[
+    {
+        "id": "04eEQhDfAL8l5nt3.webp",
+        "name": "El Conde Maullido",
+        "description": "Este gato cree que es el dueño del mundo, y tú solo vives en él para servirle.",
+        "years": 10,
+        "weight": 3,
+        "intelligence": 5,
+        "love": 4,
+        "exploding_rate": 4,
+        "tags": ["two", "double", "black"],
+        "expected_date_to_publish": "15/09/2024"
+    },
+    {
+        "id": "05Xd4JtN14983pns.webp",
+        "name": "Miaucesar",
+        "description": "Cuando te sientas, él se sienta encima; cuando te levantas, él se estira en tu lugar.",
+        "years": 13,
+        "weight": 3,
+        "intelligence": 2,
+        "love": 3,
+        "exploding_rate": 5,
+        "tags": ["Cute"],
+        "expected_date_to_publish": "16/09/2024"
+    },
+    ...
+]
+```
+
+Además, he añadido un sistema de insignias. Algunos gatos tienen [insignias](https://github.com/0x10-z/One-Cat-a-Day/blob/master/lib/all_badges.json). El criterio para ganarlas varía: puede ser por un gato en específico, una fecha especial, o alcanzar un número de gatos capturados.
+
+```json
+[
+  {
+    "id": 1,
+    "title": "Gato primerizo",
+    "image": "assets/badges/1.webp",
+    "obtained": false,
+    "criteria": {
+      "type": "total_cats",
+      "number": 1
+    }
+  },
+  {
+    "id": 2,
+    "title": "Entrenador gatuno",
+    "image": "assets/badges/10.webp",
+    "obtained": false,
+    "criteria": {
+      "type": "total_cats",
+      "number": 10
+    }
+  },
+  ...
+]
+```
+
+## Publicando en Google Play: Una Aventura
+
+Ahora, la parte menos divertida: publicar en **Google Play**. Creía que subir la app sería fácil, pero vaya sorpresa. Recordé que en la App Store también era todo un drama: te revisaban el diseño, la experiencia de usuario... ¡hasta el color de un botón! Parece que Google Play ha tomado nota y el proceso es igual de aburrido. Quizás sea culpa de las normativas europeas. Probablemente sea aún peor en Apple, en proporción.
+
+> EEUU innova, China copia y Europa regula. Y aquí estamos nosotros, saltando todos los aros. 🕴️
+
+Así fue como nació y se lanzó **One Cat a Day**. Un juego simple y entretenido que permite a los usuarios coleccionar gatos y descubrir insignias especiales, sin importar el dispositivo. ¡A ver cuántos gatos puedes conseguir!
+
+---
+
+Espero que disfrutes de la app tanto como yo disfruté creándola. 🚀 Y recuerda, ¡no te pierdas ni un solo gato del día!
