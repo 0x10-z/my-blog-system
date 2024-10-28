@@ -4,8 +4,8 @@ date: '2024-11-01'
 tags: []
 draft: true
 authors: ['default']
-summary: 'One Cat a Day es un juego para coleccionar gatos a diario, ganar insignias especiales y explorar la diversión gatuna sin límites. ¡No te pierdas ni un gato!'
-images: ['']
+summary: 'One Cat a Day es una app de colección diaria donde cada día te espera un nuevo gato con su propia historia y encanto. Desde gatos legendarios hasta felinos graciosos, puedes coleccionarlos todos y ganar insignias exclusivas al completar desafíos especiales. Ideal para los amantes de los gatos y los coleccionistas, esta app promete diversión felina sin límites y desafíos diarios. ¡No te pierdas ni un gato y construye tu propia galería gatuna!'
+images: ['/static/images/uploads/one-cat-a-day-un-juego-de-coleccion-felina/1.gif']
 ---
 
 # One Cat a Day: Un Juego de Colección Felina
@@ -18,9 +18,13 @@ La idea de hacer apps "agnósticas" (que no discriminan entre iOS, Android, o we
 
 Así que, en un fin de semana, me dije: "¿Por qué no hacer un juego donde cada día consigas un gato?" Así nació **One Cat a Day**. ¡Literalmente, un fin de semana de código y aquí estamos! 😹
 
+![](/static/images/uploads/one-cat-a-day-un-juego-de-coleccion-felina/first.webp)
+
 ## ¿De Qué Trata el Juego?
 
 La aplicación consiste en coleccionar tarjetas de gatos y conseguir insignias con gatos especiales. Cada tarjeta viene con el nombre de un gato y una descripción graciosa, ¡y tengo 365 gatos esperando a ser capturados! 😸 
+
+![](/static/images/uploads/one-cat-a-day-un-juego-de-coleccion-felina/list.webp)
 
 ¿Que cómo hice las descripciones y nombres? Fácil. **ChatGPT** me echó una pata (¡o varias!). Le pedí nombres y descripciones de gatos épicos, porque, sinceramente, ¡tenía prisa por pasar a la parte divertida!
 
@@ -65,7 +69,7 @@ funny_names = {
 
 Para el desarrollo usé **React Native** y **Expo**, lo que hizo mucho más sencillo el compilado y despliegue. Puedes echar un vistazo a la app en la [versión web](https://one-cat-a-day.vercel.app/) gracias a la flexibilidad de React Native. Y, para los que quieran trastear, aquí está el [repositorio](https://github.com/0x10-z/One-Cat-a-Day).
 
-<Image src="/images/one-cat-a-day.png" alt="One Cat a Day screenshot" width={600} height={400} />
+![](/static/images/uploads/one-cat-a-day-un-juego-de-coleccion-felina/example.webp)
 
 ## ¿Cómo lo Hice?
 
@@ -107,6 +111,8 @@ Aquí tenéis todas las fotos [en GitHub](https://github.com/0x10-z/One-Cat-a-Da
 
 Además, he añadido un sistema de insignias. Algunos gatos tienen [insignias](https://github.com/0x10-z/One-Cat-a-Day/blob/master/lib/all_badges.json). El criterio para ganarlas varía: puede ser por un gato en específico, una fecha especial, o alcanzar un número de gatos capturados.
 
+![](/static/images/uploads/one-cat-a-day-un-juego-de-coleccion-felina/badges.webp)
+
 ```json
 [
   {
@@ -133,6 +139,8 @@ Además, he añadido un sistema de insignias. Algunos gatos tienen [insignias](h
 ]
 ```
 
+![](/static/images/uploads/one-cat-a-day-un-juego-de-coleccion-felina/1.gif)
+
 ## Publicando en Google Play: Una Aventura
 
 Ahora, la parte menos divertida: publicar en **Google Play**. Creía que subir la app sería fácil, pero vaya sorpresa. Recordé que en la App Store también era todo un drama: te revisaban el diseño, la experiencia de usuario... ¡hasta el color de un botón! Parece que Google Play ha tomado nota y el proceso es igual de aburrido. Quizás sea culpa de las normativas europeas. Probablemente sea aún peor en Apple, en proporción.
@@ -144,3 +152,5 @@ Así fue como nació y se lanzó **One Cat a Day**. Un juego simple y entretenid
 ---
 
 Espero que disfrutes de la app tanto como yo disfruté creándola. 🚀 Y recuerda, ¡no te pierdas ni un solo gato del día!
+
+![](/static/images/uploads/one-cat-a-day-un-juego-de-coleccion-felina/2.gif)
