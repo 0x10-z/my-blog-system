@@ -1,0 +1,46 @@
+---
+title: 'Sobre fútbol, Movistar, Cloudflare y VPNs'
+date: '2025-02-12'
+tags: ["futbol", "laliga", "cloudflare"]
+draft: false
+authors: ['default']
+summary: 'Movistar y otros ISPs están bloqueando servidores de Cloudflare para evitar la piratería del fútbol, pero el impacto es desproporcionado y afecta a servicios legales. LaLiga pide, pero los ISPs obedecen sin cuestionar. Y justo cuando el gobierno adquiere parte de Telefónica, todo esto se vuelve aún más sospechoso.'
+images: [/static/images/uploads/sobre-futbol-movistar-cloudflare-y-mas/portada.webp]
+---
+
+# Sobre fútbol, Movistar, Cloudflare y VPNs  
+
+> "Lo suficiente para fastidiar el fútbol pirata y hacer que la experiencia sea insoportable, pero sin que se note demasiado que han tirado medio internet durante 15 minutos."  
+
+No me gusta el fútbol. No lo sigo, no me interesa y, sin embargo, he tenido que enterarme de que se juega un partido porque, el algoritmo, aun sabiendo que no me gusta nada esto del furbo, me ha puesto en mis RRSS a un montón de gente enfadada porque no podían acceder a otras páginas que nada tenían que ver ni con el fútbol ni la piratería.  
+
+En España, [LaLiga ha pedido a Movistar](https://www.xatakamovil.com/streaming/laliga-le-declaro-guerra-a-cloudflare-iptv-no-oficiales-bloqueos-cloudflare-ha-respondido) (y otros ISPs) que bloquee ciertos servidores de internet durante los partidos para evitar el acceso a retransmisiones piratas. Hasta ahí, lo esperado. Lo preocupante es que estos bloqueos han afectado a servidores donde más del 90% del tráfico no tiene nada que ver con el fútbol ni con la piratería. Durante ese tiempo, miles de usuarios se han encontrado con que no podían acceder a servicios como GitHub, Twitch o incluso herramientas de trabajo alojadas en Cloudflare.  
+
+La respuesta ha sido inmediata: la indignación en redes ha ido directa contra LaLiga, como si la culpa fuera suya. Pero ¿es realmente así?  
+
+## El problema  
+
+[LaLiga desactivó el pasado domingo](https://www.laliga.com/noticias/laliga-desactiva-antes-del-derbi-de-madrid-la-plataforma-de-pirateria-de-vivo-duckvision) una plataforma pirata que ofrecía acceso ilegal a contenido deportivo en vivo.  
+
+Lo que no mencionan es que, para hacerlo, bloquearon el acceso a cientos, probablemente miles, de servidores legítimos que no tenían ninguna relación con la piratería. Negocios de venta online, plataformas de trabajo, servicios de entretenimiento completamente legales… En fin, una medida desproporcionada que afectó a muchos más de los que intentaban castigar.  
+
+El problema de fondo es que muchos de estos bloqueos han afectado a servidores de Cloudflare, una de las infraestructuras clave de internet. **Cloudflare no es una web, ni un simple proveedor de hosting: es más bien una autopista principal por la que circula una parte enorme del tráfico de internet.** Miles de páginas y servicios dependen de ella para funcionar. Bloquear servidores de Cloudflare para evitar la piratería es como cerrar una de las carreteras más importantes del país solo porque, un día a la semana, se sabe que algunos delincuentes la utilizan. **¿El resultado? Afectas a todos los demás que la usan para trabajar, vender, aprender o simplemente comunicarse.**  
+
+Ayer, durante otro partido, Movistar intentó aplicar una estrategia aparentemente más "quirúrgica". En lugar de bloquear todos los servidores de golpe, optó por realizar cortes rotativos cada 15 minutos entre los servidores afectados. [Lo suficiente para fastidiar el fútbol pirata y hacer que la experiencia sea insoportable, pero sin que se note demasiado que han tirado medio internet durante 15 minutos](https://x.com/DavidPerez_05/status/1889419247174164541).  
+
+![Cortes de internet](/static/images/uploads/sobre-futbol-movistar-cloudflare-y-mas/1.webp)  
+
+Como se puede ver en la imagen, los cortes han ocurrido en intervalos de 15 minutos.  
+
+![Cortes de internet](/static/images/uploads/sobre-futbol-movistar-cloudflare-y-mas/2.webp)  
+
+No importa si te interesa el fútbol o no: este tipo de medidas afectan a todos. No es solo un problema de piratería, sino de cómo gestionamos el acceso a internet y qué poder estamos dejando en manos de unas pocas empresas.  
+
+## ¿Quién tiene el poder de decidir?  
+
+Que LaLiga pida bloqueos no es sorprendente. Es un negocio y, como cualquier empresa, intentará proteger su modelo con las herramientas que tenga a su alcance. Lo preocupante es que Movistar (y otros ISPs) no solo acceden a estas peticiones, sino que lo hacen sin cuestionarlas, incluso si afectan a usuarios que nada tienen que ver con la piratería.  
+
+Hasta hace poco, el proceso para estos bloqueos requería intervención judicial. Ahora, tras [una sentencia del Juzgado de lo Mercantil número 6 de Barcelona](https://www.laliga.com/noticias/una-nueva-sentencia-permite-a-movistar-y-laliga-solicitar-de-forma-inmediata-que-todos-los-operadores-de-acceso-a-internet-bloqueen-mas-de-40-plataformas-piratas), ni siquiera eso es necesario: pueden pedirlo con 30 minutos de antelación y el ISP está obligado a cumplir. No hay supervisión, no hay garantías de que el bloqueo sea proporcionado ni de que no se abuse del sistema.  
+
+Y aquí es donde todo se vuelve más sospechoso: **el gobierno [ha adquirido una participación mayoritaria](https://theobjective.com/economia/2024-05-20/compra-gobierno-acciones-telefonica/) en Telefónica, [ha colocado a dedo](https://www.elindependiente.com/economia/2025/01/18/el-gobierno-fulmina-a-pallete-en-telefonica/) a uno cercano al Partido del gobierno, al mismo tiempo que permite que existan leyes que respalden estos bloqueos.**
+
