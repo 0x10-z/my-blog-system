@@ -1,0 +1,150 @@
+---
+title: 'Elegir el puerto de tu aplicación no es trivial: también forma parte del producto'
+date: '2025-06-07'
+tags: [
+  "Web development",
+  "Arquitectura de software",
+  "Buenas prácticas",
+  "Configuración de puertos",
+  "Product strategy"
+]
+draft: false
+authors: ['default']
+summary: 'Un puerto mal elegido puede condenar a tu aplicación a conflictos innecesarios. Aprende por qué es tan importante elegirlo con cabeza.'
+images: ["/static/images/uploads/elegir-un-buen-puerto-para-tu-aplicacion/banner.webp"]
+---
+
+# 🛠️ ¿Y tú, ya has elegido bien el puerto de tu aplicación?
+
+*Elegir un buen puerto no es trivial: es tan importante como elegir un buen nombre*
+
+![banner](/static/images/uploads/elegir-un-buen-puerto-para-tu-aplicacion/banner.webp)
+
+Cuando desarrollamos una aplicación web, nos centramos en la arquitectura, en las tecnologías utilizadas, en los entornos de despliegue... pero muy pocas veces se reflexiona sobre algo tan básico como **el puerto por el que se expone la aplicación**.
+
+> En mi opinión, **elegir bien el puerto de una aplicación es tan importante como elegir bien su nombre**. Porque hacerlo mal puede traerte muchos dolores de cabeza.
+
+---
+
+## 🚨 ¿Por qué importa tanto el puerto?
+
+Un puerto mal elegido puede acabar generando conflictos inesperados, especialmente en entornos empresariales donde coexisten múltiples servicios. Y lo peor: muchos de estos conflictos no se detectan hasta que ya es demasiado tarde.
+
+Uno de los errores más comunes es **usar el puerto por defecto del framework**:
+
+- `3000` en React
+- `5000` en Flask
+- `8080` en Tomcat
+- `8888` en Jupyter
+
+Estos puertos están tan quemados que es fácil que **otra app en tu máquina ya los esté usando**, y esto puede impedirte levantar servicios en paralelo, hacer pruebas locales, o desplegar entornos de staging.
+
+Si no lo cambias **desde la primera release (aunque sea beta)**, ese puerto se convierte en parte del “contrato” de tu app y moverlo después será molesto para ti y para quienes la usen o la mantengan.
+
+---
+
+## 💣 El caso clásico: XAMPP vs Skype
+
+Hubo un tiempo en el que dos aplicaciones muy comunes como Skype y XAMPP no podián ser ejecutadas al mismo tiempo por un conflicto de puertos.
+
+Ambos servicios se peleaban por los puertos 80 y 443.
+
+- **Apache** (servidor de XAMPP) intentaba usar esos puertos porque son los estándar para HTTP y HTTPS.
+- **Skype**, en versiones antiguas, activaba por defecto una opción para “usar los puertos 80 y 443 como alternativa para conexiones entrantes”.
+
+Ambas aplicaciones se creían las más importantes del sistema… y acababan chocando.
+
+Más info:  
+👉 [StackOverflow: XAMPP Apache no arranca tras instalar Skype](https://stackoverflow.com/questions/14073985/xampp-apache-server-is-not-starting-after-skype-installation)
+
+> ⚠️ **Nota técnica:** los puertos por debajo del 1024 están reservados para protocolos estándar del sistema. Solo pueden usarse con privilegios elevados. Por eso es mejor mantenerse fuera de ese rango a menos que tengas un motivo claro.
+
+❓ **¿Y si mañana tu app obliga a cerrar otra aplicación que el usuario necesita en ese momento?**
+
+Aunque la tuya sea más crítica, no quieres ser ese tipo de software. Evita conflictos innecesarios.
+
+---
+
+## ⚙️ El puerto debe ser configurable (pero no cambiante)
+
+Sí: el puerto **debe poder cambiarse desde un archivo de configuración** (`.env`, `settings.yaml`, `config.json`...). Nunca debe estar hardcodeado en el código fuente ni requerir recompilar para cambiarlo.
+
+Ahora bien:
+
+> Configurar el puerto debe ser tu **plan de emergencia**, no tu estrategia principal.
+
+En el **99% de los casos no deberías necesitar cambiarlo**. Si en tu proyecto has tenido que cambiar de puerto varias veces, probablemente **algo no estás pensando bien desde el principio**.
+
+Además, una vez desplegada, tu app será mantenida por otros. Cambiar el puerto rompe documentación, scripts, expectativas y soporte técnico.
+
+---
+
+## 📋 Reglas básicas para elegir un buen puerto
+
+Aquí algunas recomendaciones prácticas para evitar sustos:
+
+1. **Nunca uses el puerto por defecto del framework**  
+   Cuidado con `3000`, `5000`, `8080`, etc. Cámbialo desde el primer día.
+
+2. **Evita los puertos por debajo de 1024**  
+   Requieren permisos de root y están reservados para servicios del sistema.
+
+3. **Evita los puertos populares y genéricos**  
+   Algunos puertos muy usados que conviene evitar:
+
+   - `3000` (React)
+   - `4200` (Angular)
+   - `5000` (Flask)
+   - `8000` (Django, FastAPI)
+   - `8080` (Tomcat, proxies)
+   - `8888` (Jupyter)
+   - `5173` (Vite)
+
+   Puedes consultar asignaciones comunes en el [registro oficial de puertos de IANA](https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml).
+
+4. **Integra la elección del puerto en tu estrategia de producto**
+
+   Elegir puertos no es solo una decisión técnica: **es una decisión de diseño del producto**.
+
+   Un producto bien pensado **expone sus servicios de forma ordenada, predecible y mantenible**. Esto se vuelve aún más importante cuando trabajas con múltiples microservicios, APIs internas, herramientas auxiliares o despliegues en distintos entornos.
+
+   Algunas buenas prácticas:
+
+   - Usa rangos consecutivos: `5001`, `5002`, `5003`, etc.
+   - Reserva rangos según el tipo de componente:
+     - Frontend → `6000–6099`
+     - Backend → `6100–6199`
+   - Usa patrones memorables: si tu frontend está en `5110`, los servicios que consume pueden ir en `5111`, `5112`, etc.
+
+   > Pensar en los puertos desde el principio es parte de diseñar un producto escalable, bien mantenido y profesional.
+
+   Esto facilita la vida de todos los que trabajan contigo (incluido tu yo del futuro).
+
+
+---
+
+## 🌐 Hay vida más allá del puerto 9000
+
+Del **1025 al 65535** hay más de **64.000 puertos disponibles**.
+
+Yo mismo rara vez he tenido que ir más allá del **12000**, y eso ya te deja miles de opciones viables.
+
+> Seamos creativos. Seamos ordenados. Seamos profesionales.
+
+---
+
+## ✅ Conclusión
+
+Elegir un buen puerto **no es una decisión menor**. Es una decisión de arquitectura, de estrategia y de convivencia con otros sistemas.
+
+Porque sí: **el puerto es parte de la identidad técnica de tu aplicación**.
+
+Así que recuerda:
+
+- ❌ No uses el puerto por defecto.
+- ⚙️ Hazlo configurable (pero solo como salvavidas).
+- 🧠 Piensa a futuro y elige con intención.
+
+---
+
+💬 ¿Y tú? ¿Sigues en el `3000` o ya te animaste a buscar algo mejor?
