@@ -1,0 +1,135 @@
+---
+title: 'Elegir un buen puerto para tu aplicación es tan importante como el nombre'
+date: '2025-06-07'
+tags: ["Web development"]
+draft: false
+authors: ['default']
+summary: ''
+images: ["/static/images/uploads/futuro-patrominio-fotografico-reflexiones-aldee/todos.webp"]
+---
+
+# 🛠️ ¿Y tú, ya has elegido bien el puerto de tu aplicación?
+*Elegir un buen puerto no es trivial: es tan importante como elegir un buen nombre*
+
+Cuando se desarrolla una aplicación web, se habla mucho de la arquitectura, de las tecnologías utilizadas, de los entornos... pero muy poca gente se detiene a pensar en algo tan aparentemente trivial como **el puerto que utiliza la aplicación**.
+
+> En mi opinión, **elegir bien el puerto de una aplicación es tan importante como elegir bien su nombre**. Y no, no estoy exagerando.
+
+## 🚩 ¿Por qué es tan importante?
+
+Porque un puerto mal elegido puede acabar generando conflictos inesperados a medida que el software crece y se integra con otros sistemas. Esto ocurre especialmente en entornos empresariales donde hay múltiples aplicaciones corriendo en paralelo en diferentes máquinas o entornos.
+
+## ⚠️ El error más común: dejar el puerto por defecto del framework
+
+Al principio puede parecer inofensivo dejar el puerto por defecto que trae tu framework:
+
+- `3000` en React
+- `5000` en Flask
+- `8080` en Tomcat
+- `8888` en Jupyter
+
+Pero si no lo cambias **desde la primera release (aunque sea beta)**, estás sembrando el caos futuro:
+
+- Ese puerto se queda "pegado" al proyecto.
+- Lo usas en local, en testing, en staging…
+- Cualquier desarrollador que quiera levantar otra app parecida tendrá que cambiar su entorno.
+- No podrás lanzar dos entornos a la vez sin conflictos.
+
+---
+
+## 🧠 ¿Te suena el conflicto XAMPP vs Skype?
+
+Hubo una época en la que **XAMPP y Skype no podían convivir** sin pelearse. ¿La causa? Ambos intentaban usar los puertos **80** y **443**, que están reservados para **protocolos estándar de comunicación** (HTTP y HTTPS respectivamente). Más info [aquí](https://stackoverflow.com/questions/14073985/xampp-apache-server-is-not-starting-after-skype-installation)
+
+> ⚠️ Por cierto, los puertos por debajo del 1024 están reservados para servicios del sistema y protocolos bien definidos. Técnicamente, solo procesos con privilegios elevados pueden escucharlos. Aun así, muchas aplicaciones se creen más importantes de lo que son y los usan igualmente.
+
+Y eso fue justo lo que pasó aquí:
+
+- **Apache** (parte de XAMPP) quería usar el `80` y `443` por ser el servidor HTTP/HTTPS.
+- **Skype**, en sus versiones antiguas, activaba por defecto una opción para “usar puertos 80 y 443 como alternativa para conexiones entrantes”.
+
+Ambos pensaban que eran “los más listos de la clase”, y el resultado era que **no podías tenerlos funcionando al mismo tiempo**. Había que cerrar Skype o cambiar el puerto de Apache.
+
+Una molestia totalmente evitable si uno de los dos hubiera optado por puertos menos comunes.
+
+> ❓ **¿Te gustaría que tu cliente tuviera que cerrar tu aplicación o incluso desinstalarla porque entra en conflicto con otra app?**  
+> Quizá la tuya sea más importante, pero justo en ese momento, él necesita usar la otra.
+
+Evitar ese tipo de fricciones está en tu mano.
+
+---
+
+## 🛠️ El puerto debe ser configurable
+
+Por supuesto, el puerto de la aplicación **debe ser configurable desde un archivo de configuración** (como un `.env`, `config.json`, `settings.yaml`, etc.). No deberías tener que recompilar el código o lanzar tu app con argumentos distintos solo para cambiar el puerto.
+
+Cambiar el puerto desde el archivo de configuración debería ser una **puerta trasera de emergencia**, no la norma. En el 99% de los casos **no debería hacer falta cambiarlo**.
+
+Además, una vez que una app empieza a utilizarse, es muy probable que haya un equipo de soporte técnico que ya conoce ese puerto. Cambiarlo más adelante puede convertirse en un quebradero de cabeza para todos.
+
+Por eso es **clave tomar esta decisión cuanto antes en el ciclo de vida de desarrollo de la aplicación**.
+
+---
+
+## 📋 Reglas para elegir un buen puerto
+
+Aquí tienes una pequeña guía basada en mi experiencia:
+
+1. Nunca uses el puerto por defecto de tu framework
+
+    Eso solo está bien para pruebas rápidas. En cuanto haces tu primera release (sí, incluso en desarrollo), cámbialo.
+
+2. Usa puertos por encima del 1024
+
+    Los puertos por debajo de 1024 están reservados para servicios del sistema y requieren permisos especiales. Empieza en 1025 o más arriba.
+
+3. No uses puertos demasiado comunes o populares
+
+    Evita los puertos típicos de muchos frameworks y entornos:
+
+    - `3000` (Node.js, React)
+    - `4200` (Angular)
+    - `5000` (Flask)
+    - `8000` (Django, FastAPI)
+    - `8080` (Tomcat, proxies)
+    - `8888` (Jupyter)
+    - `5173` (Vite)
+
+4. Usa una estrategia coherente si tienes varios servicios
+
+    Tu elección debe seguir cierta lógica. Algunas ideas:
+
+    - Usa series consecutivas: `5001`, `5002`, `5003`, etc.
+    - Reserva un rango por tipo de componente:
+    - Frontend: `6000-6099`
+    - Backend: `6100-6199`
+    - Usa patrones reconocibles:
+    - Si tu frontend va en `5110`, los servicios asociados podrían ir en `5111`, `5112`, etc.
+
+    Esto facilita el mantenimiento y el diagnóstico de errores en el futuro.
+
+---
+
+## 🎯 Hay vida más allá del puerto 9000
+
+Tenemos más de **64.000 puertos** disponibles a partir del 1024. ¡Seamos creativos! Elige uno que tenga sentido para tu entorno y que no interfiera con otros servicios.
+
+Yo mismo rara vez he necesitado usar un puerto por encima del **12000**, y aún así quedan **miles de opciones disponibles**.
+
+---
+
+## 🔚 Conclusión
+
+Elegir un buen puerto desde el inicio **no es solo una cuestión técnica**, es también una decisión estratégica. Te ahorra tiempo, conflictos y te obliga a pensar en tu aplicación como parte de un ecosistema más grande.
+
+Y recuerda:
+
+- **Evita los puertos por defecto.**
+- **Hazlo configurable desde el principio.**
+- **Y elige con intención, no por inercia.**
+
+Porque sí: **el puerto es parte de la identidad de tu aplicación.**
+
+---
+
+¿Y tú? ¿Ya elegiste el tuyo?
