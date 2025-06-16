@@ -8,31 +8,17 @@ summary: "Ideas y aprendizajes que he acumulado a lo largo del tiempo como ingen
 images: ["/static/images/uploads/reflexiones-sobre-ingenieria-software/banner.webp"]
 ---
 
-# 🧠 Reflexiones sobre desarrollo
+# 🧠 Reflexiones sobre ser ingeniero de software
 
-En el desarrollo de software, como en la vida, hay algo que debemos aceptar cuanto antes: **las personas cometemos errores, siempre**.  
+Ser ingeniero de software va mucho más allá de escribir código que funciona. Es una profesión que mezcla creatividad, precisión, comunicación, decisiones técnicas y humanas… y sí, también errores.
 
-La pregunta no es si vamos a cometerlos, sino **cuándo**.  
+Porque, como personas, **cometemos errores siempre**. La pregunta no es si vamos a fallar, sino **cuándo**. Y como ingenieros, sabemos bien que todo lo que puede fallar... **acabará fallando**.
 
-Y como desarrolladores, sabemos bien que todo lo que puede fallar... **acabará fallando**. Tarde o temprano.
+Nuestra labor no es solo solucionar problemas cuando ocurren, sino **anticiparlos, prevenirlos y construir entornos donde los errores no se repitan**.
 
-Por eso, cuando detectamos un error humano repetido, la solución no es solo arreglarlo y seguir adelante. **La solución es prevenirlo para siempre.** 
+Y ahí es donde entra el pensamiento crítico, los tests, los procesos bien diseñados, la reflexión y muchas veces… decir que no.
 
-¿Cómo? **Con un test**.
-
-Un ejemplo real de mi trabajo: al recibir traducciones en diferentes idiomas, nos encontrábamos errores introducidos por los traductores.
-
-A veces estos errores escapaban también al *pull request*, y sí, **rompíamos la app**.  
-
-¿El motivo? Usábamos una especie de pseudocódigo en algunos textos... pero eso es otra historia.
-
-¿La solución fue corregir la string y cerrar el PR? 
-
-No. 
-
-**Fue escribir un test para que ese error no pudiera volver a colarse nunca más.**  
-
-Es ahí donde los tests no son una carga, sino un seguro a largo plazo.
+Este post es una recopilación de reflexiones personales tras años escribiendo software, trabajando en equipo y aprendiendo a ser mejor profesional cada día. Porque no se trata solo de picar código. Se trata de ser ingenieros.
 
 ---
 
@@ -107,6 +93,35 @@ Este enfoque **divide el trabajo mental en fases limpias**, permitiéndote centr
 Y si mientras testeas ves algo que quieres refactorizar... **haz una nota y sigue adelante**. Volverás con el sombrero adecuado.
 
 > **Un paso cada vez, pero con intención.**
+
+---
+
+## ⏱️ ¡Anticípate! (O el valor de testear antes de lamentar)
+
+En el desarrollo de software, como en la vida, hay algo que debemos aceptar cuanto antes: **las personas cometemos errores, siempre**.
+
+La pregunta no es si vamos a cometerlos, sino **cuándo**.
+
+Y como ingenieros, sabemos bien que todo lo que puede fallar... **acabará fallando**. Tarde o temprano.
+
+Por eso, cuando detectamos un error humano repetido, la solución no es solo arreglarlo y seguir adelante.
+**La solución es prevenirlo para siempre.**
+
+¿Cómo? **Con un test.**
+
+Un ejemplo real de mi trabajo: al recibir traducciones en diferentes idiomas, nos encontrábamos errores introducidos por los traductores.
+A veces estos errores escapaban también al *pull request*, y sí, **rompíamos la app**.
+
+¿El motivo? Usábamos una especie de pseudocódigo en algunos textos... pero eso es otra historia.
+
+¿La solución fue corregir la string y cerrar el PR?
+
+No.
+
+**Fue escribir un test para que ese error no pudiera volver a colarse nunca más.**
+
+Porque ahí es donde los tests no son una carga, sino **un seguro a largo plazo**.
+No sirven solo para que hoy pase el CI. Sirven para que dentro de seis meses, **cuando el contexto ya no lo tengas fresco**, el sistema siga protegiéndose solo.
 
 ---
 
