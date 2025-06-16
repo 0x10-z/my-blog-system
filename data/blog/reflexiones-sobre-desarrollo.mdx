@@ -1,0 +1,235 @@
+---
+title: "Reflexiones personales sobre desarrollo"
+date: "2025-07-01"
+tags: ["desarrollo", "reflexiones", "cultura de equipo", "testing", "productividad", "toma de decisiones"]
+draft: true
+authors: ['default']
+summary: "Una recopilación de reflexiones personales sobre lo que implica desarrollar software más allá del código: cómo pensar, colaborar, decir que no, crecer con otros y adaptarse al cambio — con o sin inteligencia artificial."
+images: ["/static/images/uploads/reflexiones-sobre-desarrollo/banner.webp"]
+---
+
+# 🧠 Reflexiones sobre desarrollo
+
+En el desarrollo de software, como en la vida, hay algo que debemos aceptar cuanto antes: **las personas cometemos errores, siempre**.  
+
+La pregunta no es si vamos a cometerlos, sino **cuándo**.  
+
+Y como desarrolladores, sabemos bien que todo lo que puede fallar... **acabará fallando**. Tarde o temprano.
+
+Por eso, cuando detectamos un error humano repetido, la solución no es solo arreglarlo y seguir adelante. **La solución es prevenirlo para siempre.** 
+
+¿Cómo? **Con un test**.
+
+Un ejemplo real de mi trabajo: al recibir traducciones en diferentes idiomas, nos encontrábamos errores introducidos por los traductores.
+
+A veces estos errores escapaban también al *pull request*, y sí, **rompíamos la app**.  
+
+¿El motivo? Usábamos una especie de pseudocódigo en algunos textos... pero eso es otra historia.
+
+¿La solución fue corregir la string y cerrar el PR? 
+
+No. 
+
+**Fue escribir un test para que ese error no pudiera volver a colarse nunca más.**  
+
+Es ahí donde los tests no son una carga, sino un seguro a largo plazo.
+
+---
+
+## ⏸️ Parar antes de complicar
+
+A veces, mientras estás implementando una nueva funcionalidad, te das cuenta de que algo no encaja. Estás introduciendo un paso intermedio que parece forzado, o una solución que nadie más ha necesitado antes.  
+**Ese es el momento para parar.** Literalmente. Párate unos minutos, una hora, o incluso unos días. Pregúntate: ¿es esto realmente necesario? ¿Estoy resolviendo el problema adecuado?
+
+Muchas veces seguirás adelante con esa solución, pero otras, te darás cuenta de que estabas enfocando el problema desde el ángulo equivocado. Y puede que la solución más simple haya estado siempre ahí, escondida tras una capa de prisa o inercia.
+
+---
+
+## 🤝 Pensamiento colectivo y tiempo
+
+Hay decisiones que requieren reposo. Introducir un cambio en un proceso, una convención nueva o una librería adicional, son cosas que pueden parecer inofensivas, pero que afectan al resto del equipo.
+
+Cuando se dé uno de esos casos, **compártelo con el equipo**, aunque sea solo una nota. Pide que se mantenga presente durante unos días, y que cada uno lo piense sin presión.  
+Pasada una semana, volved a hablarlo. Es asombroso lo que ocurre cuando el cerebro ha descansado y ha tenido tiempo de conectar ideas en segundo plano, haciendo cosas totalmente distintas.
+
+---
+
+## 🧩 El desarrollo es más que escribir código
+
+Desarrollar software no es solo escribir funciones. Es entender el contexto, anticiparse a los errores, dar espacio al pensamiento, y crear sistemas en los que otras personas también puedan confiar y evolucionar.
+
+No siempre puedes escribir el código perfecto. Pero sí puedes construir un entorno donde los errores no se repitan, y donde las decisiones se tomen desde la reflexión, no desde la urgencia.
+
+> Reflexionar no es perder el tiempo. Es evitar perderlo en el futuro.
+
+---
+
+## 🏗️ Somos ingenieros, no operarios de tickets
+
+En ingeniería de software se nos pide más que simplemente “hacer tareas”. **Somos ingenieros de software**. Eso significa que no solo escribimos código: tomamos decisiones técnicas, evaluamos riesgos, y elegimos caminos que afectarán al equipo y al producto durante mucho tiempo.
+
+Por eso, cuando recibas un ticket, recuerda: **el qué debe venir definido, pero el cómo lo defines tú**. Si alguien escribe el ticket con instrucciones demasiado precisas sobre cómo resolverlo, levanta la mano. Pregunta. Colabora. Tal vez esa persona tenga motivos o experiencia para proponer esa solución. Pero **tú eres quien mejor conoce el sistema desde dentro**. Tú eres quien debe decidir si hay una mejor forma de hacerlo.
+
+Ser ingeniero es comprometerse con la calidad, no con la obediencia. Reflexiona, explica tus decisiones, y no dejes que el “hay que hacerlo así” sustituya a tu criterio técnico.
+
+> No estamos aquí solo para cumplir tickets. Estamos aquí para construir sistemas que merezca la pena mantener.
+
+---
+
+## 🧠 No todo son clavos
+
+Cuando aprendemos un patrón de diseño nuevo, un lenguaje de programación o una forma brillante de hacer las cosas, es inevitable: **empezamos a verlo en todas partes**.
+
+De repente, todo parece encajar con esa solución. Es como cuando compras un coche rojo y empiezas a ver coches rojos por todas partes. Pero cuidado: **no todo lo que parece un clavo, lo es**.
+
+Este es el famoso *"síndrome del martillo"*: si tienes un martillo, todo te parece un clavo. Y en desarrollo, caer en esto puede llevarnos a soluciones innecesariamente complejas, sobreingeniería o simplemente a aplicar un enfoque inadecuado solo porque lo acabamos de aprender.
+
+Explorar está bien. Entusiasmarse, también. Pero elige con cabeza. Cada herramienta tiene su lugar. Y a veces, una solución sencilla gana por goleada a la más elegante en papel.
+
+---
+
+## 🎩 Ponte un solo sombrero a la vez
+
+En [*The Pragmatic Programmer*](https://www.amazon.es/Pragmatic-Programmer-Journeyman-Master/dp/020161622X) uno de los principios fundamentales es mantener la claridad mental durante el desarrollo. Para ello, los autores introducen la idea de **llevar un sombrero distinto según la fase en la que estás trabajando**:
+
+* El **sombrero de implementación** te enfoca en que la funcionalidad funcione.
+* El **sombrero de tests** te obliga a pensar en los límites, errores y condiciones no ideales.
+* El **sombrero de refactorización** te hace revisar si lo que hiciste puede expresarse mejor, ser más limpio, más mantenible.
+
+La clave está en **no intentar llevarlos todos a la vez**.
+
+> Cuando implementas y refactorizas al mismo tiempo, corres el riesgo de romper cosas sin darte cuenta. Cuando pruebas y cambias código a la vez, no sabes si el fallo es del test o del código.
+
+Este enfoque **divide el trabajo mental en fases limpias**, permitiéndote centrarte con más profundidad, ser más metódico y reducir errores.
+
+💡 *The Pragmatic Programmer* insiste en que el buen software se construye con disciplina, no con prisas. Ser pragmático no es hacer lo más rápido, es hacer lo que mejor funciona a largo plazo.
+
+Y si mientras testeas ves algo que quieres refactorizar... **haz una nota y sigue adelante**. Volverás con el sombrero adecuado.
+
+> **Un paso cada vez, pero con intención.**
+
+---
+
+## ⚖️ Todo depende: el arte de elegir con criterio
+
+Los libros están bien. La teoría es necesaria. Aprender los patrones, las arquitecturas, las "mejores prácticas"... todo eso es importante. Pero en el desarrollo de software, hay una verdad que se impone a todas las demás:
+
+> **Todo depende.**
+
+No existe **el mejor lenguaje**, ni **la mejor arquitectura**, ni **la mejor forma de hacer las cosas**. Todo depende del contexto, del equipo, del tiempo, del presupuesto, del momento.
+
+Por eso, no trates de forzar tus conocimientos a la realidad del proyecto. Haz justo lo contrario: **adapta lo que sabes a lo que el proyecto necesita.**
+
+Sí, la arquitectura hexagonal puede ser elegante y mantenible…
+Pero no todo producto necesita esa complejidad. Si estás en una prueba de concepto, o lanzando una feature muy específica con vida corta, probablemente no sea la mejor elección.
+
+Lo mismo pasa con patrones de diseño, con DDD, con CQRS, con microservicios. Son herramientas, no reglas inquebrantables.
+
+Como desarrolladores, debemos construir una **estrategia de desarrollo adaptativa**, donde sepamos movernos entre soluciones rápidas y soluciones duraderas. Elegir cuándo hacer un *patch rápido* y cuándo sentarnos a diseñar algo que escale por años.
+
+> La excelencia no está en aplicar lo que leíste en un libro.
+> La excelencia está en **saber cuándo aplicarlo… y cuándo no.**
+
+---
+
+## 🚀 Saca tu producto (aunque no esté perfecto)
+
+Si no tienes la sensación de que has sacado tu producto demasiado pronto… probablemente lo hayas sacado demasiado tarde.
+
+Nos guste o no, **vivimos en la era del software y las actualizaciones**. Internet nos ha dado cosas increíbles: la distribución inmediata, la posibilidad de corregir errores en tiempo real, de añadir funcionalidades con solo subir una nueva versión.
+
+Hace años, al software se le exigía perfección desde el primer día. Hoy, lo que se espera es **movimiento**. Que evolucione. Que mejore. Que escuche al usuario y se adapte.
+
+No tengas miedo de lanzar tu producto.
+
+Probablemente te pase como a mí: cuando haces algo y conoces todos sus puntos débiles, **sientes que todo el mundo va a ver esos bugs o esas limitaciones**. Pero la realidad es que el 95% de las personas ni siquiera los detecta. Y si lo hacen, puedes corregirlos.
+
+> El software perfecto no se construye en la sombra.
+> Se construye con feedback, iteración y coraje.
+
+Sácalo. Escucha. Mejora. Repite.
+
+---
+
+## 🧠 ¿Qué nos enseñó la crisis del software?
+
+En los años 60 y 70, la industria vivió lo que se llamó la **crisis del software**. El hardware avanzaba rápido, pero el software no podía seguirle el ritmo. Los proyectos se retrasaban, sobrepasaban presupuestos, fallaban estrepitosamente o nunca llegaban a completarse. Fue en ese contexto cuando **Edsger Dijkstra** alzó la voz.
+
+Dijkstra dijo algo que sigue resonando hoy:
+
+> El problema del software radica en que no hemos aprendido a pensar con suficiente claridad.
+
+Su crítica no era solo técnica, sino profundamente filosófica: **escribir software no es ensamblar piezas, es construir pensamiento**. Es un proceso mental, abstracto, donde la complejidad no se ve... hasta que explota.
+
+El antídoto que proponía era la **disciplina**: estructuras claras, código que pueda ser razonado por humanos, soluciones simples, evitar la complejidad innecesaria.
+
+Y aún hoy, más de 50 años después, seguimos luchando con los mismos males: **complejidad creciente, presión por sacar rápido, falta de reflexión y pruebas**.
+
+Si algo debemos aprender de esa crisis es que **nuestro trabajo no es solo escribir código que funcione**, sino código que alguien (tú mismo, en 6 meses) pueda entender, modificar y mejorar sin romperlo todo.
+
+> Porque el software no falla de inmediato. El software falla cuando lo tocas.
+
+---
+
+## 🤖 ¿Nos va a reemplazar la inteligencia artificial?
+
+Muchos aseguran que la inteligencia artificial acabará con nuestro trabajo como programadores. Yo no lo veo tan claro. O al menos, no a corto ni medio plazo. Llevo **más de dos años trabajando con herramientas de IA**, y mi productividad ha mejorado radicalmente. Pero eso no significa que me haya vuelto prescindible.
+
+Lo que me ha enseñado trabajar en equipo con personas es **lo difícil que es comunicarse bien**. Cuántas veces hemos vivido ese "teléfono roto" entre alguien que escribe un ticket y alguien que lo implementa. Lo que estaba en la cabeza del autor rara vez coincide al 100% con lo que el lector interpreta.
+
+Con la IA pasa lo mismo. Le pedimos cosas en un *prompt*, pero si no damos el contexto adecuado, o no somos lo suficientemente precisos, el resultado es incorrecto. Y la programación no perdona: **una coma mal puesta rompe toda la funcionalidad**.
+
+La IA me ayuda a escribir mejor software, sí. Pero **sigo escribiendo muchos tests**. En los problemas complejos, donde hay ambigüedad o decisiones técnicas importantes, la IA no puede reemplazarme. Lo que sí hace muy bien es **ayudarme con tareas pequeñas, repetitivas o aisladas**. Si sé cómo dividir un problema complejo en pasos simples, ahí es donde más la aprovecho.
+
+Además, la IA **no tiene el contexto del producto, del negocio, de las integraciones, ni de los equipos**. No sabe cómo interactúan nuestros servicios, qué restricciones tenemos por arquitectura o qué decisiones históricas hay detrás de una clase mal diseñada.
+
+Hoy, la IA **es buena para hacer cosas simples**. Un formulario, una landing page, un CRUD sin alma. ¿Nos puede reemplazar ahí? Sí. Pero seamos sinceros: **si solo estás aportando valor haciendo eso, la IA no es tu amenaza. Lo eres tú**.
+
+Las **consultoras que viven de hacer proyectos de corta duración** y miden el éxito por líneas de código entregadas son las primeras en notar la amenaza. Pero en **empresas que hacen producto**, el valor está en pensar, en conocer profundamente el dominio, en anticiparse, en sostener el software a largo plazo. Y eso la IA no lo sabe hacer. **Aún.**
+
+> Si trabajas en producto: estás en el sitio correcto.
+> Si no lo haces: quizás deberías pensarlo.
+
+Eso sí: hacer producto **no es hacer proyectos**. Implica otras exigencias, otras responsabilidades, y otras limitaciones. Hay menos glamour técnico muchas veces, pero hay más valor. Y el valor es lo que te hará seguir teniendo trabajo, con o sin IA.
+
+---
+
+
+## 🙅‍♂️ Aprender a decir que no (o al menos, “¿por qué?”)
+
+Una parte infravalorada de ser buen desarrollador es **aprender a decir que no**. No de forma reactiva, ni arrogante. Sino con curiosidad, con intención, con responsabilidad.
+
+Muchas veces, cuando nos llega una petición (ya sea un ticket, una funcionalidad o un cambio en el proceso), asumimos que debemos ejecutarla sin más. Pero **las mejores soluciones suelen nacer de las mejores preguntas**, no de las instrucciones más precisas.
+
+Antes de implementar, detente y pregunta:
+
+* ¿Qué problema se intenta resolver?
+* ¿Por qué ahora?
+* ¿Es esta la mejor forma de abordarlo?
+* ¿Estamos tapando un problema anterior que nunca se resolvió bien?
+
+Porque sí, **muchas veces lo que hoy parece una nueva necesidad… es solo la consecuencia de un mal parche anterior**.
+
+Y entonces surge la trampa: en lugar de revisar los procesos pasados, añadimos nuevos. Más complejidad. Más capas. Más soluciones sobre problemas mal definidos.
+
+> No cures síntomas sin revisar el diagnóstico.
+> Y no automatices sin entender primero.
+
+Decir "no lo veo claro", o "¿y si lo pensamos un poco más?" no es frenar al equipo. Es **protegerlo** de decisiones impulsivas que mañana serán deuda técnica. Es parte de tu trabajo como ingeniero.
+
+---
+
+## 🧑‍🤝‍🧑 Rodéate de quienes te hagan crecer
+
+Una de las decisiones más inteligentes que puedes tomar en tu carrera es esta: **rodéate de gente mejor que tú**. O al menos, mejor que tú en áreas que no dominas.
+
+No intentes ser el experto en todo. No lo necesitas. **El mundo del desarrollo es demasiado amplio** como para pretender abarcarlo todo. En lugar de eso, busca entornos donde **puedas aprender algo cada día**. Personas que te reten, que piensen distinto, que te obliguen a salir de tu zona de confort técnico o conceptual.
+
+Y al mismo tiempo, **sé tú también esa persona para otros**. Comparte lo que sabes. Ayuda a otros a crecer. Lo que hoy enseñas, mañana te vuelve multiplicado.
+
+Pregunta con humildad. Escucha con atención. Pero **lidera con confianza**, sabiendo que tu experiencia, tu criterio y tu capacidad de reflexión aportan valor, incluso cuando no lo sepas todo.
+
+> La clave no está en ser el mejor del equipo.
+> Está en construir un equipo donde todos puedan ser mejores.
+
+---
