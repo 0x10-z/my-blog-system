@@ -4,7 +4,7 @@ date: "2025-06-16"
 tags: ["phishing", "burp", "análisis forense", "ciberseguridad", "GrupoCajaRural"]
 description: "Investigación paso a paso de un caso real de phishing bancario simulado, desde el SMS hasta la recolección de datos."
 summary: "Caso real de phishing bancario: resolución de URL acortada, captura con Burp, simulación móvil y análisis técnico de cada paso."
-images: ["/static/images/uploads/analisis-forense-phishing-entidad-bancaria/4.png"]
+images: ["/static/images/uploads/analisis-forense-phishing-entidad-bancaria/4.webp"]
 ---
 
 ## 🕵️ Análisis forense de un caso real de phishing bancario
@@ -15,7 +15,7 @@ images: ["/static/images/uploads/analisis-forense-phishing-entidad-bancaria/4.pn
 
 ### 🧰 Paso 1: Recepción del SMS sospechoso
 
-![SMS fraudulento](/static/images/uploads/analisis-forense-phishing-entidad-bancaria/1.jpg)
+![SMS fraudulento](/static/images/uploads/analisis-forense-phishing-entidad-bancaria/1.webp)
 
 El proceso comienza con la recepción de un mensaje SMS desde un número español. El texto amenaza con desactivar la tarjeta bancaria si no se actualiza la seguridad antes del 17/06/2025. Incluye un enlace acortado con **TinyURL**.
 
@@ -27,7 +27,7 @@ El proceso comienza con la recepción de un mensaje SMS desde un número españo
 curl -Ls -o /dev/null -w "%{url_effective}\n" https://tinyurl.com/9763pdap
 ```
 
-![Resolución de tinyurl](/static/images/uploads/analisis-forense-phishing-entidad-bancaria/2.png)
+![Resolución de tinyurl](/static/images/uploads/analisis-forense-phishing-entidad-bancaria/2.webp)
 
 Esto revela el destino final:
 
@@ -41,11 +41,11 @@ http://srv235288.hoster-test.ru/wp-admin/ru/rural/core/index.php
 
 Si se accede a la web con el navegador, no se ve nada. ¿Qué raro, un intento de phishing que no está preparado? Vamos a mirar más a fondo.
 
-![Landing page ruralvía](/static/images/uploads/analisis-forense-phishing-entidad-bancaria/3.png)
+![Landing page ruralvía](/static/images/uploads/analisis-forense-phishing-entidad-bancaria/3.webp)
 
 Parece que si no se accede con un `User-Agent` de un iPhone, por ejemplo, no se visualiza nada. Forzamos el `User-Agent` de un smartphone y vemos la primera página.
 
-![Formulario de tarjeta bancaria](/static/images/uploads/analisis-forense-phishing-entidad-bancaria/4.png)
+![Formulario de tarjeta bancaria](/static/images/uploads/analisis-forense-phishing-entidad-bancaria/4.webp)
 
 ---
 
@@ -53,7 +53,7 @@ Parece que si no se accede con un `User-Agent` de un iPhone, por ejemplo, no se 
 
 Introducimos un DNI y una contraseña ficticia.
 
-![Introducimos los datos](/static/images/uploads/analisis-forense-phishing-entidad-bancaria/5.png)
+![Introducimos los datos](/static/images/uploads/analisis-forense-phishing-entidad-bancaria/5.webp)
 
 E interceptando la petición con Burp, observamos los datos que se envían al servidor `POST /wp-admin/ru/rural/core/backend.php`:
 
@@ -61,17 +61,17 @@ E interceptando la petición con Burp, observamos los datos que se envían al se
 id=12345678e&pwd=123456
 ```
 
-![Burp Suite interceptando datos](/static/images/uploads/analisis-forense-phishing-entidad-bancaria/6.png)
+![Burp Suite interceptando datos](/static/images/uploads/analisis-forense-phishing-entidad-bancaria/6.webp)
 
 ---
 
 ### 🔢 Paso 5: Captura de datos personales
 
-![Login alternativo con DNI/NIE](/static/images/uploads/analisis-forense-phishing-entidad-bancaria/7.png)
+![Login alternativo con DNI/NIE](/static/images/uploads/analisis-forense-phishing-entidad-bancaria/7.webp)
 
 La página nos pide más datos del usuario: nombre completo, número de tarjeta, fecha de caducidad, código de seguridad y PIN.
 
-![Burp Suite con login simulado](/static/images/uploads/analisis-forense-phishing-entidad-bancaria/9.png)
+![Burp Suite con login simulado](/static/images/uploads/analisis-forense-phishing-entidad-bancaria/9.webp)
 
 En esta ventana de `Burp`, vemos los datos introducidos en el formulario que se envian por `Post` a la URL fake.
 
@@ -88,13 +88,13 @@ La última ventana es un campo para introducir un código SMS. En este punto, si
 
 La idea es que este código se introduzca aquí para continuar.
 
-![Redirección final al login](/static/images/uploads/analisis-forense-phishing-entidad-bancaria/10.png)
+![Redirección final al login](/static/images/uploads/analisis-forense-phishing-entidad-bancaria/10.webp)
 
 Finalmente, la página de phishing redirige al sitio oficial de `grupocajarural.es`, como si nada hubiera ocurrido.
 
 Esto refuerza la sensación de legitimidad en el usuario.
 
-![Redirección final al login](/static/images/uploads/analisis-forense-phishing-entidad-bancaria/17.png)
+![Redirección final al login](/static/images/uploads/analisis-forense-phishing-entidad-bancaria/17.webp)
 
 ---
 
