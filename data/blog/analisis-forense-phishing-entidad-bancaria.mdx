@@ -16,13 +16,18 @@ images: ["/static/images/uploads/analisis-forense-phishing-entidad-bancaria/bann
 
 ### 🧰 Paso 1: Recepción del SMS sospechoso
 
-![SMS fraudulento](/static/images/uploads/analisis-forense-phishing-entidad-bancaria/1.webp)
-
 El proceso comienza con la recepción de un mensaje SMS desde un número español. El texto amenaza con desactivar la tarjeta bancaria si no se actualiza la seguridad antes del 17/06/2025. Incluye un enlace acortado con **TinyURL**.
+
+![SMS fraudulento](/static/images/uploads/analisis-forense-phishing-entidad-bancaria/1.webp)
 
 ---
 
 ### 🧵 Paso 2: Resolución del enlace acortado
+
+En el SMS observamos un enlace acortado, lo que indica que se está intentando ocultar la URL original.
+Lamentablemente, esta práctica también es utilizada por muchas empresas legítimas, pero en el contexto adecuado puede ser un indicio de phishing.
+
+Si no queremos abrir el enlace directamente en un navegador, podemos utilizar `curl` para revelar la URL real sin necesidad de seguirla con un navegador:
 
 ```bash
 curl -Ls -o /dev/null -w "%{url_effective}\n" https://tinyurl.com/9763pdap
@@ -44,6 +49,8 @@ Si se accede a la web con el navegador, no se ve nada. ¿Qué raro, un intento d
 
 ![Landing page ruralvía](/static/images/uploads/analisis-forense-phishing-entidad-bancaria/3.webp)
 
+Muchos intentos de phishing están orientados específicamente a dispositivos móviles. Estos dispositivos suelen ocultar o acortar los enlaces en el navegador para adaptarse al tamaño reducido de la pantalla. Es posible que este sea uno de esos casos.
+
 Parece que si no se accede con un `User-Agent` de un iPhone, por ejemplo, no se visualiza nada. Forzamos el `User-Agent` de un smartphone y vemos la primera página.
 
 ![Formulario de tarjeta bancaria](/static/images/uploads/analisis-forense-phishing-entidad-bancaria/4.webp)
@@ -52,14 +59,23 @@ Parece que si no se accede con un `User-Agent` de un iPhone, por ejemplo, no se 
 
 ### 🔍 Paso 4: Recolección de datos bancarios
 
-Introducimos un DNI y una contraseña ficticia.
+> A partir de este punto, debemos tener precaución. Toda la información que introduzcamos probablemente será enviada directamente al atacante.
+> Por ello, **todos los datos utilizados a partir de ahora son ficticios**.
+
+Introducimos un DNI y una contraseña inventada.
 
 ![Introducimos los datos](/static/images/uploads/analisis-forense-phishing-entidad-bancaria/5.webp)
 
-E interceptando la petición con Burp, observamos los datos que se envían al servidor `POST /wp-admin/ru/rural/core/backend.php`:
+Al interceptar la petición con **Burp Suite**, observamos que los datos se envían al servidor a través del siguiente `POST`:
 
 ```http
 id=12345678e&pwd=123456
+```
+
+Podemos ver claramente cómo el DNI y la contraseña introducidos en el formulario son enviados a una URL sospechosa que no corresponde con la del banco legítimo, sino a:
+
+```http
+http://srv235288.hoster-test.ru
 ```
 
 ![Burp Suite interceptando datos](/static/images/uploads/analisis-forense-phishing-entidad-bancaria/6.webp)
@@ -70,11 +86,11 @@ id=12345678e&pwd=123456
 
 ![Login alternativo con DNI/NIE](/static/images/uploads/analisis-forense-phishing-entidad-bancaria/7.webp)
 
-La página nos pide más datos del usuario: nombre completo, número de tarjeta, fecha de caducidad, código de seguridad y PIN.
+La página solicita más datos del usuario: nombre completo, número de tarjeta, fecha de caducidad, código de seguridad y PIN. Es una práctica habitual en los fraudes tipo phishing más sofisticados, donde se intenta obtener la mayor cantidad de información sensible posible.
 
 ![Burp Suite con login simulado](/static/images/uploads/analisis-forense-phishing-entidad-bancaria/9.webp)
 
-En esta ventana de `Burp`, vemos los datos introducidos en el formulario que se envian por `Post` a la URL fake.
+En esta ventana de **Burp Suite**, observamos cómo los datos introducidos en el formulario se envían mediante una petición POST a la misma URL fraudulenta.
 
 ```http
 POST /wp-admin/ru/rural/core/backend.php
@@ -85,15 +101,15 @@ name=Michael+Jordan&cc=1234+5678&yr=11%2F27&cvv=123&pix=1234
 
 ### 📲 Paso 6: Simulación de acceso final
 
-La última ventana es un campo para introducir un código SMS. En este punto, si hubiésemos introducido datos reales de tarjeta, podría haberse recibido un SMS auténtico del banco con un código.
+La última ventana solicita un código SMS. En este punto, si se hubieran introducido datos reales de tarjeta, es posible que el banco legítimo hubiera enviado un código de verificación al número asociado.
 
-La idea es que este código se introduzca aquí para continuar.
+La idea del atacante es que el usuario introduzca ese código aquí, completando así el fraude.
 
 ![Redirección final al login](/static/images/uploads/analisis-forense-phishing-entidad-bancaria/10.webp)
 
-Finalmente, la página de phishing redirige al sitio oficial de `grupocajarural.es`, como si nada hubiera ocurrido.
+Finalmente, la página de phishing redirige automáticamente al sitio oficial de `grupocajarural.es`, simulando que no ha pasado nada.
 
-Esto refuerza la sensación de legitimidad en el usuario.
+Esta redirección final refuerza la sensación de legitimidad, haciendo creer al usuario que ha accedido correctamente a su cuenta.
 
 ![Redirección final al login](/static/images/uploads/analisis-forense-phishing-entidad-bancaria/17.webp)
 
@@ -114,9 +130,9 @@ Esto refuerza la sensación de legitimidad en el usuario.
 
 ## 🛡️ Recomendaciones
 
-- Desconfiar de SMS con enlaces acortados y amenazas urgentes.
-- Comprobar siempre las URLs antes de acceder.
-- Usar navegadores con protección contra phishing.
-- Reportar estos intentos al banco y a INCIBE.
+- Desconfía de SMS con enlaces acortados o mensajes con tono alarmista o amenazante.
+- Comprueba siempre la URL antes de acceder, especialmente si te solicitan datos personales o bancarios.
+- Ante la más mínima duda, contacta directamente con tu gestor o con la entidad bancaria por canales oficiales.
+- Reporta cualquier intento de phishing al banco y a INCIBE (Instituto Nacional de Ciberseguridad): [https://www.incibe.es](https://www.incibe.es)
 
 ---
