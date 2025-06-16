@@ -1,0 +1,123 @@
+---
+title: "Análisis Forense de Phishing a Entidad Bancaria"
+date: "2025-06-16"
+tags: ["phishing", "burp", "análisis forense", "ciberseguridad", "GrupoCajaRural"]
+description: "Investigación paso a paso de un caso real de phishing bancario simulado, desde el SMS hasta la recolección de datos."
+summary: "Caso real de phishing bancario: resolución de URL acortada, captura con Burp, simulación móvil y análisis técnico de cada paso."
+images: ["/static/images/uploads/analisis-forense-phishing-entidad-bancaria/4.png"]
+---
+
+
+## 🕵️ Análisis forense de un caso real de phishing bancario
+
+> En esta investigación forense, se analiza un intento de phishing dirigido a clientes de una entidad bancaria simulada (**GrupoCajaRural.es**). A partir de un SMS fraudulento, se reconstruye todo el flujo del ataque documentando cada paso mediante capturas de pantalla y herramientas OSINT/técnicas de análisis web.
+
+---
+
+### 🧰 Paso 1: Recepción del SMS sospechoso
+
+![SMS fraudulento](/static/images/uploads/analisis-forense-phishing-entidad-bancaria/1.jpg)
+
+El proceso comienza con la recepción de un mensaje SMS desde un número español. El texto amenaza con desactivar la tarjeta bancaria si no se actualiza la seguridad antes del 17/06/2025. Incluye un enlace acortado con **TinyURL**.
+
+---
+
+### 🧵 Paso 2: Resolución del enlace acortado
+
+```bash
+curl -Ls -o /dev/null -w "%{url_effective}\n" https://tinyurl.com/9763pdap
+```
+
+![Resolución de tinyurl](/static/images/uploads/analisis-forense-phishing-entidad-bancaria/2.png)
+
+Esto revela el destino final:
+
+```text
+http://srv235288.hoster-test.ru/wp-admin/ru/rural/core/index.php
+```
+
+---
+
+### 💪 Paso 3: Simulación de entorno móvil
+
+Si se accede a la web con el navegador, no se ve nada. Que raro, un intento de phishing que no está preparado? vamos a mirar más a fondo.
+
+![Landing page ruralvía](/static/images/uploads/analisis-forense-phishing-entidad-bancaria/3.png)
+
+Parece que si no se accede con un `User-Agent` de un iPhone, por ejemplo, no se visualiza nada. Forzamos el user agent de un smartphone y vemos la primera página.
+
+![Formulario de tarjeta bancaria](/static/images/uploads/analisis-forense-phishing-entidad-bancaria/4.png)
+
+---
+
+### 🔍 Paso 4: Recolección de datos bancarios
+
+Introducimos un DNI y una contraseña ficticia
+
+![Introducimos los datos](/static/images/uploads/analisis-forense-phishing-entidad-bancaria/5.png)
+
+E interceptando la petici´´on con Burp, observamos los datos que se envian al servidor `POST /wp-admin/ru/rural/core/backend.php`
+
+```http
+id=12345678e&pwd=123456
+```
+![Burp Suite interceptando datos](/static/images/uploads/analisis-forense-phishing-entidad-bancaria/6.png)
+
+---
+
+### 🔢 Paso 5: Captura datos personales
+
+![Login alternativo con DNI/NIE](/static/images/uploads/analisis-forense-phishing-entidad-bancaria/7.png)
+
+La pagina nos pide mas datos del usuario, nombre completo, numero de tarjeta, fecha de caducidad, codigo de seguridad y pin.
+
+
+![Burp Suite con login simulado](/static/images/uploads/analisis-forense-phishing-entidad-bancaria/9.png)
+
+```http
+POST /wp-admin/ru/rural/core/backend.php
+name=Michael+Jordan&cc=1234+5678&yr=11%2F27&cvv=123&pix=1234
+```
+
+Confirmamos que los datos son enviados vía POST al endpoint `backend.php`.
+
+---
+
+### 📲 Paso 6: Simulación de acceso final
+
+La ultima ventana es un código SMS. En este punto, si hubiesemos introducido datos reales de tarjeta, te habría llegado algun SMS real del banco con un codigo.
+
+La idea es que este codigo lo introduzcas en esta ventana.
+
+![Redirección final al login](/static/images/uploads/analisis-forense-phishing-entidad-bancaria/10.png)
+
+Y finalmente, la página de phishing nos redirige a la pagina oficial de grupocajarural.es, como si nada hubiera pasado.
+
+El flujo termina redirigiendo al login original, reforzando la sensación de legitimidad.
+
+![Redirección final al login](/static/images/uploads/analisis-forense-phishing-entidad-bancaria/17.png)
+
+
+---
+
+## 🔍 Conclusiones
+
+Este phishing multietapa:
+
+- Usa un enlace acortado para ocultar la URL final.
+- Simula entorno móvil con buena apariencia.
+- Captura datos críticos en varias fases.
+- Redirige sin errores visibles para no alertar al usuario.
+
+---
+
+## 🛡️ Recomendaciones
+
+- Desconfiar de SMS con enlaces acortados y amenazas urgentes.
+- Comprobar siempre las URLs antes de acceder.
+- Usar navegadores con protección contra phishing.
+- Reportar estos intentos al banco y a INCIBE.
+
+---
+
+Si estás investigando un ataque similar y quieres automatizar el análisis de redirecciones, formularios y headers, te puedo mostrar cómo hacerlo con `curl`, `Burp Suite` y `python` paso a paso.
