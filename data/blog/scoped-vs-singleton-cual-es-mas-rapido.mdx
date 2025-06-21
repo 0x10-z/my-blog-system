@@ -1,0 +1,261 @@
+---
+title: "Scoped vs Singleton: ¿cuál es más rápido en .NET?"
+date: "2025-06-20"
+tags: [".NET", "WebAPI", "DI", "Performance", "Singleton", "Scoped"]
+draft: false
+authors: ['default']
+summary: "Comparamos el rendimiento de servicios Singleton y Scoped en WebAPI usando BenchmarkDotNet. ¿Cuál es mejor según el caso?"
+images: ["/static/images/uploads/scoped-vs-singleton-cual-es-mas-rapido/1.webp"]
+---
+
+# 🧪 Scoped vs Singleton: ¿cuál es más rápido (y más seguro) en una Web API .NET?
+
+En una aplicación Web API en .NET, cada vez que se recibe una petición HTTP, se inicia un nuevo flujo de ejecución: desde el controlador hasta los servicios de negocio, los repositorios y más allá. Y aquí es donde surge una decisión clave de arquitectura:
+
+> ¿Deberíamos registrar nuestros servicios como `Scoped` (una instancia por petición) o como `Singleton` (una sola instancia para toda la vida de la aplicación)?
+
+Hay quienes defienden usar `Singleton` porque "evita la creación repetida" y "mejora el rendimiento". Otros recomiendan `Scoped` porque es más seguro y compatible con `DbContext`, entre otros argumentos.
+
+En este post analizamos **los pros y contras de ambos enfoques**, y mostramos **pruebas de rendimiento reales** con [`BenchmarkDotNet`](https://benchmarkdotnet.org/). Verás cómo el rendimiento puede cambiar drásticamente según el tipo de trabajo que haga tu servicio — desde cálculos triviales hasta cargas pesadas concurrentes.
+
+Y sobre todo, sacamos conclusiones prácticas para tu Web API: si tienes servicios que acceden a bases de datos, escriben registros, procesan datos concurrentemente... este análisis es para ti.
+
+---
+
+## ⚗️ Escenarios probados
+
+Creamos cuatro servicios distintos, combinando dos dimensiones:
+
+- **Singleton** vs **Scoped**
+- Lógica **ligera** vs lógica **pesada** (Fibonacci con `BigInteger`)
+
+Cada servicio fue invocado en paralelo desde 8 hilos. Los resultados fueron medidos sin debugger y con `InvocationCount = 160`.
+
+---
+
+## 🧠 Caso 1: Servicio ligero
+
+```csharp
+public int DoWork() => 42;
+````
+
+| Método           | Tiempo medio | Memoria |
+| ---------------- | ------------ | ------- |
+| ✅ SingletonLight | 5.12 µs      | 2.28 KB |
+| ScopedLight      | 6.56 µs      | 5.04 KB |
+
+**¿Qué aprendemos?**
+
+* El `Singleton` es ligeramente más rápido porque no hay que instanciar nada.
+* Esto es ideal para servicios sin estado, sin dependencias externas ni trabajo pesado.
+* Sin embargo, si tu `LightService` termina dependiendo de un logger contextual, `DbContext`, o un token de usuario, probablemente dejará de poder ser `Singleton`.
+
+---
+
+## 🔥 Caso 2: Servicio pesado (Fibonacci)
+
+```csharp
+public int DoWork()
+{
+    BigInteger a = 0, b = 1;
+    for (int i = 2; i <= 100; i++) (a, b) = (b, a + b);
+    return b.ToString().Length;
+}
+```
+
+| Método         | Tiempo medio | Memoria  |
+| -------------- | ------------ | -------- |
+| SingletonHeavy | ❌ 64.08 µs   | 17.98 KB |
+| ✅ ScopedHeavy  | 22.50 µs     | 20.67 KB |
+
+**¿Qué pasa aquí?**
+
+* El `Singleton` necesita proteger el acceso con un `lock`, lo cual **serializa el trabajo**. Solo un hilo trabaja a la vez.
+* El `Scoped` crea una instancia por hilo → **máximo paralelismo**.
+* Aunque asigna más memoria, el coste se amortiza con creces cuando el trabajo interno es costoso.
+
+---
+
+## 🧩 ¿Qué pasa en una Web API real?
+
+Imagina un servicio que interactúa con una base de datos:
+
+```csharp
+public class OrderService
+{
+    private readonly AppDbContext _dbContext;
+
+    public void ConfirmOrder(int orderId)
+    {
+        var order = _dbContext.Orders.Find(orderId);
+        order.Status = "Confirmed";
+        _dbContext.SaveChanges();
+    }
+}
+```
+
+### ✅ Este servicio debe ser `Scoped`.
+
+* `DbContext` es `Scoped`. Si lo inyectas en un `Singleton`, obtendrás un error como:
+
+```bash
+Cannot consume scoped service 'MyDbContext' from singleton
+```
+
+* Incluso si haces un `CreateScope()` manual dentro del `Singleton`, estarás **gestionando el ciclo de vida a mano**, y podrías:
+
+  * Olvidar el `Dispose()`, causando fugas de memoria.
+  * Generar `deadlocks` si combinas `lock` + creación de scopes.
+  * Ocultar dependencias no evidentes, dificultando tests y mantenimiento.
+
+---
+
+## ⚙️ ¿Y en un `BackgroundService`?
+
+En `BackgroundService`, no hay una petición HTTP que cree el `Scope` automáticamente. Si necesitas acceder a un servicio `Scoped`, **debes crear un `Scope` manualmente**:
+
+```csharp
+public class MyBackgroundWorker : BackgroundService
+{
+    private readonly IServiceProvider _provider;
+
+    public MyBackgroundWorker(IServiceProvider provider)
+    {
+        _provider = provider;
+    }
+
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    {
+        while (!stoppingToken.IsCancellationRequested)
+        {
+            using var scope = _provider.CreateScope();
+            var service = scope.ServiceProvider.GetRequiredService<IOrderService>();
+            await service.DoWorkAsync();
+        }
+    }
+}
+```
+
+🔍 En este caso está justificado el uso de `CreateScope()`, **porque tú gestionas el ciclo de vida del trabajo manualmente**.
+
+---
+
+## 🧠 ¿Qué implica usar un Singleton *thread-safe*?
+
+Usar `Singleton` no es gratis. Aunque parece cómodo ("se instancia una vez y se usa siempre"), tiene implicaciones serias si tu servicio:
+
+* **Mantiene estado interno mutable** (como contadores, listas, diccionarios, etc.)
+* Es accedido **desde múltiples hilos** a la vez (lo que ocurre en casi cualquier Web API en producción)
+
+### ❌ Si no es thread-safe: tienes un problema
+
+Cuando múltiples hilos acceden y modifican el estado del singleton sin sincronización:
+
+* Puedes tener **condiciones de carrera**.
+* El estado del objeto puede quedar **corrupto**.
+* Puedes tener errores **intermitentes**, difíciles de reproducir y muy costosos de depurar.
+
+```csharp
+public class UnsafeCounterService
+{
+    private int _count = 0;
+
+    public int Increment()
+    {
+        return _count++; // ❌ No es atómico ni thread-safe:
+                         // Si dos hilos acceden al mismo tiempo, ambos pueden ejecutar estos pasos en paralelo:
+                         //   1. Leer _count (por ejemplo, 0).
+                         //   2. Calcular newValue = _count + 1 → 1.
+                         //   3. Asignar _count = newValue → ambos asignan 1.
+                         // Resultado: se pierde un incremento, y ambos hilos devuelven el mismo valor.
+    }
+}
+
+```
+
+### ✅ Solución 1: Hazlo inmutable
+
+Un `Singleton` es seguro por diseño **si es inmutable**, es decir:
+
+* No tiene campos que cambien de valor después del constructor.
+* No guarda estado interno de ninguna forma.
+* Solo opera sobre los datos que recibe por parámetro.
+
+```csharp
+public class TaxCalculator // ✅ Inmutable
+{
+    private readonly decimal _vat;
+
+    public TaxCalculator(decimal vat)
+    {
+        _vat = vat;
+    }
+
+    public decimal Apply(decimal amount) => amount * _vat;
+}
+```
+
+### ✅ Solución 2: Hazlo seguro mediante sincronización
+
+Si necesitas que el singleton tenga estado, debes proteger el acceso concurrente con:
+
+* `lock` (sencillo pero puede bloquear)
+* `Interlocked` (para operaciones atómicas simples)
+* `ConcurrentDictionary`, `ConcurrentQueue`, etc.
+
+```csharp
+public class SafeCounterService
+{
+    private int _count = 0;
+
+    public int Increment()
+    {
+        return Interlocked.Increment(ref _count); // ✅ Atómico y rápido
+    }
+}
+```
+
+> ❗ Pero cuidado: **el simple uso de `lock` no te salva si haces muchas operaciones costosas dentro**. Como vimos en los benchmarks, eso puede provocar cuellos de botella serios.
+
+---
+
+### 📌 Checklist: ¿puede ser Singleton?
+
+Antes de registrar un servicio como Singleton, asegúrate de que cumple **todas** estas condiciones:
+
+| Requisito                                                               |    |
+| ----------------------------------------------------------------------- | -- |
+| No guarda estado mutable interno                                        | ✅ |
+| Es completamente inmutable tras su creación                             | ✅ |
+| Todas sus operaciones son `thread-safe`                                 | ✅ |
+| No depende de servicios `Scoped` como `DbContext`                       | ✅ |
+| No utiliza `HttpContext`, claims, logging contextual u objetos efímeros | ✅ |
+
+---
+
+## ✅ Conclusiones prácticas
+
+| Escenario                                   | ¿Qué usar?                   | Motivo                                              |
+| ------------------------------------------- | ---------------------------- | --------------------------------------------------- |
+| Servicio sin estado y lógica ligera         | Singleton                    | Reutilizable, rápido y sin costes de creación       |
+| Servicio ligero pero con dependencias       | Scoped                       | Encaja mejor con logging, contexto de usuario, etc. |
+| Acceso a `DbContext`                        | Scoped                       | `DbContext` es `Scoped` por diseño                  |
+| Alta concurrencia con lógica costosa        | Scoped                       | Permite paralelismo real sin cuellos de botella     |
+| Servicio `Singleton` que usa `lock`         | Evitar si es muy concurrido  | Penaliza el rendimiento al bloquear múltiples hilos |
+| `BackgroundService` con dependencias scoped | Scoped + `CreateScope()`     | Justificado en este patrón de ejecución manual      |
+
+---
+
+## 💡 Reglas de oro
+
+> Usa `Scoped` por defecto en Web API.
+> Usa `Singleton` **solo si**:
+>
+> * No tiene estado mutable.
+> * Es thread-safe sin necesidad de `lock`.
+> * No depende de servicios `Scoped`.
+> * Su uso está limitado y claramente controlado.
+
+---
+
+¿Has tenido que usar `CreateScope()` en producción? ¿Te has topado con errores extraños por mezclar ciclos de vida? Comparte tu experiencia abajo 👇
